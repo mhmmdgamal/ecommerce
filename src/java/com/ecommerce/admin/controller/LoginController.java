@@ -32,7 +32,7 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
 
         // forword the requset to the login page
-        Helper.forwardRequest(request, response, "/WEB-INF/views/admin/login.jsp", "Login");
+        Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "login.jsp", "Login");
     }
 
     /**

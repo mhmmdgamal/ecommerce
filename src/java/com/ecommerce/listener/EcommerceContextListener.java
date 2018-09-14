@@ -15,7 +15,7 @@ public class EcommerceContextListener implements ServletContextListener {
     /**
      * create database connection and set it to the app context
      * when app created for the first time
-     * 
+     *
      * @param sce 
      */
     @Override
@@ -33,7 +33,7 @@ public class EcommerceContextListener implements ServletContextListener {
         
         // set database to request
         sc.setAttribute("db", db);
-    }
+        }
 
     /**
      * close database connection when app destroyed

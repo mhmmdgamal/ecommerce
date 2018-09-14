@@ -43,8 +43,8 @@
                     <c:forEach items="${requestScope['categories']}" var="category">
                         <div class='cat'>
                             <div class='hidden-buttons'>
-                                <a href='/ecommerce/admin/categories?action=Edit&categoryid=${category.id}' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Edit</a>
-                                <a href='/ecommerce/admin/categories?action=Delete&categoryid=${category.id}' class='confirm btn btn-xs btn-danger'><i class='fa fa-close'></i> Delete</a>
+                                <a href='${initParam['sourceJspOfAdmin']}categories?action=Edit&categoryid=${category.id}' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Edit</a>
+                                <a href='${initParam['sourceJspOfAdmin']}categories?action=Delete&categoryid=${category.id}' class='confirm btn btn-xs btn-danger'><i class='fa fa-close'></i> Delete</a>
                             </div>
                             <h3>${category.name}</h3>
                             <div class='full-view'>
@@ -85,14 +85,14 @@
             </div>
         </div>
 
-        <a class="add-category btn btn-primary" href="/ecommerce/admin/categories?action=Add"><i class="fa fa-plus"></i> Add New Category</a>
+        <a class="add-category btn btn-primary" href="${initParam['sourceJspOfAdmin']}categories?action=Add"><i class="fa fa-plus"></i> Add New Category</a>
     </div>
 </c:when>
 <c:otherwise>
 
     <div class="container">
         <div class="nice-message">There\'s No Categories To Show</div>
-        <a href="/ecommerce/admin/categories?action=Add" class="btn btn-primary">
+        <a href="${initParam['sourceJspOfAdmin']}categories?action=Add" class="btn btn-primary">
             <i class="fa fa-plus"></i> New Category
         </a>
     </div>

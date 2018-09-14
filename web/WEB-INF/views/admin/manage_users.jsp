@@ -52,18 +52,18 @@
                             <td>${user.fullName}</td>
                             <td>${user.date}</td>
                             <td>
-                                <a href='/ecommerce/admin/users?action=Edit&userid=${user.id}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
-                                <a href='/ecommerce/admin/users?action=Delete&userid=${user.id}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete </a>
+                                <a href='${initParam['sourceJspOfAdmin']}users?action=Edit&userid=${user.id}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
+                                <a href='${initParam['sourceJspOfAdmin']}users?action=Delete&userid=${user.id}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete </a>
 
                                 <c:if test="${user.regStatus eq 0}">
-                                    <a href='/ecommerce/admin/users?action=Activate&userid=${user.id}' class='btn btn-info activate'><i class='fa fa-check'></i> Activate</a>
+                                    <a href='${initParam['sourceJspOfAdmin']}users?action=Activate&userid=${user.id}' class='btn btn-info activate'><i class='fa fa-check'></i> Activate</a>
                                 </c:if>
                             </td>
                         </tr>
                     </c:forEach>
                 </table>
             </div>
-            <a href="/ecommerce/admin/users?action=Add" class="btn btn-primary">
+            <a href="${initParam['sourceJspOfAdmin']}users?action=Add" class="btn btn-primary">
                 <i class="fa fa-plus"></i> New Member
             </a>
         </div>
@@ -72,7 +72,7 @@
     <c:otherwise>
         <div class="container">
             <div class="nice-message">There's No Members To Show</div>
-            <a href="/ecommerce/admin/users?action=Add" class="btn btn-primary">
+            <a href="${initParam['sourceJspOfAdmin']}users?action=Add" class="btn btn-primary">
                 <i class="fa fa-plus"></i> New Member
             </a>
         </div>

@@ -58,10 +58,10 @@ public class UserController extends HttpServlet {
                 request.setAttribute("users", users);
 
                 // forword to manage page
-                Helper.forwardRequest(request, response, "/WEB-INF/views/admin/manage_users.jsp");
+                Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "manage_users.jsp");
             } else if (action.equals("Add")) {
                 // forword to add page
-                Helper.forwardRequest(request, response, "/WEB-INF/views/admin/add_user.jsp");
+                Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "add_user.jsp");
             } else if (action.equals("Edit")) {
                 // get userId param from the request
                 String userId = request.getParameter("userid");
@@ -76,7 +76,7 @@ public class UserController extends HttpServlet {
                     request.setAttribute("user", userFounded);
 
                     // forword to edit page
-                    Helper.forwardRequest(request, response, "/WEB-INF/views/admin/edit_user.jsp");
+                    Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "edit_user.jsp");
                 } else {
                     // redirect to the previous page with error message
                     Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
@@ -193,7 +193,7 @@ public class UserController extends HttpServlet {
                 // check if no errors
                 if (formErrors.size() > 0) {
                     // forword to add page
-                    Helper.forwardRequest(request, response, "/WEB-INF/views/admin/add_user.jsp");
+                    Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "add_user.jsp");
                 } else {
                     // make new user and set info to it
                     User user = new User();
@@ -212,7 +212,7 @@ public class UserController extends HttpServlet {
                         request.setAttribute("success", "user added");
                     }
                     // forword to add page
-                    Helper.forwardRequest(request, response, "/WEB-INF/views/admin/add_user.jsp");
+                    Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "add_user.jsp");
 
 //					$avatar = rand(0, 10000000000) . '_' . $avatarName;
 //
@@ -263,7 +263,7 @@ public class UserController extends HttpServlet {
                 // check if no errors
                 if (formErrors.size() > 0) {
                     // forword to edit page
-                    Helper.forwardRequest(request, response, "/WEB-INF/views/admin/edit_user.jsp");
+                    Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "edit_user.jsp");
                 } else {
                     // make new user and set info to it
                     User user = new User();
@@ -287,7 +287,7 @@ public class UserController extends HttpServlet {
                         request.setAttribute("success", "user updated");
                     }
                     // forword to edit page
-                    Helper.forwardRequest(request, response, "/WEB-INF/views/admin/edit_user.jsp");
+                    Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "edit_user.jsp");
                 }
             } else {
                 // redirect to the login page if the username does not exists in session

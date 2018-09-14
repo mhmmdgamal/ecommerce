@@ -26,7 +26,7 @@
 </div>
 <div class="container">
 
-    <form action="${pageContext.request.contextPath}/admin/items?action=Add" class="form-horizontal" method="POST">
+    <form action="${initParam['sourcejsp']}items?action=Add" class="form-horizontal" method="POST">
         <!-- Start Name Field -->
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Name</label>

@@ -5,7 +5,7 @@
     <c:redirect url="dashboard"/>
 </c:if>
 
-<form class="login" action="${pageContext.request.contextPath}/admin/login" method="POST">
+<form class="login" action="${initParam['sourceJspOfAdmin']}login" method="POST">
     <h4 class="text-center">Admin Login</h4>
     <input class="form-control" type="text" name="user" placeholder="Username" autocomplete="off" />
     <input class="form-control" type="password" name="pass" placeholder="Password" autocomplete="new-password" />
@@ -13,3 +13,10 @@
 </form>
 
 <c:import url="includes/templates/footer.jsp" />
+<!--
+    ** the action firstly will go to LoginController by check web.xml
+    * <servlet-mapping>
+    * <servlet-name>LoginController</servlet-name>
+    * <url-pattern>/login</url-pattern>
+    * </servlet-mapping>
+-->

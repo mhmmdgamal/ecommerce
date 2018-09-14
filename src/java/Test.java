@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  */
 /**
  *
- * @author mohamed and Ramadan
+ * @author Mohamed and Ramadan
  */
 public class Test {
 

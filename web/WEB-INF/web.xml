@@ -18,7 +18,7 @@
         <param-value/>
     </context-param>
     <context-param>
-        <param-name>loginAsAdmin</param-name>
+        <param-name>sourceJspOfAdmin</param-name>
         <param-value>/ecommerce/admin/</param-value>
     </context-param>
     <context-param>
@@ -28,6 +28,10 @@
     <context-param>
         <param-name>sourceAdminLayout</param-name>
         <param-value>/ecommerce/resources/admin/layout/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>sourceCustomerLayout</param-name>
+        <param-value>/ecommerce/resources/customer/layout/</param-value>
     </context-param>
     <!--filters-->
     <filter>

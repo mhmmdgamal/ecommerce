@@ -25,7 +25,7 @@
 </div>
 <div class="container">
 
-    <form action="${pageContext.request.contextPath}/admin/categories?action=Add" class="form-horizontal" method="POST">
+    <form action="${initParam['sourcejsp']}categories?action=Add" class="form-horizontal" method="POST">
         <!-- Start Name Field -->
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Name</label>
@@ -38,7 +38,7 @@
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Description</label>
             <div class="col-sm-10 col-md-6">
-                <input type="text" name="description" class="form-control" placeholder="Describe The Category" />
+                <input type="text" name="description" class="form-control" placeholder="Describe The Category " />
             </div>
         </div>
         <!-- End Description Field -->

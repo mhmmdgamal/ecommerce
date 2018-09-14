@@ -69,7 +69,7 @@ public class DashboardController extends HttpServlet {
             request.setAttribute("latestComments", commentDao.getLatestComments(5));
 
             // forword the requset to the dashboard page
-            Helper.forwardRequest(request, response, "/WEB-INF/views/admin/dashboard.jsp");
+            Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "dashboard.jsp");
         } else {
             // redirect to login page if session not exits
             response.sendRedirect("login");

@@ -180,11 +180,11 @@
                     <td>${comment.user.getName}</td>
                     <td>${comment.addDate}</td>
                     <td>
-                        <a href='/ecommerce/admin/comments?action=Edit&commentid=${comment.id}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
-                        <a href='/ecommerce/admin/comments?action=Delete&commentid=${comment.id}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete </a>
+                        <a href='${initParam['sourceJspOfAdmin']}comments?action=Edit&commentid=${comment.id}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
+                        <a href='${initParam['sourceJspOfAdmin']}comments?action=Delete&commentid=${comment.id}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete </a>
                         <c:if test="${comment.status eq 0}">
 
-                            <a href='/ecommerce/admin/comments?action=Approve&commentid=${comment.id}' class='btn btn-info activate'><i class='fa fa-check'></i> Approve</a>
+                            <a href='${initParam['sourceJspOfAdmin']}comments?action=Approve&commentid=${comment.id}' class='btn btn-info activate'><i class='fa fa-check'></i> Approve</a>
                         </c:if>
                     </td>
                 </tr>

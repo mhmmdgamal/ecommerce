@@ -75,10 +75,10 @@ public class ItemController extends HttpServlet {
                 request.setAttribute("items", items);
 
                 // forword request to manage page
-                Helper.forwardRequest(request, response, "/WEB-INF/views/admin/manage_items.jsp");
+                Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "manage_items.jsp");
             } else if (action.equals("Add")) {
                 // forword request to add page
-                Helper.forwardRequest(request, response, "/WEB-INF/views/admin/add_item.jsp");
+                Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "add_item.jsp");
             } else if (action.equals("Edit")) {
                 // get itemId param from the request
                 String itemId = request.getParameter("itemid");
@@ -99,7 +99,7 @@ public class ItemController extends HttpServlet {
                     request.setAttribute("item", itemFounded);
 
                     // forword request to edit page
-                    Helper.forwardRequest(request, response, "/WEB-INF/views/admin/edit_item.jsp");
+                    Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "edit_item.jsp");
                 } else {
                     // redirect to the previous page with error message
                     Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
@@ -235,7 +235,7 @@ public class ItemController extends HttpServlet {
                 // check if no errors
                 if (formErrors.size() > 0) {
                     // forword to add page
-                    Helper.forwardRequest(request, response, "/WEB-INF/views/admin/add_item.jsp");
+                    Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "add_item.jsp");
                 } else {
                     // make new user and set info to it
                     User user = new User();
@@ -267,7 +267,7 @@ public class ItemController extends HttpServlet {
                         request.setAttribute("success", "item added");
                     }
                     // forword to add page
-                    Helper.forwardRequest(request, response, "/WEB-INF/views/admin/add_item.jsp");
+                    Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "add_item.jsp");
                 }
             } else if (action.equals("Edit")) {
                 // get itemid param from the request
@@ -325,7 +325,7 @@ public class ItemController extends HttpServlet {
                 request.setAttribute("errors", formErrors);
 
                 if (formErrors.size() > 0) {
-                    Helper.forwardRequest(request, response, "/WEB-INF/views/admin/edit_item.jsp");
+                    Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "edit_item.jsp");
                 } else {
                     // make new item 
                     Item item = new Item();
@@ -367,7 +367,7 @@ public class ItemController extends HttpServlet {
                     request.setAttribute("item", item);
 
                     // forword to edit page
-                    Helper.forwardRequest(request, response, "/WEB-INF/views/admin/edit_item.jsp");
+                    Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "edit_item.jsp");
                 }
             } else {
                 // redirect to the login page if the username does not exists in session 
