@@ -17,6 +17,18 @@
         <param-name>dbPassword</param-name>
         <param-value/>
     </context-param>
+    <context-param>
+        <param-name>loginAsAdmin</param-name>
+        <param-value>/ecommerce/admin/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>sourcejsp</param-name>
+        <param-value>/WEB-INF/views/admin/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>sourceAdminLayout</param-name>
+        <param-value>/ecommerce/resources/admin/layout/</param-value>
+    </context-param>
     <!--filters-->
     <filter>
         <filter-name>UrlFilter</filter-name>
@@ -73,6 +85,10 @@
         <servlet-name>CommentController</servlet-name>
         <servlet-class>com.ecommerce.admin.controller.CommentController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>IndexController</servlet-name>
+        <servlet-class>com.ecommerce.customer.controller.IndexController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
         <url-pattern>/admin/users</url-pattern>
@@ -101,5 +117,9 @@
     <servlet-mapping>
         <servlet-name>CommentController</servlet-name>
         <url-pattern>/admin/comments</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IndexController</servlet-name>
+        <url-pattern>/IndexController</url-pattern>
     </servlet-mapping>
 </web-app>
