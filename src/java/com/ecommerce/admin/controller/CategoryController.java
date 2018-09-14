@@ -62,10 +62,10 @@ public class CategoryController extends HttpServlet {
                 request.setAttribute("sort", sort);
 
                 // forword request to manage page
-                Helper.forwardRequest(request, response, "/WEB-INF/views/admin/manage_categories.jsp");
+                Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "manage_categories.jsp");
             } else if (action.equals("Add")) {
                 // forword request to add page
-                Helper.forwardRequest(request, response, "/WEB-INF/views/admin/add_category.jsp");
+                Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "add_category.jsp");
             } else if (action.equals("Edit")) {
                 // get categoryId param from the request
                 String categoryId = request.getParameter("categoryid");
@@ -80,7 +80,7 @@ public class CategoryController extends HttpServlet {
                     request.setAttribute("category", categoryFounded);
 
                     // forword request to edit page
-                    Helper.forwardRequest(request, response, "/WEB-INF/views/admin/edit_category.jsp");
+                    Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "edit_category.jsp");
                 } else {
                     // redirect to the previous page with error message
                     Helper.redriectToPrevPage(request, response, "There`s No Such ID", true);
@@ -160,7 +160,7 @@ public class CategoryController extends HttpServlet {
                 }
 
                 // forword request to the add page
-                Helper.forwardRequest(request, response, "/WEB-INF/views/admin/add_category.jsp");
+                Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "add_category.jsp");
             } else if (action.equals("Edit")) {
                 // get form params from the request
                 long id = Long.parseLong(request.getParameter("categoryid"));
@@ -197,7 +197,7 @@ public class CategoryController extends HttpServlet {
                 request.setAttribute("category", category);
 
                 // forword request to the edit page
-                Helper.forwardRequest(request, response, "/WEB-INF/views/admin/edit_category.jsp");
+                Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "edit_category.jsp");
             }
         } else {
             // redirect to the login page if the username does not exists in session
