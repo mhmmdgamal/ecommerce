@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ecommerce.admin.controller;
 
 import com.ecommerce.bean.Comment;
@@ -25,9 +20,9 @@ public class CommentController extends HttpServlet {
     String adminJspPath = null;
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.service(req, resp); //To change body of generated methods, choose Tools | Templates.
+    public void init() throws ServletException {
         adminJspPath = getServletContext().getInitParameter("adminJspPath");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

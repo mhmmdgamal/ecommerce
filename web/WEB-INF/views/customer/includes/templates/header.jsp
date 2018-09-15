@@ -15,7 +15,7 @@
             <div class="container">
                 <c:choose>
                     <c:when test="${user ne null}">
-                        <img class="my-image img-thumbnail img-circle" src="${initParam['customerImgPath']}img.png" alt="" />
+                        <img class="my-image img-thumbnail img-circle" src="${initParam['customerImgPath']}img.png" alt="No Image" />
                         <div class="btn-group my-info">
                             <span class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                 <!--<?php echo $sessionUser ?>-->
@@ -55,22 +55,20 @@
                 </div>
                 <div class="collapse navbar-collapse" id="app-nav">
                     <ul class="nav navbar-nav navbar-right">
-<!--                        <?php
+                        <!--                       
+                        <?php
                         $allCats = getAllFrom("*", "categories", "where parent = 0", "", "ID", "ASC");
                         foreach ($allCats as $cat) {
-                        echo 
-                        '<li>
-                        <a href="categories.php?pageid=' . $cat['ID'] . '">
-                        ' . $cat['Name'] . '
-                        </a>
-                        </li>';
-                        }
-                        ?>-->
-                        
+                            echo
+                            '<li><a href="categories.php?pageid=' . $cat['ID'] . '">
+				  ' . $cat['Name'] . '</a></li>';
+                        }?>
+                        -->
+
                         <c:forEach items="${categories}" var="category">
                             <li>
                                 <a href="${initParam['customerPath']}categories?pageid=${category.id}">${category.name}</a>
-                        </li>
+                            </li>
                         </c:forEach>
                     </ul>
                 </div>

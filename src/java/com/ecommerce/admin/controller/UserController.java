@@ -1,44 +1,32 @@
+//<editor-fold>
 package com.ecommerce.admin.controller;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 import com.ecommerce.bean.User;
 import com.ecommerce.dao.UserDaoImpl;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
+//</editor-fold>
 public class UserController extends HttpServlet {
 
     String adminJspPath = null;
+    ServletContext servletContext;
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.service(req, resp); //To change body of generated methods, choose Tools | Templates.
+    public void init() throws ServletException {
         adminJspPath = getServletContext().getInitParameter("adminJspPath");
+        servletContext = getServletContext();
     }
-    
-    
-    
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
+    // <editor-fold >
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -59,10 +47,10 @@ public class UserController extends HttpServlet {
                 // check if the page param value if exists and equal Pending
                 if (request.getParameter("page") != null && request.getParameter("page").equals("Pending")) {
                     // get pendings users
-                    users = new UserDaoImpl(getServletContext()).getAllUsers(true);
+                    users = new UserDaoImpl(servletContext).getAllUsers(true);
                 } else {
                     // get users
-                    users = new UserDaoImpl(getServletContext()).getAllUsers(false);
+                    users = new UserDaoImpl(servletContext).getAllUsers(false);
                 }
                 // set users to the request
                 request.setAttribute("users", users);
@@ -80,7 +68,7 @@ public class UserController extends HttpServlet {
                 long Id = userId != null && Helper.isNumber(userId) ? Long.parseLong(userId) : 0;
 
                 // get user depending on userId
-                User userFounded = new UserDaoImpl(getServletContext()).getUserById(Id);
+                User userFounded = new UserDaoImpl(servletContext).getUserById(Id);
                 if (userFounded != null) {
                     // set the found user to the request
                     request.setAttribute("user", userFounded);
@@ -99,7 +87,7 @@ public class UserController extends HttpServlet {
                 long Id = userId != null && Helper.isNumber(userId) ? Long.parseLong(userId) : 0;
 
                 // delete user depending on userId
-                boolean userDeleted = new UserDaoImpl(getServletContext()).deleteUser(Id);
+                boolean userDeleted = new UserDaoImpl(servletContext).deleteUser(Id);
                 if (userDeleted) {
                     // redirect to the previous page with deleted message
                     Helper.redriectToPrevPage(request, response, "user deleted", false);
@@ -116,7 +104,7 @@ public class UserController extends HttpServlet {
                 long id = userId != null && Helper.isNumber(userId) ? Long.parseLong(userId) : 0;
 
                 // activate user depending on userId
-                boolean userActivated = new UserDaoImpl(getServletContext()).activeUser(id);
+                boolean userActivated = new UserDaoImpl(servletContext).activeUser(id);
                 if (userActivated) {
                     // redirect to the previous page with deleted message
                     Helper.redriectToPrevPage(request, response, "user approved", false);
@@ -131,14 +119,7 @@ public class UserController extends HttpServlet {
         }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+/////////////////////////////////////////////////////////////////////
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -213,13 +194,13 @@ public class UserController extends HttpServlet {
                     user.setFullName(fullName);
 
                     // add user
-                    boolean userAdded = new UserDaoImpl(getServletContext()).addUser(user);
+                    boolean userAdded = new UserDaoImpl(servletContext).addUser(user);
                     if (!userAdded) {
                         // add new error to errors if user not added
                         formErrors.add("Sorry This User Is Exist");
                     } else {
                         // set success message if user added
-                        request.setAttribute("success", "user added");
+                        request.setAttribute("success", "user added successfully");
                     }
                     // forword to add page
                     Helper.forwardRequest(request, response, adminJspPath + "add_user.jsp");
@@ -287,7 +268,7 @@ public class UserController extends HttpServlet {
                     request.setAttribute("user", user);
 
                     // update user
-                    boolean userUpdated = new UserDaoImpl(getServletContext()).updateUser(user);
+                    boolean userUpdated = new UserDaoImpl(servletContext).updateUser(user);
 
                     if (!userUpdated) {
                         // add new error to errors if user not updated
@@ -306,11 +287,6 @@ public class UserController extends HttpServlet {
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

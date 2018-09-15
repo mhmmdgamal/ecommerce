@@ -24,10 +24,10 @@ public class MySQLDatabaseHelper {
 
     /**
      * connect to database
-     * 
+     *
      * @param url
      * @param userName
-     * @param password 
+     * @param password
      */
     private MySQLDatabaseHelper(String url, String userName, String password) {
         try {
@@ -40,7 +40,7 @@ public class MySQLDatabaseHelper {
 
     /**
      * get singleton instance of MySQLDatabaseHelper
-     * 
+     *
      * @param url
      * @param userName
      * @param password
@@ -59,7 +59,7 @@ public class MySQLDatabaseHelper {
 
     /**
      * close connection
-     * 
+     *
      */
     public void closeConnection() {
         try {

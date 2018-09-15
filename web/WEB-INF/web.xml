@@ -61,13 +61,17 @@
         <servlet-class>com.ecommerce.customer.controller.HomeController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CategoryItemsController</servlet-name>
-        <servlet-class>com.ecommerce.customer.controller.CategoryItemsController</servlet-class>
+        <servlet-name>ItemOfCategoryController</servlet-name>
+        <servlet-class>com.ecommerce.customer.controller.ItemOfCategoryController</servlet-class>
     </servlet>
-    <!--servlets mapping-->
     <servlet>
         <servlet-name>UserLogoutController</servlet-name>
         <servlet-class>com.ecommerce.customer.controller.LogoutController</servlet-class>
+    </servlet>
+    <!--servlets mapping for admin only-->
+    <servlet>
+        <servlet-name>RegistrationController</servlet-name>
+        <servlet-class>com.ecommerce.customer.controller.RegistrationController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
@@ -97,20 +101,20 @@
         <servlet-name>CommentController</servlet-name>
         <url-pattern>/admin/comments</url-pattern>
     </servlet-mapping>
+    <!--servlets mapping for customer and admin-->
     <servlet-mapping>
         <servlet-name>HomeController</servlet-name>
         <url-pattern>/home</url-pattern>
-        <url-pattern></url-pattern>
+        <url-pattern/>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CategoryItemsController</servlet-name>
+        <servlet-name>ItemOfCategoryController</servlet-name>
         <url-pattern>/categories</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserLogoutController</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
-    
     <!--context params-->
     <context-param>
         <param-name>dbUrl</param-name>
@@ -156,4 +160,8 @@
         <param-name>customerImgPath</param-name>
         <param-value>/ecommerce/resources/customer/img/</param-value>
     </context-param>
+    <servlet-mapping>
+        <servlet-name>RegistrationController</servlet-name>
+        <url-pattern>/RegistrationController</url-pattern>
+    </servlet-mapping>
 </web-app>
