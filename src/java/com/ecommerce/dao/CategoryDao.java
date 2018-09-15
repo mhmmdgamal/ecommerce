@@ -6,11 +6,14 @@
 package com.ecommerce.dao;
 
 import com.ecommerce.bean.Category;
+import com.ecommerce.bean.Item;
 import java.util.List;
 
 public interface CategoryDao {
 
     public boolean updateCategory(Category category);
+    
+    public List<Item> getCategoryItems(long id, String sort);
 
     public boolean addCategory(Category category);
 

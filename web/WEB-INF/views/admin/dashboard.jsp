@@ -32,7 +32,7 @@
                     <div class="info">
                         Total Members
                         <span>
-                            <a href="${initParam['sourceJspOfAdmin']}users">${numUsers}</a>
+                            <a href="${initParam['adminPath']}users">${numUsers}</a>
                         </span>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                     <div class="info">
                         Pending Members
                         <span>
-                            <a href="${initParam['sourceJspOfAdmin']}users?action=Manage&page=Pending">
+                            <a href="${initParam['adminPath']}users?action=Manage&page=Pending">
                                 ${numPendingUsers}
                             </a>
                         </span>
@@ -56,7 +56,7 @@
                     <div class="info">
                         Total Items
                         <span>
-                            <a href="${initParam['sourceJspOfAdmin']}items">${numItems}</a>
+                            <a href="${initParam['adminPath']}items">${numItems}</a>
                         </span>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                     <div class="info">
                         Total Comments
                         <span>
-                            <a href="${initParam['sourceJspOfAdmin']}comments">${numComments}</a>
+                            <a href="${initParam['adminPath']}comments">${numComments}</a>
                         </span>
                     </div>
                 </div>
@@ -96,19 +96,19 @@
                                         <li>
                                             ${user.name}
 
-                                            <a href='${initParam['sourceJspOfAdmin']}users?action=Edit&userid=${user.id}'>
+                                            <a href='${initParam['adminPath']}users?action=Edit&userid=${user.id}'>
                                                 <span class='btn btn-success pull-right'>
                                                     <i class="fa fa-edit"></i> Edit
                                                 </span>
                                             </a>
 
-                                            <a href='${initParam['sourceJspOfAdmin']}users?action=Delete&userid=${user.id}'>
+                                            <a href='${initParam['adminPath']}users?action=Delete&userid=${user.id}'>
                                                 <span class='btn btn-danger pull-right confirm'>
                                                     <i class="fa fa-edit"></i> Delete
                                                 </span>
                                             </a>
                                             <c:if test="${user.regStatus eq 0}">
-                                                <a href='${initParam['sourceJspOfAdmin']}users?action=Activate&userid=${user.id}'>
+                                                <a href='${initParam['adminPath']}users?action=Activate&userid=${user.id}'>
                                                     <span class='btn btn-info pull-right'>
                                                         <i class='fa fa-check'></i> Activate
                                                     </span>
@@ -142,19 +142,19 @@
                                         <li>
                                             ${item.name}
 
-                                            <a href='${initParam['sourceJspOfAdmin']}items?action=Edit&itemid=${item.id}'>
+                                            <a href='${initParam['adminPath']}items?action=Edit&itemid=${item.id}'>
                                                 <span class='btn btn-success pull-right'>
                                                     <i class="fa fa-edit"></i> Edit
                                                 </span>
                                             </a>
 
-                                            <a href='${initParam['sourceJspOfAdmin']}items?action=Delete&itemid=${item.id}'>
+                                            <a href='${initParam['adminPath']}items?action=Delete&itemid=${item.id}'>
                                                 <span class='btn btn-danger pull-right confirm'>
                                                     <i class="fa fa-edit"></i> Delete
                                                 </span>
                                             </a>
                                             <c:if test="${item.approve eq 0}">
-                                                <a href='${initParam['sourceJspOfAdmin']}items?action=Approve&itemid=${item.id}'>
+                                                <a href='${initParam['adminPath']}items?action=Approve&itemid=${item.id}'>
                                                     <span class='btn btn-info pull-right'>
                                                         <i class='fa fa-check'></i> Activate
                                                     </span>

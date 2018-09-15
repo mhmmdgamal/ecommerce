@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ecommerce.admin.controller;
+package com.ecommerce.customer.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

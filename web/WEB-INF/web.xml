@@ -1,38 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-    <!--context params-->
-    <context-param>
-        <param-name>dbUrl</param-name>
-        <param-value>jdbc:mysql://localhost:3306/</param-value>
-    </context-param>
-    <context-param>
-        <param-name>dbName</param-name>
-        <param-value>shop</param-value>
-    </context-param>
-    <context-param>
-        <param-name>dbUsername</param-name>
-        <param-value>root</param-value>
-    </context-param>
-    <context-param>
-        <param-name>dbPassword</param-name>
-        <param-value/>
-    </context-param>
-    <context-param>
-        <param-name>sourceJspOfAdmin</param-name>
-        <param-value>/ecommerce/admin/</param-value>
-    </context-param>
-    <context-param>
-        <param-name>sourcejsp</param-name>
-        <param-value>/WEB-INF/views/admin/</param-value>
-    </context-param>
-    <context-param>
-        <param-name>sourceAdminLayout</param-name>
-        <param-value>/ecommerce/resources/admin/layout/</param-value>
-    </context-param>
-    <context-param>
-        <param-name>sourceCustomerLayout</param-name>
-        <param-value>/ecommerce/resources/customer/layout/</param-value>
-    </context-param>
     <!--filters-->
     <filter>
         <filter-name>UrlFilter</filter-name>
@@ -55,11 +22,12 @@
         <url-pattern>/admin/comments</url-pattern>
         <url-pattern>/admin/dashboard</url-pattern>
     </filter-mapping>
-    <!--servlets-->
+    <!--listeners-->
     <listener>
         <description>ServletContextListener</description>
         <listener-class>com.ecommerce.listener.EcommerceContextListener</listener-class>
     </listener>
+    <!--servlets-->
     <servlet>
         <servlet-name>UserController</servlet-name>
         <servlet-class>com.ecommerce.admin.controller.UserController</servlet-class>
@@ -76,7 +44,6 @@
         <servlet-name>LogoutController</servlet-name>
         <servlet-class>com.ecommerce.admin.controller.LogoutController</servlet-class>
     </servlet>
-    <!--servlets mapping-->
     <servlet>
         <servlet-name>CategoryController</servlet-name>
         <servlet-class>com.ecommerce.admin.controller.CategoryController</servlet-class>
@@ -90,8 +57,17 @@
         <servlet-class>com.ecommerce.admin.controller.CommentController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>IndexController</servlet-name>
-        <servlet-class>com.ecommerce.customer.controller.IndexController</servlet-class>
+        <servlet-name>HomeController</servlet-name>
+        <servlet-class>com.ecommerce.customer.controller.HomeController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CategoryItemsController</servlet-name>
+        <servlet-class>com.ecommerce.customer.controller.CategoryItemsController</servlet-class>
+    </servlet>
+    <!--servlets mapping-->
+    <servlet>
+        <servlet-name>UserLogoutController</servlet-name>
+        <servlet-class>com.ecommerce.customer.controller.LogoutController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
@@ -113,7 +89,6 @@
         <servlet-name>CategoryController</servlet-name>
         <url-pattern>/admin/categories</url-pattern>
     </servlet-mapping>
-    <!--<welcome file list-->
     <servlet-mapping>
         <servlet-name>ItemController</servlet-name>
         <url-pattern>/admin/items</url-pattern>
@@ -123,7 +98,62 @@
         <url-pattern>/admin/comments</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>IndexController</servlet-name>
-        <url-pattern>/IndexController</url-pattern>
+        <servlet-name>HomeController</servlet-name>
+        <url-pattern>/home</url-pattern>
+        <url-pattern></url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CategoryItemsController</servlet-name>
+        <url-pattern>/categories</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserLogoutController</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    
+    <!--context params-->
+    <context-param>
+        <param-name>dbUrl</param-name>
+        <param-value>jdbc:mysql://localhost:3306/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>dbName</param-name>
+        <param-value>shop</param-value>
+    </context-param>
+    <context-param>
+        <param-name>dbUsername</param-name>
+        <param-value>root</param-value>
+    </context-param>
+    <context-param>
+        <param-name>dbPassword</param-name>
+        <param-value/>
+    </context-param>
+    <context-param>
+        <param-name>adminPath</param-name>
+        <param-value>/ecommerce/admin/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>adminJspPath</param-name>
+        <param-value>/WEB-INF/views/admin/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>adminLayoutPath</param-name>
+        <param-value>/ecommerce/resources/admin/layout/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>customerPath</param-name>
+        <param-value>/ecommerce/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>customerJspPath</param-name>
+        <param-value>/WEB-INF/views/customer/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>customerLayoutPath</param-name>
+        <param-value>/ecommerce/resources/customer/layout/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>customerImgPath</param-name>
+        <param-value>/ecommerce/resources/customer/img/</param-value>
+    </context-param>
 </web-app>

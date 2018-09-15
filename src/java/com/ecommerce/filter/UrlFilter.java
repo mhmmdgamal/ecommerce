@@ -98,12 +98,12 @@ public class UrlFilter implements Filter {
             throws IOException, ServletException {
         // get requestUri from request
         String requestURI = ((HttpServletRequest) request).getRequestURI();
-        if (requestURI.equals("/ecommerce/")) {
-            requestURI = "/ecommerce/index.html";
-        }
+//        if (requestURI.equals("/ecommerce/")) {
+//            requestURI = "/ecommerce/";
+//        }
         
-        // check if requestUri exists and end with / slash
-        if (requestURI != null && requestURI.length() > 0 && requestURI.endsWith("/")) {
+        // check if requestUri have path and end with / slash
+        if (requestURI.length() > 0 && requestURI.endsWith("/") && !requestURI.equals("/ecommerce/")) {
             // get requestUri without the end / slash
             requestURI = requestURI.substring(0, requestURI.length() - 1);
             

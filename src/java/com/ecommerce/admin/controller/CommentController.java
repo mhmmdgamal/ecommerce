@@ -22,6 +22,14 @@ import javax.servlet.http.HttpSession;
 
 public class CommentController extends HttpServlet {
 
+    String adminJspPath = null;
+
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.service(req, resp); //To change body of generated methods, choose Tools | Templates.
+        adminJspPath = getServletContext().getInitParameter("adminJspPath");
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -67,7 +75,7 @@ public class CommentController extends HttpServlet {
                 request.setAttribute("comments", comments);
 
                 // forword request to manage page
-                Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "manage_comments.jsp");
+                Helper.forwardRequest(request, response, adminJspPath + "manage_comments.jsp");
             } else if (action.equals("Edit")) {
                 // get commentId param from the request
                 String commentId = request.getParameter("commentid");
@@ -82,7 +90,7 @@ public class CommentController extends HttpServlet {
                     request.setAttribute("comment", commentFounded);
 
                     // forword request to edit page
-                    Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "edit_comment.jsp");
+                    Helper.forwardRequest(request, response, adminJspPath + "edit_comment.jsp");
                 } else {
                     // redirect to the previous page with error message
                     Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
@@ -176,7 +184,7 @@ public class CommentController extends HttpServlet {
                 request.setAttribute("comment", comment);
 
                 // forword request to the edit page
-                Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "edit_comment.jsp");
+                Helper.forwardRequest(request, response, adminJspPath + "edit_comment.jsp");
             }
         } else {
             // redirect to the login page if the username does not exists in session

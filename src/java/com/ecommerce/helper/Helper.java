@@ -45,8 +45,8 @@ public class Helper {
             request.getSession().setAttribute("error", message);
         }
         if (request.getHeader("referer") == null) {
-            setTitle(request, "Login");
-            request.getRequestDispatcher("login").forward(request, response);
+            setTitle(request, "Home");
+            request.getRequestDispatcher("home").forward(request, response);
         } else {
             setTitle(request, getTitleFromRefererLink(request.getHeader("referer")));
             response.sendRedirect(request.getHeader("referer"));

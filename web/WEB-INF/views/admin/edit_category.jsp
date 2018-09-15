@@ -27,7 +27,7 @@
 </div>
 <div class="container">
 
-    <form action="${pageContext.request.contextPath}/admin/categories?action=Edit" class="form-horizontal" method="POST">
+    <form action="${initParam['adminPath']}categories?action=Edit" class="form-horizontal" method="POST">
 
         <input type="hidden" name="categoryid" value="${category.id}" />
         <!-- Start Name Field -->

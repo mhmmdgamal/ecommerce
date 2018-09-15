@@ -16,7 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class LoginController extends HttpServlet {
-    
+
+    String adminJspPath = null;
+
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.service(req, resp); //To change body of generated methods, choose Tools | Templates.
+        adminJspPath = getServletContext().getInitParameter("adminJspPath");
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -32,7 +39,7 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
 
         // forword the requset to the login page
-        Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "login.jsp", "Login");
+        Helper.forwardRequest(request, response, adminJspPath + "login.jsp", "Login");
     }
 
     /**
@@ -67,7 +74,7 @@ public class LoginController extends HttpServlet {
             Helper.setTitle(request, "Dashboard");
             response.sendRedirect("dashboard");
         } else {
-            
+
             // redirect to login page if user not exits
             response.sendRedirect("login");
         }

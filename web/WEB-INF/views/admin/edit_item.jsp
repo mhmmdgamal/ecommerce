@@ -27,7 +27,7 @@
 </div>
 <div class="container">
 
-    <form action="${pageContext.request.contextPath}/admin/items?action=Edit" class="form-horizontal" method="POST">
+    <form action="${initParam['adminPath']}items?action=Edit" class="form-horizontal" method="POST">
 
         <input type="hidden" name="itemid" value="${item.id}" />
         <!-- Start Name Field -->
@@ -180,11 +180,11 @@
                     <td>${comment.user.getName}</td>
                     <td>${comment.addDate}</td>
                     <td>
-                        <a href='${initParam['sourceJspOfAdmin']}comments?action=Edit&commentid=${comment.id}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
-                        <a href='${initParam['sourceJspOfAdmin']}comments?action=Delete&commentid=${comment.id}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete </a>
+                        <a href='${initParam['adminPath']}comments?action=Edit&commentid=${comment.id}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
+                        <a href='${initParam['adminPath']}comments?action=Delete&commentid=${comment.id}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete </a>
                         <c:if test="${comment.status eq 0}">
 
-                            <a href='${initParam['sourceJspOfAdmin']}comments?action=Approve&commentid=${comment.id}' class='btn btn-info activate'><i class='fa fa-check'></i> Approve</a>
+                            <a href='${initParam['adminPath']}comments?action=Approve&commentid=${comment.id}' class='btn btn-info activate'><i class='fa fa-check'></i> Approve</a>
                         </c:if>
                     </td>
                 </tr>

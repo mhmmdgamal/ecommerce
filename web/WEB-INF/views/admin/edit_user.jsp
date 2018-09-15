@@ -26,7 +26,7 @@
 </div>
 <div class="container">
 
-    <form action="${pageContext.request.contextPath}/admin/users?action=Edit" class="form-horizontal" method="POST">
+    <form action="${initParam['adminPath']}users?action=Edit" class="form-horizontal" method="POST">
 
         <input type="hidden" name="userid" value="${user.id}" />
         <!-- Start Username Field -->

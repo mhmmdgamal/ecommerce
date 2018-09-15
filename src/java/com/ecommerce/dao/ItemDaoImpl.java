@@ -63,7 +63,7 @@ public class ItemDaoImpl implements ItemDao {
     public List<Comment> getItemComments(long id, String sort) {
         List<Comment> comments = new ArrayList();
 
-        try (ResultSet rs = db.findAll(new String[]{"*"}, table, "`item_id`=?", "id", sort, null)) {
+        try (ResultSet rs = db.findAll(new String[]{"*"}, "comments", "`item_id`=" + id, "id", sort, null)) {
 
             Comment comment;
 
@@ -137,7 +137,7 @@ public class ItemDaoImpl implements ItemDao {
                 item.setId(rs.getLong("id"));
                 item.setName(rs.getString("name"));
                 item.setDescription(rs.getString("description"));
-                item.setPrice(rs.getString("description"));
+                item.setPrice(rs.getString("price"));
                 item.setAddDate(rs.getDate("add_date"));
                 item.setCountryMade(rs.getString("country_made"));
                 item.setImage(rs.getString("image"));
@@ -176,7 +176,7 @@ public class ItemDaoImpl implements ItemDao {
                 item.setId(rs.getLong("id"));
                 item.setName(rs.getString("name"));
                 item.setDescription(rs.getString("description"));
-                item.setPrice(rs.getString("description"));
+                item.setPrice(rs.getString("price"));
                 item.setAddDate(rs.getDate("add_date"));
                 item.setCountryMade(rs.getString("country_made"));
                 item.setImage(rs.getString("image"));
@@ -228,7 +228,7 @@ public class ItemDaoImpl implements ItemDao {
                 item.setId(rs.getLong("id"));
                 item.setName(rs.getString("name"));
                 item.setDescription(rs.getString("description"));
-                item.setPrice(rs.getString("description"));
+                item.setPrice(rs.getString("price"));
                 item.setAddDate(rs.getDate("add_date"));
                 item.setCountryMade(rs.getString("country_made"));
                 item.setImage(rs.getString("image"));

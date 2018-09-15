@@ -18,6 +18,14 @@ import javax.servlet.http.HttpSession;
 
 public class DashboardController extends HttpServlet {
 
+    String adminJspPath = null;
+
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.service(req, resp); //To change body of generated methods, choose Tools | Templates.
+        adminJspPath = getServletContext().getInitParameter("adminJspPath");
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -69,7 +77,7 @@ public class DashboardController extends HttpServlet {
             request.setAttribute("latestComments", commentDao.getLatestComments(5));
 
             // forword the requset to the dashboard page
-            Helper.forwardRequest(request, response, getServletContext().getInitParameter("sourcejsp") + "dashboard.jsp");
+            Helper.forwardRequest(request, response, adminJspPath + "dashboard.jsp");
         } else {
             // redirect to login page if session not exits
             response.sendRedirect("login");

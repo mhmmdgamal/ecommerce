@@ -24,7 +24,7 @@
 </div>
 <div class="container">
 
-    <form action="${pageContext.request.contextPath}/admin/comments?action=Edit" class="form-horizontal" method="POST">
+    <form action="${initParam['adminPath']}comments?action=Edit" class="form-horizontal" method="POST">
 
         <input type="hidden" name="commentid" value="${comment.id}" />
         <!-- Start Comment Field -->

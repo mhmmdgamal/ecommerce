@@ -3,11 +3,11 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>${(title eq null) ? "Login" : title}</title>
-        <link rel="stylesheet" href="${initParam['sourceAdminLayout']}css/bootstrap.min.css" />
-        <link rel="stylesheet" href="${initParam['sourceAdminLayout']}css/font-awesome.min.css" />
-        <link rel="stylesheet" href="${initParam['sourceAdminLayout']}css/jquery-ui.css" />
-        <link rel="stylesheet" href="${initParam['sourceAdminLayout']}css/jquery.selectBoxIt.css" />
-        <link rel="stylesheet" href="${initParam['sourceAdminLayout']}css/backend.css" />
+        <title>${title}</title>
+        <link rel="stylesheet" href="${initParam['adminLayoutPath']}css/bootstrap.min.css" />
+        <link rel="stylesheet" href="${initParam['adminLayoutPath']}css/font-awesome.min.css" />
+        <link rel="stylesheet" href="${initParam['adminLayoutPath']}css/jquery-ui.css" />
+        <link rel="stylesheet" href="${initParam['adminLayoutPath']}css/jquery.selectBoxIt.css" />
+        <link rel="stylesheet" href="${initParam['adminLayoutPath']}css/backend.css" />
     </head>
     <body>

@@ -6,6 +6,7 @@
 package com.ecommerce.dao;
 
 import com.ecommerce.bean.Category;
+import com.ecommerce.bean.Item;
 import com.ecommerce.helper.MySQLDatabaseHelper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,15 +18,18 @@ public class CategoryDaoImpl implements CategoryDao {
 
     private final MySQLDatabaseHelper db;
     private final String table = "categories";
+    private final ServletContext sc;
 
     public CategoryDaoImpl(ServletContext sc) {
         // get database instance from app context
         this.db = (MySQLDatabaseHelper) sc.getAttribute("db");
+        
+        this.sc = sc;
     }
 
     /**
      * update category
-     * 
+     *
      * @param category
      * @return true if updated false otherwise
      */
@@ -36,7 +40,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
     /**
      * add category
-     * 
+     *
      * @param category
      * @return true if added false otherwise
      */
@@ -47,7 +51,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
     /**
      * delete category
-     * 
+     *
      * @param id
      * @return true if deleted false otherwise
      */
@@ -58,7 +62,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
     /**
      * get all categories data from database
-     * 
+     *
      * @param sort
      * @return found categories
      */
@@ -88,8 +92,47 @@ public class CategoryDaoImpl implements CategoryDao {
     }
 
     /**
+     * get all items linked with the category
+     *
+     * @param id
+     * @param sort
+     * @return comments
+     */
+    @Override
+    public List<Item> getCategoryItems(long id, String sort) {
+        List<Item> items = new ArrayList();
+
+        try (ResultSet rs = db.findAll(new String[]{"*"}, "items", "`category_id`=" + id + " AND `approve`=1", "id", sort, null)) {
+            while (rs.next()) {
+                Item item = new Item();
+
+                item.setId(rs.getLong("id"));
+                item.setName(rs.getString("name"));
+                item.setDescription(rs.getString("description"));
+                item.setPrice(rs.getString("price"));
+                item.setAddDate(rs.getDate("add_date"));
+                item.setCountryMade(rs.getString("country_made"));
+                item.setImage(rs.getString("image"));
+                item.setStatus(rs.getString("status"));
+                item.setRating(rs.getByte("rating"));
+                item.setApprove(rs.getByte("approve"));
+                item.setTags(rs.getString("tags"));
+                item.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
+                item.setCategory(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")));
+
+                items.add(item);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+
+        return items;
+    }
+
+    /**
      * get latest categories data from database depending on number
-     * 
+     *
      * @param num
      * @return latest num categories
      */
@@ -97,7 +140,7 @@ public class CategoryDaoImpl implements CategoryDao {
     public List<Category> getLatestCategories(int num) {
         List<Category> categories = new ArrayList();
 
-        try (ResultSet rs = db.findLatest(new String[]{"*"}, table, null,"id", "DESC", num + "")) {
+        try (ResultSet rs = db.findLatest(new String[]{"*"}, table, null, "id", "DESC", num + "")) {
             while (rs.next()) {
                 Category category = new Category();
 
@@ -120,7 +163,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
     /**
      * get number of categories
-     * 
+     *
      * @return categories number or 0
      */
     @Override
@@ -136,7 +179,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
     /**
      * get specific category with id
-     * 
+     *
      * @param id
      * @return found category
      */
