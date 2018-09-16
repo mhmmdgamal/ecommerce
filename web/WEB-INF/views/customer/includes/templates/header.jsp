@@ -14,11 +14,11 @@
         <div class="upper-bar">
             <div class="container">
                 <c:choose>
-                    <c:when test="${user ne null}">
+                    <c:when test="${sessionScope['user'] ne null}">
                         <img class="my-image img-thumbnail img-circle" src="${initParam['customerImgPath']}img.png" alt="No Image" />
                         <div class="btn-group my-info">
                             <span class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                <!--<?php echo $sessionUser ?>-->
+                                ${sessionScope['fullName']}
                                 <span class="caret"></span>
                             </span>
                             <ul class="dropdown-menu">
@@ -65,7 +65,7 @@
                         }?>
                         -->
 
-                        <c:forEach items="${categories}" var="category">
+                        <c:forEach items="${navCategories}" var="category">
                             <li>
                                 <a href="${initParam['customerPath']}categories?pageid=${category.id}">${category.name}</a>
                             </li>

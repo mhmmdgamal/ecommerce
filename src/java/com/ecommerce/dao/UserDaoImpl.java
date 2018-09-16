@@ -26,14 +26,18 @@ public class UserDaoImpl implements UserDao {
      * 
      * @param userName
      * @param password
+     * @param admin
      * @return found user
      */
     @Override
-    public User getLoginUser(String userName, String password) {
+    public User getLoginUser(String userName, String password, boolean admin) {
 
-        String sql = "SELECT `id`, `name`, `password`, `full_name` FROM `users` WHERE `name` = ? AND `password` = ? AND `group_id` = 1 LIMIT 1";
+        String query = "SELECT `id`, `name`, `password`, `full_name` FROM `users` WHERE `name` = ? AND `password` = ?";
+        if (admin) {
+            query += " AND `group_id` = 1 LIMIT 1";
+        }
         User user = null;
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, userName);
             pstmt.setString(2, password);
             ResultSet rs = pstmt.executeQuery();

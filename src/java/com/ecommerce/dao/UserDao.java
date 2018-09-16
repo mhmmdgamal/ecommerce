@@ -22,7 +22,7 @@ public interface UserDao {
 
     public User getUserById(long id);
 
-    public User getLoginUser(String userName, String password);
+    public User getLoginUser(String userName, String password, boolean admin);
 
     public int getNumUsers();
 

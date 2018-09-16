@@ -28,7 +28,7 @@ public class LogoutController extends HttpServlet {
         }
 
         // redirect to login page to new login
-        response.sendRedirect("home");
+        response.sendRedirect("");
     }
 
     /**

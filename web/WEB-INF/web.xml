@@ -6,8 +6,8 @@
         <filter-class>com.ecommerce.filter.UrlFilter</filter-class>
     </filter>
     <filter>
-        <filter-name>LoginFilter</filter-name>
-        <filter-class>com.ecommerce.filter.LoginFilter</filter-class>
+        <filter-name>AdminLoginFilter</filter-name>
+        <filter-class>com.ecommerce.filter.AdminLoginFilter</filter-class>
     </filter>
     <!--filters mapping-->
     <filter-mapping>
@@ -15,7 +15,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
+        <filter-name>AdminLoginFilter</filter-name>
         <url-pattern>/admin/users</url-pattern>
         <url-pattern>/admin/categories</url-pattern>
         <url-pattern>/admin/items</url-pattern>
@@ -70,8 +70,8 @@
     </servlet>
     <!--servlets mapping for admin only-->
     <servlet>
-        <servlet-name>RegistrationController</servlet-name>
-        <servlet-class>com.ecommerce.customer.controller.RegistrationController</servlet-class>
+        <servlet-name>LoginRegisterController</servlet-name>
+        <servlet-class>com.ecommerce.customer.controller.LoginRegisterController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
@@ -84,6 +84,7 @@
     <servlet-mapping>
         <servlet-name>DashboardController</servlet-name>
         <url-pattern>/admin/dashboard</url-pattern>
+        <url-pattern>/admin</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LogoutController</servlet-name>
@@ -161,7 +162,11 @@
         <param-value>/ecommerce/resources/customer/img/</param-value>
     </context-param>
     <servlet-mapping>
-        <servlet-name>RegistrationController</servlet-name>
-        <url-pattern>/RegistrationController</url-pattern>
+        <servlet-name>LoginRegisterController</servlet-name>
+        <url-pattern>/login</url-pattern>
     </servlet-mapping>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/views/404.jsp</location>
+    </error-page>
 </web-app>

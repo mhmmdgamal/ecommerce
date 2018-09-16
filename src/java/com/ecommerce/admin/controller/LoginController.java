@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 //</editor-fold >
+
 public class LoginController extends HttpServlet {
 
     String adminJspPath = null;
@@ -26,8 +27,15 @@ public class LoginController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // forword the requset to the login page
-        Helper.forwardRequest(request, response, adminJspPath + "login.jsp", "Login");
+        HttpSession session = request.getSession();
+
+        if (session.getAttribute("username") != null) {
+            // redirect to dashboard if session exists
+            response.sendRedirect("dashboard");
+        } else {
+            // forword the requset to the login page
+            Helper.forwardRequest(request, response, adminJspPath + "login.jsp", "Login");
+        }
     }
 
     @Override
@@ -38,7 +46,7 @@ public class LoginController extends HttpServlet {
         String password = request.getParameter("pass");
 
         // get logging user
-        User user = new UserDaoImpl(getServletContext()).getLoginUser(userName, password);
+        User user = new UserDaoImpl(getServletContext()).getLoginUser(userName, password, true);
 
         // check if user exists
         if (user != null) {

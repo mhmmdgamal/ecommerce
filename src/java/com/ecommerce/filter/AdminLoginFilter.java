@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class LoginFilter implements Filter {
+public class AdminLoginFilter implements Filter {
 
     private static final boolean debug = true;
 
@@ -29,7 +29,7 @@ public class LoginFilter implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
 
-    public LoginFilter() {
+    public AdminLoginFilter() {
     }
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
