@@ -1,4 +1,3 @@
-
 package com.ecommerce.dao;
 
 import com.ecommerce.bean.Comment;
@@ -155,6 +154,45 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     /**
+     * get all items data from database
+     *
+     * @param sort
+     * @return found items
+     */
+    @Override
+    public List<Item> getAllApprovedItems(String sort) {
+        List<Item> items = new ArrayList();
+
+        try (ResultSet rs = db.findAll(new String[]{"*"}, table, " AND `approve`=1", "id", sort, null)) {
+
+            while (rs.next()) {
+                Item item = new Item();
+
+                item.setId(rs.getLong("id"));
+                item.setName(rs.getString("name"));
+                item.setDescription(rs.getString("description"));
+                item.setPrice(rs.getString("price"));
+                item.setAddDate(rs.getDate("add_date"));
+                item.setCountryMade(rs.getString("country_made"));
+                item.setImage(rs.getString("image"));
+                item.setStatus(rs.getString("status"));
+                item.setRating(rs.getByte("rating"));
+                item.setApprove(rs.getByte("approve"));
+                item.setTags(rs.getString("tags"));
+                item.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
+                item.setCategory(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")));
+                items.add(item);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+
+        return items;
+    }
+
+    /**
      * get latest items data from database depending on number
      *
      * @param num
@@ -244,4 +282,3 @@ public class ItemDaoImpl implements ItemDao {
     }
 
 }
-                                                                                                                                                                                                        

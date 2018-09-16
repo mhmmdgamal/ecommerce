@@ -26,7 +26,7 @@
 </div>
 <div class="container">
 
-    <form action="${initParam['adminJspPath']}users?action=Add" class="form-horizontal" method="POST">
+    <form action="${initParam['adminPath']}users?action=Add" class="form-horizontal" method="POST">
         <!-- Start Username Field -->        
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Username</label>

@@ -9,6 +9,7 @@ import com.ecommerce.dao.UserDaoImpl;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
 import java.util.List;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,11 +19,12 @@ import javax.servlet.http.HttpSession;
 public class CommentController extends HttpServlet {
 
     String adminJspPath = null;
+    ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
-        adminJspPath = getServletContext().getInitParameter("adminJspPath");
-
+        servletContext = getServletContext();
+        adminJspPath = servletContext.getInitParameter("adminJspPath");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -50,10 +52,10 @@ public class CommentController extends HttpServlet {
             String action = request.getParameter("action") != null ? request.getParameter("action") : "Manage";
 
             // get all users with out pendings users
-            List<User> users = new UserDaoImpl(getServletContext()).getAllUsers(false);
+            List<User> users = new UserDaoImpl(servletContext).getAllUsers(false);
             System.out.println(users);
             // get all items with assending order
-            List<Item> items = new ItemDaoImpl(getServletContext()).getAllItems("ASC");
+            List<Item> items = new ItemDaoImpl(servletContext).getAllItems("ASC");
 
             // set users to request
             request.setAttribute("users", users);
@@ -64,7 +66,7 @@ public class CommentController extends HttpServlet {
             if (action.equals("Manage")) {
 
                 // get all comments with assending order
-                List<Comment> comments = new CommentDaoImpl(getServletContext()).getAllComments("ASC");
+                List<Comment> comments = new CommentDaoImpl(servletContext).getAllComments("ASC");
 
                 // set comments to request
                 request.setAttribute("comments", comments);
@@ -79,7 +81,7 @@ public class CommentController extends HttpServlet {
                 long id = commentId != null && Helper.isNumber(commentId) ? Long.parseLong(commentId) : 0;
 
                 // get comment depending on commentId
-                Comment commentFounded = new CommentDaoImpl(getServletContext()).getCommentById(id);
+                Comment commentFounded = new CommentDaoImpl(servletContext).getCommentById(id);
                 if (commentFounded != null) {
                     // set the found comment to the request
                     request.setAttribute("comment", commentFounded);
@@ -98,7 +100,7 @@ public class CommentController extends HttpServlet {
                 long id = commentId != null && Helper.isNumber(commentId) ? Long.parseLong(commentId) : 0;
 
                 // delete comment depending on the commentId
-                boolean commentDeleted = new CommentDaoImpl(getServletContext()).deleteComment(id);
+                boolean commentDeleted = new CommentDaoImpl(servletContext).deleteComment(id);
                 if (commentDeleted) {
                     // redirect to the previous page with deleted message
                     Helper.redriectToPrevPage(request, response, "comment deleted", false);
@@ -114,7 +116,7 @@ public class CommentController extends HttpServlet {
                 long id = commentId != null && Helper.isNumber(commentId) ? Long.parseLong(commentId) : 0;
 
                 // approve comment depending on the commentId
-                boolean commentApproved = new CommentDaoImpl(getServletContext()).approveComment(id);
+                boolean commentApproved = new CommentDaoImpl(servletContext).approveComment(id);
                 if (commentApproved) {
                     // redirect to the previous page with deleted message
                     Helper.redriectToPrevPage(request, response, "comment approved", false);
@@ -164,7 +166,7 @@ public class CommentController extends HttpServlet {
                 comment.setComment(com);
 
                 // update comment
-                boolean commentUpdated = new CommentDaoImpl(getServletContext()).updateComment(comment);
+                boolean commentUpdated = new CommentDaoImpl(servletContext).updateComment(comment);
 
                 if (!commentUpdated) {
                     String error = "error in update";

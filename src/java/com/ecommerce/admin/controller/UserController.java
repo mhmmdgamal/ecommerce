@@ -18,12 +18,12 @@ import javax.servlet.http.HttpSession;
 public class UserController extends HttpServlet {
 
     String adminJspPath = null;
-    ServletContext servletContext;
+    ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
-        adminJspPath = getServletContext().getInitParameter("adminJspPath");
         servletContext = getServletContext();
+        adminJspPath = servletContext.getInitParameter("adminJspPath");
     }
 
     // <editor-fold >

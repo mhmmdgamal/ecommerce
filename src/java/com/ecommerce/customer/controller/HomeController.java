@@ -24,8 +24,8 @@ public class HomeController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        customerJspPath = getServletContext().getInitParameter("customerJspPath");
         servletContext = getServletContext();
+        customerJspPath = servletContext.getInitParameter("customerJspPath");
     }
 
     // <editor-fold >
@@ -36,7 +36,7 @@ public class HomeController extends HttpServlet {
         // set page title
         Helper.setTitle(request, "Home");
         // get all items with assending 
-        List<Item> items = new ItemDaoImpl(servletContext).getAllItems("ASC");
+        List<Item> items = new ItemDaoImpl(servletContext).getAllApprovedItems("ASC");
         // set items to request
         request.setAttribute("allItems", items);
         // forword request to manage page

@@ -5,6 +5,7 @@ import com.ecommerce.bean.User;
 import com.ecommerce.dao.UserDaoImpl;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +16,12 @@ import javax.servlet.http.HttpSession;
 public class LoginController extends HttpServlet {
 
     String adminJspPath = null;
+    ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
-        adminJspPath = getServletContext().getInitParameter("adminJspPath");
+        servletContext = getServletContext();
+        adminJspPath = servletContext.getInitParameter("adminJspPath");
 
     }
 
@@ -46,7 +49,7 @@ public class LoginController extends HttpServlet {
         String password = request.getParameter("pass");
 
         // get logging user
-        User user = new UserDaoImpl(getServletContext()).getLoginUser(userName, password, true);
+        User user = new UserDaoImpl(servletContext).getLoginUser(userName, password, true);
 
         // check if user exists
         if (user != null) {

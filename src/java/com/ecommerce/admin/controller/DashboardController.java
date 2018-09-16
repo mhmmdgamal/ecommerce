@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ecommerce.admin.controller;
 
 import com.ecommerce.dao.CommentDaoImpl;
@@ -10,6 +5,7 @@ import com.ecommerce.dao.ItemDaoImpl;
 import com.ecommerce.dao.UserDaoImpl;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,11 +15,12 @@ import javax.servlet.http.HttpSession;
 public class DashboardController extends HttpServlet {
 
     String adminJspPath = null;
+    ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
-        adminJspPath = getServletContext().getInitParameter("adminJspPath");
-
+        servletContext = getServletContext();
+        adminJspPath = servletContext.getInitParameter("adminJspPath");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -47,13 +44,13 @@ public class DashboardController extends HttpServlet {
             Helper.setTitle(request, "Dashboard");
 
             // get user dao to do operation on user
-            UserDaoImpl userDao = new UserDaoImpl(getServletContext());
+            UserDaoImpl userDao = new UserDaoImpl(servletContext);
 
             // get item dao to do operation on item
-            ItemDaoImpl itemDao = new ItemDaoImpl(getServletContext());
+            ItemDaoImpl itemDao = new ItemDaoImpl(servletContext);
 
             // get comment dao to do operation on comment
-            CommentDaoImpl commentDao = new CommentDaoImpl(getServletContext());
+            CommentDaoImpl commentDao = new CommentDaoImpl(servletContext);
 
             // set the number of users to the request
             request.setAttribute("numUsers", userDao.getNumUsers());

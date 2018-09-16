@@ -13,8 +13,10 @@ public interface ItemDao {
     public boolean deleteItem(long id);
 
     public List<Comment> getItemComments(long id, String sort);
-    
+
     public List<Item> getAllItems(String sort);
+
+    public List<Item> getAllApprovedItems(String sort);
 
     public Item getItemById(long id);
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ecommerce.admin.controller;
 
 import com.ecommerce.bean.Item;
@@ -17,6 +12,7 @@ import com.ecommerce.helper.Helper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,15 +20,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class ItemController extends HttpServlet {
-    
+
     String adminJspPath = null;
+    ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
-        adminJspPath = getServletContext().getInitParameter("adminJspPath");
-
+        servletContext = getServletContext();
+        adminJspPath = servletContext.getInitParameter("adminJspPath");
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -58,13 +55,13 @@ public class ItemController extends HttpServlet {
             String action = request.getParameter("action") != null ? request.getParameter("action") : "Manage";
 
             // get all users with out pendings users
-            List<User> users = new UserDaoImpl(getServletContext()).getAllUsers(false);
+            List<User> users = new UserDaoImpl(servletContext).getAllUsers(false);
 
             // get all categories with assending order
-            List<Category> categories = new CategoryDaoImpl(getServletContext()).getAllCategories("ASC");
+            List<Category> categories = new CategoryDaoImpl(servletContext).getAllCategories("ASC");
 
             // get all comments with assending order
-            List<Comment> comments = new CommentDaoImpl(getServletContext()).getAllComments("ASC");
+            List<Comment> comments = new CommentDaoImpl(servletContext).getAllComments("ASC");
 
             // set users to request
             request.setAttribute("users", users);
@@ -77,7 +74,7 @@ public class ItemController extends HttpServlet {
 
             if (action.equals("Manage")) {
                 // get all items with assending 
-                List<Item> items = new ItemDaoImpl(getServletContext()).getAllItems("ASC");
+                List<Item> items = new ItemDaoImpl(servletContext).getAllItems("ASC");
 
                 // set items to request
                 request.setAttribute("items", items);
@@ -95,13 +92,13 @@ public class ItemController extends HttpServlet {
                 long id = itemId != null && Helper.isNumber(itemId) ? Long.parseLong(itemId) : 0;
 
                 // get itemComments with assending order
-                List<Comment> itemComments = new ItemDaoImpl(getServletContext()).getItemComments(id, "ASC");
+                List<Comment> itemComments = new ItemDaoImpl(servletContext).getItemComments(id, "ASC");
 
                 // set the itemComments to request
                 request.setAttribute("itemComments", itemComments);
 
                 // get item depending on commentId
-                Item itemFounded = new ItemDaoImpl(getServletContext()).getItemById(id);
+                Item itemFounded = new ItemDaoImpl(servletContext).getItemById(id);
                 if (itemFounded != null) {
                     // set the found item to request
                     request.setAttribute("item", itemFounded);
@@ -120,7 +117,7 @@ public class ItemController extends HttpServlet {
                 long Id = itemId != null && Helper.isNumber(itemId) ? Long.parseLong(itemId) : 0;
 
                 // delete item depending on the itemId
-                boolean itemDeleted = new ItemDaoImpl(getServletContext()).deleteItem(Id);
+                boolean itemDeleted = new ItemDaoImpl(servletContext).deleteItem(Id);
 
                 if (itemDeleted) {
                     // redirect to the previous page with deleted message
@@ -137,7 +134,7 @@ public class ItemController extends HttpServlet {
                 long Id = itemId != null && Helper.isNumber(itemId) ? Long.parseLong(itemId) : 0;
 
                 // approve item depending on the itemId
-                boolean itemActivated = new ItemDaoImpl(getServletContext()).approveItem(Id);
+                boolean itemActivated = new ItemDaoImpl(servletContext).approveItem(Id);
 
                 if (itemActivated) {
                     // redirect to the previous page with deleted message
@@ -177,13 +174,13 @@ public class ItemController extends HttpServlet {
             String action = request.getParameter("action");
 
             // get all users with out pendings users
-            List<User> users = new UserDaoImpl(getServletContext()).getAllUsers(false);
+            List<User> users = new UserDaoImpl(servletContext).getAllUsers(false);
 
             // get all categories with assending order
-            List<Category> categories = new CategoryDaoImpl(getServletContext()).getAllCategories("ASC");
+            List<Category> categories = new CategoryDaoImpl(servletContext).getAllCategories("ASC");
 
             // get all comments with assending order
-            List<Comment> comments = new CommentDaoImpl(getServletContext()).getAllComments("ASC");
+            List<Comment> comments = new CommentDaoImpl(servletContext).getAllComments("ASC");
 
             // set users to request
             request.setAttribute("users", users);
@@ -265,7 +262,7 @@ public class ItemController extends HttpServlet {
                     item.setTags(tags);
 
                     // add item 
-                    boolean itemAdded = new ItemDaoImpl(getServletContext()).addItem(item);
+                    boolean itemAdded = new ItemDaoImpl(servletContext).addItem(item);
 
                     if (!itemAdded) {
                         // add new error to errors if item not added
@@ -282,7 +279,7 @@ public class ItemController extends HttpServlet {
                 int id = Integer.parseInt(request.getParameter("itemid"));
 
                 // get itemComments depending on id with assending order
-                List<Comment> itemComments = new ItemDaoImpl(getServletContext()).getItemComments(id, "ASC");
+                List<Comment> itemComments = new ItemDaoImpl(servletContext).getItemComments(id, "ASC");
 
                 // set itemComments to requset
                 request.setAttribute("itemComments", itemComments);
@@ -361,7 +358,7 @@ public class ItemController extends HttpServlet {
                     item.setTags(tags);
 
                     // update item
-                    boolean itemUpdated = new ItemDaoImpl(getServletContext()).updateItem(item);
+                    boolean itemUpdated = new ItemDaoImpl(servletContext).updateItem(item);
 
                     if (!itemUpdated) {
                         // add new error to errors if item not updated

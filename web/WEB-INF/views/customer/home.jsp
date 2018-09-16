@@ -5,7 +5,8 @@
     <div class="row">
         <!-- what's meaning of : item.approve = 1      -->
 
-        <c:forEach items="${allItems}" var="item"> <!-- request.getAttribute("allItems")-->
+        <c:forEach items="${requestScope['allItems']}" var="item"> 
+            <!-- request.getAttribute("allItems")== $ {requestScope['allItems']} == $ { allItems }-->
             <div class="col-sm-6 col-md-3">
                 <div class="thumbnail item-box">
                     <span class="price-tag">${item.price}</span>

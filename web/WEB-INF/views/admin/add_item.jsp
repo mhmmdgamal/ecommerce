@@ -26,7 +26,8 @@
 </div>
 <div class="container">
 
-    <form action="${initParam['adminJspPath']}items?action=Add" class="form-horizontal" method="POST">
+    <form action="${initParam['adminPath']}items?action=Add" class="form-horizontal" method="POST">
+        <!-- action will go to the ItemController --> 
         <!-- Start Name Field -->
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Name</label>
