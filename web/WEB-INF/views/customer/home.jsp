@@ -1,13 +1,24 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="includes/templates/header.jsp"/>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>home</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>
+
+<div class="container">
+    <div class="row">
+        <!-- what's meaning of : item.approve = 1      -->
+
+        <c:forEach items="${allItems}" var="item"> <!-- request.getAttribute("allItems")-->
+            <div class="col-sm-6 col-md-3">
+                <div class="thumbnail item-box">
+                    <span class="price-tag">${item.price}</span>
+                    <img class="img-responsive" src="${initParam['customerImgPath']}img.png" alt="" />
+                    <div class="caption">
+                        <h3><a href="${initParam['customerPath']}items?itemid='${item.id}'">${item.name}</a></h3>
+                        <p>${item.description}</p>
+                        <div class="date">${item.addDate}</div>
+                    </div>
+                </div>
+            </div>
+        </c:forEach >
+    </div>
+</div>
+
+<c:import url="includes/templates/footer.jsp"/>
