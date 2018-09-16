@@ -11,14 +11,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-/**
- *
- * @author mohamed
- */
+
+
 // </editor-fold >
-public class ItemOfCategoryController extends HttpServlet {
+public class ItemsOfCategoryController extends HttpServlet {
     // <editor-fold >
-    ServletContext servletContext;
+    ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
@@ -41,7 +39,7 @@ public class ItemOfCategoryController extends HttpServlet {
             request.setAttribute("categoryItems", categoryItems);
 
             // forword request to show category items page
-            Helper.forwardRequest(request, response, servletContext.getInitParameter("customerJspPath") + "show_item_of_category.jsp");
+            Helper.forwardRequest(request, response, servletContext.getInitParameter("customerJspPath") + "show_items_of_category.jsp");
         } else {
             Helper.redriectToPrevPage(request, response, "You Must Add Page ID", true);
         }

@@ -61,8 +61,8 @@
         <servlet-class>com.ecommerce.customer.controller.HomeController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ItemOfCategoryController</servlet-name>
-        <servlet-class>com.ecommerce.customer.controller.ItemOfCategoryController</servlet-class>
+        <servlet-name>ItemsOfCategoryController</servlet-name>
+        <servlet-class>com.ecommerce.customer.controller.ItemsOfCategoryController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UserLogoutController</servlet-name>
@@ -109,7 +109,7 @@
         <url-pattern/>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ItemOfCategoryController</servlet-name>
+        <servlet-name>ItemsOfCategoryController</servlet-name>
         <url-pattern>/categories</url-pattern>
     </servlet-mapping>
     <servlet-mapping>

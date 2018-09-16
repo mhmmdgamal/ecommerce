@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ecommerce.filter;
 
 import java.io.IOException;
@@ -29,6 +24,30 @@ public class UrlFilter implements Filter {
 
     public UrlFilter() {
     }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response,
+            FilterChain chain)
+            throws IOException, ServletException {
+        // get requestUri from request
+        String requestURI = ((HttpServletRequest) request).getRequestURI();
+//        if (requestURI.equals("/ecommerce/")) {
+//            requestURI = "/ecommerce/";
+//        }
+        
+        // check if requestUri have path and end with / slash
+        if (requestURI.length() > 0 && requestURI.endsWith("/") && !requestURI.equals("/ecommerce/")) {
+            // get requestUri without the end / slash
+            requestURI = requestURI.substring(0, requestURI.length() - 1);
+            
+            // redirect to the new requestUri
+            ((HttpServletResponse) response).sendRedirect(requestURI);
+        } else {
+            chain.doFilter(request, response);
+        }
+    }
+//not important code in down ..don't look ! save your time
+    //<editor-fold   >
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
@@ -82,63 +101,21 @@ public class UrlFilter implements Filter {
 	respOut.println("<P><B>This has been appended by an intrusive filter.</B>");
          */
     }
+//</editor-fold   >
+    //not important code in down ..don't look ! save your time
+//<editor-fold   >
 
-    /**
-     *
-     * @param request The servlet request we are processing
-     * @param response The servlet response we are creating
-     * @param chain The filter chain we are processing
-     *
-     * @exception IOException if an input/output error occurs
-     * @exception ServletException if a servlet error occurs
-     */
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response,
-            FilterChain chain)
-            throws IOException, ServletException {
-        // get requestUri from request
-        String requestURI = ((HttpServletRequest) request).getRequestURI();
-//        if (requestURI.equals("/ecommerce/")) {
-//            requestURI = "/ecommerce/";
-//        }
-        
-        // check if requestUri have path and end with / slash
-        if (requestURI.length() > 0 && requestURI.endsWith("/") && !requestURI.equals("/ecommerce/")) {
-            // get requestUri without the end / slash
-            requestURI = requestURI.substring(0, requestURI.length() - 1);
-            
-            // redirect to the new requestUri
-            ((HttpServletResponse) response).sendRedirect(requestURI);
-        } else {
-            chain.doFilter(request, response);
-        }
-    }
-
-    /**
-     * Return the filter configuration object for this filter.
-     */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
     }
 
-    /**
-     * Set the filter configuration object for this filter.
-     *
-     * @param filterConfig The filter configuration object
-     */
     public void setFilterConfig(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
     }
 
-    /**
-     * Destroy method for this filter
-     */
     public void destroy() {
     }
 
-    /**
-     * Init method for this filter
-     */
     public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
@@ -148,9 +125,6 @@ public class UrlFilter implements Filter {
         }
     }
 
-    /**
-     * Return a String representation of this object.
-     */
     @Override
     public String toString() {
         if (filterConfig == null) {
@@ -209,5 +183,5 @@ public class UrlFilter implements Filter {
     public void log(String msg) {
         filterConfig.getServletContext().log(msg);
     }
-
+//</editor-fold >
 }
