@@ -305,108 +305,112 @@ h1 {
 
 /* Start Footer */
 .footer {
-  background-color: #333;
-  color: #EEE;
-  padding: 15px; }
+    background-color: #333;
+    color: #EEE;
+    padding: 15px; 
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;}
 
 .footer .copyright {
-  text-align: left;
-  padding-top: 15px;
-  font-size: 16px;
-  color: #b9b9b9; }
+    text-align: left;
+    padding-top: 15px;
+    font-size: 16px;
+    color: #b9b9b9; }
 
 .footer .copyright i {
-  color: #d41b1b; }
+    color: #d41b1b; }
 
 .footer .social {
-  padding-right: 0;
-  margin: 5px 0 0px; }
+    padding-right: 0;
+    margin: 5px 0 0px; }
 
 .footer .social li {
-  display: inline-block;
-  line-height: 1.6;
+    display: inline-block;
+    line-height: 1.6;
 }
 
 @media (max-width: 767px) {
-  .footer .social li {
-    margin-bottom: 10px;
-  }
+    .footer .social li {
+        margin-bottom: 10px;
+    }
 }
 
 .footer .social li i {
-  padding: 8px 0px 6px;
-  background-color: #4D4D4D;
-  color: #BABABA;
-  margin-right: 4px;
-  text-align: center;
-  -webkit-transition: all .2s ease-in-out;
-  -moz-transition: all .2s ease-in-out;
-  transition: all .2s ease-in-out;
-  zoom: 1;
-  filter: alpha(opacity=60);
-  opacity: .6;
-  width: 45px; }
+    padding: 8px 0px 6px;
+    background-color: #4D4D4D;
+    color: #BABABA;
+    margin-right: 4px;
+    text-align: center;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+    zoom: 1;
+    filter: alpha(opacity=60);
+    opacity: .6;
+    width: 45px; }
 
 .footer .social i:hover {
-  opacity: 1;
-  color: #FFF; }
+    opacity: 1;
+    color: #FFF; }
 
 .footer .social .fa-youtube:hover {
-  background-color: #cd201f; }
+    background-color: #cd201f; }
 
 .footer .social .fa-facebook:hover {
-  background-color: #3b5998; }
+    background-color: #3b5998; }
 
 .footer .social .fa-github:hover {
-  background-color: #ff9933; }
+    background-color: #ff9933; }
 
 .footer .social .fa-twitter:hover {
-  background-color: #55acee; }
+    background-color: #55acee; }
 
 .footer .social .fa-codepen:hover {
-  background-color: #444; }
+    background-color: #444; }
 
 .footer .social .fa-google-plus:hover {
-  background-color: #dd4b39; }
+    background-color: #dd4b39; }
 
 .footer .social .fa-instagram:hover {
-  background-color: #3f729b; }
+    background-color: #3f729b; }
 
 @media (max-width: 767px) {
-  .footer .copyright {
-    text-align: center !important;
-    margin-bottom: 0; } }
+    .footer .copyright {
+        text-align: center !important;
+        margin-bottom: 0; } }
 .scroll-to-top {
-  width: 45px;
-  height: 45px;
-  position: fixed;
-  right: 25px;
-  bottom: 25px;
-  display: none;
-  z-index: 9999; }
+    width: 45px;
+    height: 45px;
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    display: none;
+    z-index: 9999; }
 
 .scroll-to-top span {
-  background: linear-gradient(to right, #2980b9 50%, #2c95d9 50%) no-repeat scroll right bottom/210% 100% #2fa3ef;
-  -webkit-transition: all ease .3s;
-  -moz-transition: all ease .3s;
-  -o-transition: all ease .3s;
-  transition: all ease .3s;
-  display: block;
-  width: 100%;
-  height: 100%;
-  color: #FFF;
-  border-radius: 50%;
-  text-align: center;
-  padding-top: 3px;
-  cursor: pointer; }
+    background: linear-gradient(to right, #2980b9 50%, #2c95d9 50%) no-repeat scroll right bottom/210% 100% #2fa3ef;
+    -webkit-transition: all ease .3s;
+    -moz-transition: all ease .3s;
+    -o-transition: all ease .3s;
+    transition: all ease .3s;
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: #FFF;
+    border-radius: 50%;
+    text-align: center;
+    padding-top: 3px;
+    cursor: pointer; }
 
 .scroll-to-top span:hover {
-  background-position: left bottom; }
+    background-position: left bottom; }
 
 .scroll-to-top span:before {
-  font-family: 'FontAwesome';
-  content: "\f077";
-  font-size: 25px; }
+    font-family: 'FontAwesome';
+    content: "\f077";
+    font-size: 25px; }
 
 /* End Footer */
 
