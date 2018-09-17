@@ -307,11 +307,7 @@ h1 {
 .footer {
     background-color: #333;
     color: #EEE;
-    padding: 15px; 
-    position: absolute;
-    width: 100%;
-    left: 0;
-    bottom: 0;}
+    padding: 15px; }
 
 .footer .copyright {
     text-align: left;

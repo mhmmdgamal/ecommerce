@@ -109,4 +109,5 @@
             </div>
         </c:otherwise>
     </c:choose>
-    <c:import url="includes/templates/footer.jsp" />
+</div>
+<c:import url="includes/templates/footer.jsp" />
