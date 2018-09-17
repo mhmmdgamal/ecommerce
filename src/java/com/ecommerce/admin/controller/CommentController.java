@@ -14,8 +14,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.annotation.WebServlet;
 
+@WebServlet("/admin/comments")
 public class CommentController extends HttpServlet {
 
     String adminJspPath = null;
@@ -40,94 +41,85 @@ public class CommentController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // get registered session
-        HttpSession session = request.getSession();
+        // set page title
+        Helper.setTitle(request, "Comments");
 
-        // check if the username exists in session 
-        if (session.getAttribute("username") != null) {
-            // set page title
-            Helper.setTitle(request, "Comments");
+        // get the action param value if exists or return manage 
+        String action = request.getParameter("action") != null ? request.getParameter("action") : "Manage";
 
-            // get the action param value if exists or return manage 
-            String action = request.getParameter("action") != null ? request.getParameter("action") : "Manage";
+        // get all users with out pendings users
+        List<User> users = new UserDaoImpl(servletContext).getAllUsers(false);
+        System.out.println(users);
+        // get all items with assending order
+        List<Item> items = new ItemDaoImpl(servletContext).getAllItems("ASC");
 
-            // get all users with out pendings users
-            List<User> users = new UserDaoImpl(servletContext).getAllUsers(false);
-            System.out.println(users);
-            // get all items with assending order
-            List<Item> items = new ItemDaoImpl(servletContext).getAllItems("ASC");
+        // set users to request
+        request.setAttribute("users", users);
 
-            // set users to request
-            request.setAttribute("users", users);
+        // set items to request
+        request.setAttribute("items", items);
 
-            // set items to request
-            request.setAttribute("items", items);
+        if (action.equals("Manage")) {
 
-            if (action.equals("Manage")) {
+            // get all comments with assending order
+            List<Comment> comments = new CommentDaoImpl(servletContext).getAllComments("ASC");
 
-                // get all comments with assending order
-                List<Comment> comments = new CommentDaoImpl(servletContext).getAllComments("ASC");
+            // set comments to request
+            request.setAttribute("comments", comments);
 
-                // set comments to request
-                request.setAttribute("comments", comments);
+            // forword request to manage page
+            Helper.forwardRequest(request, response, adminJspPath + "manage_comments.jsp");
+        } else if (action.equals("Edit")) {
+            // get commentId param from the request
+            String commentId = request.getParameter("commentid");
 
-                // forword request to manage page
-                Helper.forwardRequest(request, response, adminJspPath + "manage_comments.jsp");
-            } else if (action.equals("Edit")) {
-                // get commentId param from the request
-                String commentId = request.getParameter("commentid");
+            // return the commentId if number or return 0
+            long id = commentId != null && Helper.isNumber(commentId) ? Long.parseLong(commentId) : 0;
 
-                // return the commentId if number or return 0
-                long id = commentId != null && Helper.isNumber(commentId) ? Long.parseLong(commentId) : 0;
+            // get comment depending on commentId
+            Comment commentFounded = new CommentDaoImpl(servletContext).getCommentById(id);
+            if (commentFounded != null) {
+                // set the found comment to the request
+                request.setAttribute("comment", commentFounded);
 
-                // get comment depending on commentId
-                Comment commentFounded = new CommentDaoImpl(servletContext).getCommentById(id);
-                if (commentFounded != null) {
-                    // set the found comment to the request
-                    request.setAttribute("comment", commentFounded);
-
-                    // forword request to edit page
-                    Helper.forwardRequest(request, response, adminJspPath + "edit_comment.jsp");
-                } else {
-                    // redirect to the previous page with error message
-                    Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
-                }
-            } else if (action.equals("Delete")) {
-                // get commentId param from the request
-                String commentId = request.getParameter("commentid");
-
-                // return the commentId if number or return 0
-                long id = commentId != null && Helper.isNumber(commentId) ? Long.parseLong(commentId) : 0;
-
-                // delete comment depending on the commentId
-                boolean commentDeleted = new CommentDaoImpl(servletContext).deleteComment(id);
-                if (commentDeleted) {
-                    // redirect to the previous page with deleted message
-                    Helper.redriectToPrevPage(request, response, "comment deleted", false);
-                } else {
-                    // redirect to the previous page with error message
-                    Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
-                }
-            } else if (action.equals("Approve")) {
-                // get commentId param from the request
-                String commentId = request.getParameter("commentid");
-
-                // return the commentId if number or return 0
-                long id = commentId != null && Helper.isNumber(commentId) ? Long.parseLong(commentId) : 0;
-
-                // approve comment depending on the commentId
-                boolean commentApproved = new CommentDaoImpl(servletContext).approveComment(id);
-                if (commentApproved) {
-                    // redirect to the previous page with deleted message
-                    Helper.redriectToPrevPage(request, response, "comment approved", false);
-                } else {
-                    // redirect to the previous page with error message
-                    Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
-                }
+                // forword request to edit page
+                Helper.forwardRequest(request, response, adminJspPath + "edit_comment.jsp");
+            } else {
+                // redirect to the previous page with error message
+                Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
             }
-        } else {
-            // redirect to the login page if the username does not exists in session 
-            response.sendRedirect("login");
+        } else if (action.equals("Delete")) {
+            // get commentId param from the request
+            String commentId = request.getParameter("commentid");
+
+            // return the commentId if number or return 0
+            long id = commentId != null && Helper.isNumber(commentId) ? Long.parseLong(commentId) : 0;
+
+            // delete comment depending on the commentId
+            boolean commentDeleted = new CommentDaoImpl(servletContext).deleteComment(id);
+            if (commentDeleted) {
+                // redirect to the previous page with deleted message
+                Helper.redriectToPrevPage(request, response, "comment deleted", false);
+            } else {
+                // redirect to the previous page with error message
+                Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
+            }
+        } else if (action.equals("Approve")) {
+            // get commentId param from the request
+            String commentId = request.getParameter("commentid");
+
+            // return the commentId if number or return 0
+            long id = commentId != null && Helper.isNumber(commentId) ? Long.parseLong(commentId) : 0;
+
+            // approve comment depending on the commentId
+            boolean commentApproved = new CommentDaoImpl(servletContext).approveComment(id);
+            if (commentApproved) {
+                // redirect to the previous page with deleted message
+                Helper.redriectToPrevPage(request, response, "comment approved", false);
+            } else {
+                // redirect to the previous page with error message
+                Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
+            }
         }
     }
 
@@ -143,49 +135,40 @@ public class CommentController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // get registered session
-        HttpSession session = request.getSession();
+        // set page title
+        Helper.setTitle(request, "Comments");
 
-        // check if the username exists in session
-        if (session.getAttribute("username") != null) {
-            // set page title
-            Helper.setTitle(request, "Comments");
+        // get the action param value
+        String action = request.getParameter("action");
 
-            // get the action param value
-            String action = request.getParameter("action");
+        if (action.equals("Edit")) {
 
-            if (action.equals("Edit")) {
+            // get form params from the request
+            int id = Integer.parseInt(request.getParameter("commentid"));
+            String com = request.getParameter("comment");
 
-                // get form params from the request
-                int id = Integer.parseInt(request.getParameter("commentid"));
-                String com = request.getParameter("comment");
+            // make new comment and set info to it
+            Comment comment = new Comment();
+            comment.setId(id);
+            comment.setComment(com);
 
-                // make new comment and set info to it
-                Comment comment = new Comment();
-                comment.setId(id);
-                comment.setComment(com);
+            // update comment
+            boolean commentUpdated = new CommentDaoImpl(servletContext).updateComment(comment);
 
-                // update comment
-                boolean commentUpdated = new CommentDaoImpl(servletContext).updateComment(comment);
-
-                if (!commentUpdated) {
-                    String error = "error in update";
-                    // set error message to request if comment does not update successfully
-                    request.setAttribute("error", error);
-                } else {
-                    // set success message to request if comment updated successfully
-                    request.setAttribute("success", "comment updated");
-                }
-
-                // set comment to request
-                request.setAttribute("comment", comment);
-
-                // forword request to the edit page
-                Helper.forwardRequest(request, response, adminJspPath + "edit_comment.jsp");
+            if (!commentUpdated) {
+                String error = "error in update";
+                // set error message to request if comment does not update successfully
+                request.setAttribute("error", error);
+            } else {
+                // set success message to request if comment updated successfully
+                request.setAttribute("success", "comment updated");
             }
-        } else {
-            // redirect to the login page if the username does not exists in session
-            response.sendRedirect("login");
+
+            // set comment to request
+            request.setAttribute("comment", comment);
+
+            // forword request to the edit page
+            Helper.forwardRequest(request, response, adminJspPath + "edit_comment.jsp");
         }
     }
 

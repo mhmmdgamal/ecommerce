@@ -23,9 +23,7 @@
                             </span>
                             <ul class="dropdown-menu">
                                 <li><a href="${initParam['customerPath']}profile">My Profile</a></li>
-                                <li><a href="${initParam['customerPath']}newad">New Item</a></li>
-                                <!--TODO: not work think again--> 
-                                <li><a href="${initParam['customerPath']}profile?id=my-ads">My Items</a></li>
+                                <li><a href="${initParam['customerPath']}new-item">New Item</a></li>
                                 <li><a href="${initParam['customerPath']}logout">Logout</a></li>
                             </ul>
                         </div>

@@ -10,9 +10,11 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@WebFilter(urlPatterns = {"/*"})
 public class UrlFilter implements Filter {
 
     private static final boolean debug = true;
@@ -31,15 +33,12 @@ public class UrlFilter implements Filter {
             throws IOException, ServletException {
         // get requestUri from request
         String requestURI = ((HttpServletRequest) request).getRequestURI();
-//        if (requestURI.equals("/ecommerce/")) {
-//            requestURI = "/ecommerce/";
-//        }
-        
+
         // check if requestUri have path and end with / slash
         if (requestURI.length() > 0 && requestURI.endsWith("/") && !requestURI.equals("/ecommerce/")) {
             // get requestUri without the end / slash
             requestURI = requestURI.substring(0, requestURI.length() - 1);
-            
+
             // redirect to the new requestUri
             ((HttpServletResponse) response).sendRedirect(requestURI);
         } else {

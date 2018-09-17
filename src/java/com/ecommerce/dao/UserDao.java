@@ -5,6 +5,8 @@
  */
 package com.ecommerce.dao;
 
+import com.ecommerce.bean.Comment;
+import com.ecommerce.bean.Item;
 import com.ecommerce.bean.User;
 import java.util.List;
 
@@ -20,6 +22,10 @@ public interface UserDao {
 
     public List<User> getAllUsers(boolean pendings);
 
+    public List<Item> getUserItems(long id, String sort);
+    
+    public List<Comment> getUserComments(Long id, String sort);
+    
     public User getUserById(long id);
 
     public User getLoginUser(String userName, String password, boolean admin);

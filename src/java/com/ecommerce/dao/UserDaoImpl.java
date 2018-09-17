@@ -1,5 +1,7 @@
 package com.ecommerce.dao;
 
+import com.ecommerce.bean.Comment;
+import com.ecommerce.bean.Item;
 import com.ecommerce.bean.User;
 import com.ecommerce.helper.MySQLDatabaseHelper;
 import java.sql.Connection;
@@ -15,15 +17,17 @@ public class UserDaoImpl implements UserDao {
     private final Connection connection;
     private final MySQLDatabaseHelper db;
     private final String table = "users";
+    private final ServletContext sc;
 
     public UserDaoImpl(ServletContext sc) {
         this.db = (MySQLDatabaseHelper) sc.getAttribute("db");
         this.connection = db.getConnection();
+        this.sc = sc;
     }
 
     /**
-     * get login user 
-     * 
+     * get login user
+     *
      * @param userName
      * @param password
      * @param admin
@@ -57,6 +61,45 @@ public class UserDaoImpl implements UserDao {
     }
 
     /**
+     * get all items linked with the user
+     *
+     * @param id
+     * @param sort
+     * @return items
+     */
+    @Override
+    public List<Item> getUserItems(long id, String sort) {
+        List<Item> items = new ArrayList();
+
+        try (ResultSet rs = db.findAll(new String[]{"*"}, "items", "`user_id`=" + id, "id", sort, null)) {
+            while (rs.next()) {
+                Item item = new Item();
+
+                item.setId(rs.getLong("id"));
+                item.setName(rs.getString("name"));
+                item.setDescription(rs.getString("description"));
+                item.setPrice(rs.getString("price"));
+                item.setAddDate(rs.getDate("add_date"));
+                item.setCountryMade(rs.getString("country_made"));
+                item.setImage(rs.getString("image"));
+                item.setStatus(rs.getString("status"));
+                item.setRating(rs.getByte("rating"));
+                item.setApprove(rs.getByte("approve"));
+                item.setTags(rs.getString("tags"));
+                item.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
+                item.setCategory(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")));
+
+                items.add(item);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+
+        return items;
+    }
+
+    /**
      * get number of pending users
      *
      * @return users number or 0
@@ -69,11 +112,11 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        
+
         return count;
     }
 
-     /**
+    /**
      * active user depending on id
      *
      * @param id
@@ -108,7 +151,7 @@ public class UserDaoImpl implements UserDao {
         return db.update(user, table);
     }
 
-     /**
+    /**
      * add user
      *
      * @param user
@@ -133,7 +176,7 @@ public class UserDaoImpl implements UserDao {
     /**
      * get all users data from database
      *
-     * @param pendings 
+     * @param pendings
      * @return found users
      */
     @Override
@@ -198,7 +241,7 @@ public class UserDaoImpl implements UserDao {
         return users;
     }
 
-     /**
+    /**
      * get number of users
      *
      * @return users number or 0
@@ -239,5 +282,40 @@ public class UserDaoImpl implements UserDao {
         }
 
         return user;
+    }
+
+    /**
+     * get all comments linked with the user
+     *
+     * @param id
+     * @param sort
+     * @return comments
+     */
+    @Override
+    public List<Comment> getUserComments(Long id, String sort) {
+        List<Comment> comments = new ArrayList();
+
+        try (ResultSet rs = db.findAll(new String[]{"*"}, "comments", "`user_id`=" + id, "id", sort, null)) {
+
+            Comment comment;
+
+            while (rs.next()) {
+                comment = new Comment();
+
+                comment.setId(rs.getLong("id"));
+                comment.setComment(rs.getString("comment"));
+                comment.setAddDate(rs.getDate("add_date"));
+                comment.setStatus(rs.getByte("status"));
+                comment.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
+                comment.setItem(new ItemDaoImpl(sc).getItemById(rs.getLong("item_id")));
+
+                comments.add(comment);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+
+        return comments;
     }
 }

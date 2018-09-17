@@ -18,6 +18,8 @@ public interface CommentDao {
 
     public List<Comment> getAllComments(String sort);
 
+    public List<Comment> getAllComments(long itemId, String sort);
+    
     public Comment getCommentById(long id);
 
     public int getNumComments();

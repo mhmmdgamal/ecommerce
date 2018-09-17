@@ -16,7 +16,11 @@ public interface ItemDao {
 
     public List<Item> getAllItems(String sort);
 
+    public Item getApprovedItemById(long id);
+
     public List<Item> getAllApprovedItems(String sort);
+
+    public List<Item> getTagItems(String tag, String sort);
 
     public Item getItemById(long id);
 

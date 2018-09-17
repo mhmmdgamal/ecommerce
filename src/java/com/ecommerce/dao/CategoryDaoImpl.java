@@ -96,7 +96,7 @@ public class CategoryDaoImpl implements CategoryDao {
      *
      * @param id
      * @param sort
-     * @return comments
+     * @return items
      */
     @Override
     public List<Item> getCategoryItems(long id, String sort) {

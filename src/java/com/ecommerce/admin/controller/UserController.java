@@ -13,8 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.annotation.WebServlet;
 
 //</editor-fold>
+@WebServlet("/admin/users")
 public class UserController extends HttpServlet {
 
     String adminJspPath = null;
@@ -31,103 +33,90 @@ public class UserController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // get registered session
-        HttpSession session = request.getSession();
+        // set page title
+        Helper.setTitle(request, "Users");
 
-        // check if the username exists in session 
-        if (session.getAttribute("username") != null) {
-            // set page title
-            Helper.setTitle(request, "Users");
+        // get the action param value if exists or return manage
+        String action = request.getParameter("action") != null ? request.getParameter("action") : "Manage";
+        if (action.equals("Manage")) {
+            List<User> users;
 
-            // get the action param value if exists or return manage
-            String action = request.getParameter("action") != null ? request.getParameter("action") : "Manage";
-            if (action.equals("Manage")) {
-                List<User> users;
-
-                // check if the page param value if exists and equal Pending
-                if (request.getParameter("page") != null && request.getParameter("page").equals("Pending")) {
-                    // get pendings users
-                    users = new UserDaoImpl(servletContext).getAllUsers(true);
-                } else {
-                    // get users
-                    users = new UserDaoImpl(servletContext).getAllUsers(false);
-                }
-                // set users to the request
-                request.setAttribute("users", users);
-
-                // forword to manage page
-                Helper.forwardRequest(request, response, adminJspPath + "manage_users.jsp");
-            } else if (action.equals("Add")) {
-                // forword to add page
-                Helper.forwardRequest(request, response, adminJspPath + "add_user.jsp");
-            } else if (action.equals("Edit")) {
-                // get userId param from the request
-                String userId = request.getParameter("userid");
-
-                // return the userId if number or return 0
-                long Id = userId != null && Helper.isNumber(userId) ? Long.parseLong(userId) : 0;
-
-                // get user depending on userId
-                User userFounded = new UserDaoImpl(servletContext).getUserById(Id);
-                if (userFounded != null) {
-                    // set the found user to the request
-                    request.setAttribute("user", userFounded);
-
-                    // forword to edit page
-                    Helper.forwardRequest(request, response, adminJspPath + "edit_user.jsp");
-                } else {
-                    // redirect to the previous page with error message
-                    Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
-                }
-            } else if (action.equals("Delete")) {
-                // get userId param from the request
-                String userId = request.getParameter("userid");
-
-                // return the userId if number or return 0
-                long Id = userId != null && Helper.isNumber(userId) ? Long.parseLong(userId) : 0;
-
-                // delete user depending on userId
-                boolean userDeleted = new UserDaoImpl(servletContext).deleteUser(Id);
-                if (userDeleted) {
-                    // redirect to the previous page with deleted message
-                    Helper.redriectToPrevPage(request, response, "user deleted", false);
-                } else {
-                    // redirect to the previous page with error message
-                    Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
-                }
-            } else if (action.equals("Activate")) {
-
-                // get userId param from the request
-                String userId = request.getParameter("userid");
-
-                // return the userId if number or return 0
-                long id = userId != null && Helper.isNumber(userId) ? Long.parseLong(userId) : 0;
-
-                // activate user depending on userId
-                boolean userActivated = new UserDaoImpl(servletContext).activeUser(id);
-                if (userActivated) {
-                    // redirect to the previous page with deleted message
-                    Helper.redriectToPrevPage(request, response, "user approved", false);
-                } else {
-                    // redirect to the previous page with error message
-                    Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
-                }
+            // check if the page param value if exists and equal Pending
+            if (request.getParameter("page") != null && request.getParameter("page").equals("Pending")) {
+                // get pendings users
+                users = new UserDaoImpl(servletContext).getAllUsers(true);
+            } else {
+                // get users
+                users = new UserDaoImpl(servletContext).getAllUsers(false);
             }
-        } else {
-            // redirect to the login page if the username does not exists in session
-            response.sendRedirect("login");
+            // set users to the request
+            request.setAttribute("users", users);
+
+            // forword to manage page
+            Helper.forwardRequest(request, response, adminJspPath + "manage_users.jsp");
+        } else if (action.equals("Add")) {
+            // forword to add page
+            Helper.forwardRequest(request, response, adminJspPath + "add_user.jsp");
+        } else if (action.equals("Edit")) {
+            // get userId param from the request
+            String userId = request.getParameter("userid");
+
+            // return the userId if number or return 0
+            long Id = userId != null && Helper.isNumber(userId) ? Long.parseLong(userId) : 0;
+
+            // get user depending on userId
+            User userFounded = new UserDaoImpl(servletContext).getUserById(Id);
+            if (userFounded != null) {
+                // set the found user to the request
+                request.setAttribute("user", userFounded);
+
+                // forword to edit page
+                Helper.forwardRequest(request, response, adminJspPath + "edit_user.jsp");
+            } else {
+                // redirect to the previous page with error message
+                Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
+            }
+        } else if (action.equals("Delete")) {
+            // get userId param from the request
+            String userId = request.getParameter("userid");
+
+            // return the userId if number or return 0
+            long Id = userId != null && Helper.isNumber(userId) ? Long.parseLong(userId) : 0;
+
+            // delete user depending on userId
+            boolean userDeleted = new UserDaoImpl(servletContext).deleteUser(Id);
+            if (userDeleted) {
+                // redirect to the previous page with deleted message
+                Helper.redriectToPrevPage(request, response, "user deleted", false);
+            } else {
+                // redirect to the previous page with error message
+                Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
+            }
+        } else if (action.equals("Activate")) {
+
+            // get userId param from the request
+            String userId = request.getParameter("userid");
+
+            // return the userId if number or return 0
+            long id = userId != null && Helper.isNumber(userId) ? Long.parseLong(userId) : 0;
+
+            // activate user depending on userId
+            boolean userActivated = new UserDaoImpl(servletContext).activeUser(id);
+            if (userActivated) {
+                // redirect to the previous page with deleted message
+                Helper.redriectToPrevPage(request, response, "user approved", false);
+            } else {
+                // redirect to the previous page with error message
+                Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
+            }
         }
-    }
+}
 
 /////////////////////////////////////////////////////////////////////
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+@Override
+        protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // get registered session
-        HttpSession session = request.getSession();
 
-        // check if the username exists in session
-        if (session.getAttribute("username") != null) {
             // set page title
             Helper.setTitle(request, "Users");
 
@@ -280,15 +269,11 @@ public class UserController extends HttpServlet {
                     // forword to edit page
                     Helper.forwardRequest(request, response, adminJspPath + "edit_user.jsp");
                 }
-            } else {
-                // redirect to the login page if the username does not exists in session
-                response.sendRedirect("login");
-            }
         }
     }
 
     @Override
-    public String getServletInfo() {
+        public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 }

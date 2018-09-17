@@ -10,8 +10,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.annotation.WebServlet;
 
+@WebServlet("/admin/categories")
 public class CategoryController extends HttpServlet {
 
     String adminJspPath = null;
@@ -105,89 +106,81 @@ public class CategoryController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // get registered session
-        HttpSession session = request.getSession();
 
-        // check if the username exists in session
-        if (session.getAttribute("username") != null) {
-            // set page title
-            Helper.setTitle(request, "Categories");
+        // set page title
+        Helper.setTitle(request, "Categories");
 
-            // get the action param value
-            String action = request.getParameter("action");
+        // get the action param value
+        String action = request.getParameter("action");
 
-            if (action.equals("Add")) {
-                // get form params from the request
-                String name = request.getParameter("name");
-                String description = request.getParameter("description");
-                int ordering = Integer.parseInt(request.getParameter("ordering"));
-                int visibility = Integer.parseInt(request.getParameter("visibility"));
-                int commenting = Integer.parseInt(request.getParameter("commenting"));
-                int ads = Integer.parseInt(request.getParameter("ads"));
+        if (action.equals("Add")) {
+            // get form params from the request
+            String name = request.getParameter("name");
+            String description = request.getParameter("description");
+            int ordering = Integer.parseInt(request.getParameter("ordering"));
+            int visibility = Integer.parseInt(request.getParameter("visibility"));
+            int commenting = Integer.parseInt(request.getParameter("commenting"));
+            int ads = Integer.parseInt(request.getParameter("ads"));
 
-                // make new category and set info to it 
-                Category category = new Category();
-                category.setName(name);
-                category.setDescription(description);
-                category.setOrdering(ordering);
-                category.setVisibility(visibility);
-                category.setAllowComments(commenting);
-                category.setAllowAds(ads);
+            // make new category and set info to it 
+            Category category = new Category();
+            category.setName(name);
+            category.setDescription(description);
+            category.setOrdering(ordering);
+            category.setVisibility(visibility);
+            category.setAllowComments(commenting);
+            category.setAllowAds(ads);
 
-                // add new category 
-                boolean categoryAdded = new CategoryDaoImpl(servletContext).addCategory(category);
-                if (!categoryAdded) {
-                    String error = "Sorry This Category Is Exist";
-                    // set error message to request if category does not add successfully
-                    request.setAttribute("error", error);
-                } else {
-                    // set success message to request if category added successfully
-                    request.setAttribute("success", "category added");
-                }
-
-                // forword request to the add page
-                Helper.forwardRequest(request, response, adminJspPath + "add_category.jsp");
-            } else if (action.equals("Edit")) {
-                // get form params from the request
-                long id = Long.parseLong(request.getParameter("categoryid"));
-                String name = request.getParameter("name");
-                String description = request.getParameter("description");
-                int ordering = Integer.parseInt(request.getParameter("ordering"));
-                int visibility = Integer.parseInt(request.getParameter("visibility"));
-                int commenting = Integer.parseInt(request.getParameter("commenting"));
-                int ads = Integer.parseInt(request.getParameter("ads"));
-
-                // make new category and set info to it 
-                Category category = new Category();
-                category.setId(id);
-                category.setName(name);
-                category.setDescription(description);
-                category.setOrdering(ordering);
-                category.setVisibility(visibility);
-                category.setAllowComments(commenting);
-                category.setAllowAds(ads);
-
-                // update category
-                boolean categoryUpdated = new CategoryDaoImpl(servletContext).updateCategory(category);
-
-                if (!categoryUpdated) {
-                    String error = "error in update";
-                    // set error message to request if category does not update successfully
-                    request.setAttribute("error", error);
-                } else {
-                    // set success message to request if category updated successfully
-                    request.setAttribute("success", "category updated");
-                }
-
-                // set category to request
-                request.setAttribute("category", category);
-
-                // forword request to the edit page
-                Helper.forwardRequest(request, response, adminJspPath + "edit_category.jsp");
+            // add new category 
+            boolean categoryAdded = new CategoryDaoImpl(servletContext).addCategory(category);
+            if (!categoryAdded) {
+                String error = "Sorry This Category Is Exist";
+                // set error message to request if category does not add successfully
+                request.setAttribute("error", error);
+            } else {
+                // set success message to request if category added successfully
+                request.setAttribute("success", "category added");
             }
-        } else {
-            // redirect to the login page if the username does not exists in session
-            response.sendRedirect("login");
+
+            // forword request to the add page
+            Helper.forwardRequest(request, response, adminJspPath + "add_category.jsp");
+        } else if (action.equals("Edit")) {
+            // get form params from the request
+            long id = Long.parseLong(request.getParameter("categoryid"));
+            String name = request.getParameter("name");
+            String description = request.getParameter("description");
+            int ordering = Integer.parseInt(request.getParameter("ordering"));
+            int visibility = Integer.parseInt(request.getParameter("visibility"));
+            int commenting = Integer.parseInt(request.getParameter("commenting"));
+            int ads = Integer.parseInt(request.getParameter("ads"));
+
+            // make new category and set info to it 
+            Category category = new Category();
+            category.setId(id);
+            category.setName(name);
+            category.setDescription(description);
+            category.setOrdering(ordering);
+            category.setVisibility(visibility);
+            category.setAllowComments(commenting);
+            category.setAllowAds(ads);
+
+            // update category
+            boolean categoryUpdated = new CategoryDaoImpl(servletContext).updateCategory(category);
+
+            if (!categoryUpdated) {
+                String error = "error in update";
+                // set error message to request if category does not update successfully
+                request.setAttribute("error", error);
+            } else {
+                // set success message to request if category updated successfully
+                request.setAttribute("success", "category updated");
+            }
+
+            // set category to request
+            request.setAttribute("category", category);
+
+            // forword request to the edit page
+            Helper.forwardRequest(request, response, adminJspPath + "edit_category.jsp");
         }
     }
 

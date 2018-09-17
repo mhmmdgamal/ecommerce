@@ -10,8 +10,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.annotation.WebServlet;
 
+@WebServlet("/admin/dashboard")
 public class DashboardController extends HttpServlet {
 
     String adminJspPath = null;
@@ -35,50 +36,42 @@ public class DashboardController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // get registered session
-        HttpSession session = request.getSession();
 
-        // check if the username exist in session 
-        if (session.getAttribute("username") != null) {
-            // set page title
-            Helper.setTitle(request, "Dashboard");
+        // set page title
+        Helper.setTitle(request, "Dashboard");
 
-            // get user dao to do operation on user
-            UserDaoImpl userDao = new UserDaoImpl(servletContext);
+        // get user dao to do operation on user
+        UserDaoImpl userDao = new UserDaoImpl(servletContext);
 
-            // get item dao to do operation on item
-            ItemDaoImpl itemDao = new ItemDaoImpl(servletContext);
+        // get item dao to do operation on item
+        ItemDaoImpl itemDao = new ItemDaoImpl(servletContext);
 
-            // get comment dao to do operation on comment
-            CommentDaoImpl commentDao = new CommentDaoImpl(servletContext);
+        // get comment dao to do operation on comment
+        CommentDaoImpl commentDao = new CommentDaoImpl(servletContext);
 
-            // set the number of users to the request
-            request.setAttribute("numUsers", userDao.getNumUsers());
+        // set the number of users to the request
+        request.setAttribute("numUsers", userDao.getNumUsers());
 
-            // set the number of pending users to the request
-            request.setAttribute("numPendingUsers", userDao.getNumPendingUsers());
+        // set the number of pending users to the request
+        request.setAttribute("numPendingUsers", userDao.getNumPendingUsers());
 
-            // set the latest five users to the request
-            request.setAttribute("latestUsers", userDao.getLatestUsers(5));
+        // set the latest five users to the request
+        request.setAttribute("latestUsers", userDao.getLatestUsers(5));
 
-            // set the number of items to the request
-            request.setAttribute("numItems", itemDao.getNumItems());
+        // set the number of items to the request
+        request.setAttribute("numItems", itemDao.getNumItems());
 
-            // set the latest five items to the request
-            request.setAttribute("latestItems", itemDao.getLatestItems(5));
+        // set the latest five items to the request
+        request.setAttribute("latestItems", itemDao.getLatestItems(5));
 
-            // set the number of comments to the request
-            request.setAttribute("numComments", commentDao.getNumComments());
+        // set the number of comments to the request
+        request.setAttribute("numComments", commentDao.getNumComments());
 
-            // set the latest five comments to the request
-            request.setAttribute("latestComments", commentDao.getLatestComments(5));
+        // set the latest five comments to the request
+        request.setAttribute("latestComments", commentDao.getLatestComments(5));
 
-            // forword the requset to the dashboard page
-            Helper.forwardRequest(request, response, adminJspPath + "dashboard.jsp");
-        } else {
-            // redirect to login page if session not exits
-            response.sendRedirect("login");
-        }
+        // forword the requset to the dashboard page
+        Helper.forwardRequest(request, response, adminJspPath + "dashboard.jsp");
     }
 
     /**

@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-//</editor-fold >
+import javax.servlet.annotation.WebServlet;
 
+//</editor-fold >
+@WebServlet("/admin/login")
 public class LoginController extends HttpServlet {
 
     String adminJspPath = null;

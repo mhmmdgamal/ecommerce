@@ -13,11 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.annotation.WebServlet;
 
-/**
- *
- * @author mohamed
- */
+@WebServlet("/login")
 public class LoginRegisterController extends HttpServlet {
 
     String customerJspPath = null;

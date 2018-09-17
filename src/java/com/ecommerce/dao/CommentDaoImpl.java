@@ -92,9 +92,26 @@ public class CommentDaoImpl implements CommentDao {
      */
     @Override
     public List<Comment> getAllComments(String sort) {
+        return getAllComments(0, sort);
+    }
+
+    /**
+     * get all comments data from database depending on item id
+     *
+     * @param id
+     * @param sort
+     * @return found comments
+     */
+    @Override
+    public List<Comment> getAllComments(long id, String sort) {
         List<Comment> comments = new ArrayList();
 
-        try (ResultSet rs = db.findAll(new String[]{"*"}, table, null, "id", sort, null)) {
+        String itemId = null;
+        if (id != 0) {
+            itemId = " `item_id`=" + id + " AND status = 1";
+        }
+        
+        try (ResultSet rs = db.findAll(new String[]{"*"}, table, itemId, "id", sort, null)) {
             while (rs.next()) {
                 Comment comment = new Comment();
 

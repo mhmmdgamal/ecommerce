@@ -48,6 +48,45 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     /**
+     * get all items linked with the user
+     *
+     * @param tag
+     * @param sort
+     * @return items
+     */
+    @Override
+    public List<Item> getTagItems(String tag, String sort) {
+        List<Item> items = new ArrayList();
+
+        try (ResultSet rs = db.findAll(new String[]{"*"}, "items", "`tags` like '%" + tag + "%'" + " AND `approve`=1", "id", sort, null)) {
+            while (rs.next()) {
+                Item item = new Item();
+
+                item.setId(rs.getLong("id"));
+                item.setName(rs.getString("name"));
+                item.setDescription(rs.getString("description"));
+                item.setPrice(rs.getString("price"));
+                item.setAddDate(rs.getDate("add_date"));
+                item.setCountryMade(rs.getString("country_made"));
+                item.setImage(rs.getString("image"));
+                item.setStatus(rs.getString("status"));
+                item.setRating(rs.getByte("rating"));
+                item.setApprove(rs.getByte("approve"));
+                item.setTags(rs.getString("tags"));
+                item.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
+                item.setCategory(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")));
+
+                items.add(item);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+
+        return items;
+    }
+    
+    /**
      * get all comments linked with the item
      *
      * @param id
@@ -124,7 +163,7 @@ public class ItemDaoImpl implements ItemDao {
     @Override
     public List<Item> getAllItems(String sort) {
         List<Item> items = new ArrayList();
-
+        
         try (ResultSet rs = db.findAll(new String[]{"*"}, table, null, "id", sort, null)) {
             while (rs.next()) {
                 Item item = new Item();
@@ -152,7 +191,7 @@ public class ItemDaoImpl implements ItemDao {
 
         return items;
     }
-
+    
     /**
      * get all items data from database
      *
@@ -163,7 +202,7 @@ public class ItemDaoImpl implements ItemDao {
     public List<Item> getAllApprovedItems(String sort) {
         List<Item> items = new ArrayList();
 
-        try (ResultSet rs = db.findAll(new String[]{"*"}, table, " AND `approve`=1", "id", sort, null)) {
+        try (ResultSet rs = db.findAll(new String[]{"*"}, table, " `approve`=1", "id", sort, null)) {
 
             while (rs.next()) {
                 Item item = new Item();
@@ -257,6 +296,41 @@ public class ItemDaoImpl implements ItemDao {
         Item item = null;
 
         try (ResultSet rs = db.findOne(new String[]{"*"}, table, "`id`=?", id)) {
+            if (rs.next()) {
+                item = new Item();
+                item.setId(rs.getLong("id"));
+                item.setName(rs.getString("name"));
+                item.setDescription(rs.getString("description"));
+                item.setPrice(rs.getString("price"));
+                item.setAddDate(rs.getDate("add_date"));
+                item.setCountryMade(rs.getString("country_made"));
+                item.setImage(rs.getString("image"));
+                item.setStatus(rs.getString("status"));
+                item.setRating(rs.getByte("rating"));
+                item.setApprove(rs.getByte("approve"));
+                item.setTags(rs.getString("tags"));
+                item.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
+                item.setCategory(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
+        }
+
+        return item;
+    }
+    
+    /**
+     * get specific item with id and be approved
+     *
+     * @param id
+     * @return found item
+     */
+    @Override
+    public Item getApprovedItemById(long id) {
+        Item item = null;
+
+        try (ResultSet rs = db.findOne(new String[]{"*"}, table, "`id`=? AND `approve`=1", id)) {
             if (rs.next()) {
                 item = new Item();
                 item.setId(rs.getLong("id"));

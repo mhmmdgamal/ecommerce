@@ -27,6 +27,18 @@ public class Helper {
         }
         return true;
     }
+    
+    /**
+     * explode string to array
+     * 
+     * @param string
+     * @param split
+     * @return tokens
+     */
+    public static String[] explode(String string, String split) {
+        String[] tokens = string.split(split);
+        return tokens;
+    }
 
     /**
      * redirect to the previous page 
