@@ -18,7 +18,7 @@
             <!-- End Col-Sm-6 -->
             <!-- Start Col-Sm-6 -->
             <div class="col-xs-12 col-sm-6">
-                <ul class="list-unstyled social">
+                <ul class="list-unstyled social text-right">
                     <li>
                         <a target="_blank" href="#">
                             <i class="fa fa-youtube fa-fw fa-2x"></i>
