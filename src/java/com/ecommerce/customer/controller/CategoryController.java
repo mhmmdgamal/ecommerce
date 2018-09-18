@@ -15,7 +15,7 @@ import javax.servlet.annotation.WebServlet;
 
 @WebServlet("/categories")
 // </editor-fold >
-public class ItemsOfCategoryController extends HttpServlet {
+public class CategoryController extends HttpServlet {
     // <editor-fold >
     ServletContext servletContext = null;
 
@@ -40,7 +40,7 @@ public class ItemsOfCategoryController extends HttpServlet {
             request.setAttribute("categoryItems", categoryItems);
 
             // forword request to show category items page
-            Helper.forwardRequest(request, response, servletContext.getInitParameter("customerJspPath") + "show_items_of_category.jsp");
+            Helper.forwardRequest(request, response, servletContext.getInitParameter("customerJspPath") + "show_category.jsp");
         } else {
             Helper.redriectToPrevPage(request, response, "You Must Add Page ID", true);
         }
@@ -53,7 +53,7 @@ public class ItemsOfCategoryController extends HttpServlet {
 
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return " this controller show all Item for one category by pageID get from url";
     }// </editor-fold>
 
 }

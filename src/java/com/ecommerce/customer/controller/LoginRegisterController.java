@@ -4,7 +4,6 @@ import com.ecommerce.bean.User;
 import com.ecommerce.dao.UserDaoImpl;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -15,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.annotation.WebServlet;
 
-@WebServlet("/login")
+@WebServlet("/login") // == @WebServlet( urlPatterns = {"/login"} ) 
 public class LoginRegisterController extends HttpServlet {
 
     String customerJspPath = null;
@@ -49,7 +48,7 @@ public class LoginRegisterController extends HttpServlet {
         } else {
             // forword the requset to the login page
             Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp", "Login");
-        }
+    }
 
     }
 
@@ -138,12 +137,14 @@ public class LoginRegisterController extends HttpServlet {
                 if (!userAdded) {
                     // add new error to errors if user not added
                     formErrors.add("Sorry This User Is Exist");
+                    Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp");
+
                 } else {
                     // set success message if user added
                     request.setAttribute("success", "Congrats You Are Now Registerd User");
+                    // forword to add page
+                    Helper.forwardRequest(request, response, customerJspPath + "home.jsp");
                 }
-                // forword to add page
-                Helper.forwardRequest(request, response, customerJspPath + "home.jsp");
 
             }
 

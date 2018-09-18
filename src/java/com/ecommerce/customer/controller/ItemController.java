@@ -89,7 +89,7 @@ public class ItemController extends HttpServlet {
 
         // get all comments with descinding order links with item id
         List<Comment> comments = new CommentDaoImpl(servletContext).getAllComments(id, "DESC");
-        
+
         System.out.println(comments);
         // set comments to request
         request.setAttribute("comments", comments);
@@ -100,7 +100,7 @@ public class ItemController extends HttpServlet {
             formErrors.add("You Must Add Comment");
 
             // forward to show items page
-            Helper.forwardRequest(request, response, customerJspPath + "show_item.jsp");
+//            Helper.forwardRequest(request, response, customerJspPath + "show_item.jsp");
         } else {
             // git user id from session
             long userId = Long.parseLong(request.getSession().getAttribute("userId") + "");
@@ -120,7 +120,7 @@ public class ItemController extends HttpServlet {
 
             if (!commentAdded) {
                 String error = "error in add";
-                
+
                 // set error message to request if comment does not update successfully
                 request.setAttribute("error", error);
             } else {
@@ -131,11 +131,17 @@ public class ItemController extends HttpServlet {
             // forword request to manage page
             Helper.forwardRequest(request, response, customerJspPath + "show_item.jsp");
         }
+
+        long userId = Long.parseLong(request.getSession().getAttribute("userId") + "");
+        if (userId == item.getUser().getId() || true) {
+            request.getSession().setAttribute("myItem", true);
+        }
+
     }
 
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return " this controller show one item for one Category by itemId get from url";
     }
 
 }

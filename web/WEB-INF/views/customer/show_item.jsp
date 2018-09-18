@@ -1,23 +1,7 @@
 <%@page import="com.ecommerce.helper.Helper"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:import url="includes/templates/header.jsp" />
-
-<div class="container">
-    <c:if test="${requestScope['error'] ne null}">
-        <div class="alert alert-danger alert-dismissible">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            ${error}
-        </div>
-        <c:remove var="error" />
-    </c:if> 
-    <c:if test="${requestScope['success'] ne null}">
-        <div class="alert alert-success alert-dismissible">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            ${success}
-        </div>
-        <c:remove var="success" />
-    </c:if>
-</div>
+<c:import url="includes/templates/check_one_error.jsp" />
 
 <c:choose>
     <c:when test="${item ne null}">
@@ -78,6 +62,10 @@
                         </div>
                     </div>
                     <!-- End Add Comment -->
+                    <button class="btn btn-primary center-block" href="#">Edit your Item</button>
+                    <c:if test="${sessionScope['myItem'] eq true}">
+                        <button class="btn btn-primary center-block"  href="#">Edit your Item</button>
+                    </c:if>
                 </c:when>
                 <c:otherwise>
                     <a href="${initParam['customerPath']}login">Login/Register</a> To Add Comment

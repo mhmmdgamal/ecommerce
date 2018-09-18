@@ -1,57 +1,15 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:import url="includes/templates/header.jsp" />
+<c:import url="includes/templates/check_errors.jsp" />
 
 <div class="container login-page">
     <h1 class="text-center">
         <span class="selected" data-class="login">Login</span> | 
         <span data-class="signup">Signup</span>
     </h1>
-    <div class="the-errors text-center">
-        <!--        <?php 
-        
-                if (!empty($formErrors)) {
-        
-                foreach ($formErrors as $error) {
-        
-                echo '<div class="msg error">' . $error . '</div>';
-        
-                }
-        
-                }
-        
-                if (isset($succesMsg)) {
-        
-                echo '<div class="msg success">' . $succesMsg . '</div>';
-        
-                }
-        
-                ?>-->
-    
-        <div class="row">
-    <div class="container">
-        <c:if test="${requestScope['errors'] ne null}">
-            <c:forEach items="${requestScope['errors']}" var="error">
-                <div class="alert alert-danger alert-dismissible col-sm-offset-2 col-sm-10">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    ${error}
-                </div>
-            </c:forEach>
-            <c:remove var="error" />
-        </c:if> 
-        <c:if test="${requestScope['success'] ne null}">
-            <div class="alert alert-success alert-dismissible col-sm-offset-2 col-sm-10">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                ${success}
-            </div>
-            <c:remove var="success" />
-        </c:if>
-
-    </div>
-</div>
-
-    </div>
     <!-- Start Login Form -->
     <form class="login" action="${initParam['customerPath']}login" method="POST">
+        <!-- action will go to the LoginRegisterController -->
         <div class="input-container">
             <input 
                 class="form-control" 
@@ -78,7 +36,7 @@
         <div class="input-container">
             <input 
                 pattern=".{4,}"
-                title="Username Must Be Between 4 Chars"
+                title="Username must contain 4 or more characters"
                 class="form-control" 
                 type="text" 
                 name="user" 

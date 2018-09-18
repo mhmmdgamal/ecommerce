@@ -42,7 +42,7 @@ public class NewItemController extends HttpServlet {
         // get all categories from database with assending order
         List<Category> categories = new CategoryDaoImpl(servletContext).getAllCategories("ASC");
 
-        // set categories to the reqest
+        // set categories to the request
         request.setAttribute("categories", categories);
 
         // forward to new item page
