@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-@WebFilter(urlPatterns = {"/new-item", "/profile"})
+@WebFilter(urlPatterns = {"/new-item", "/profile", "/edit/item"})
 public class UserLoginFilter implements Filter {
     
     private static final boolean debug = true;

@@ -10,7 +10,7 @@
                         ${error}
                     </div>
                 </c:forEach>
-                <c:remove var="error" />
+                <c:remove var="errors" />
             </c:if> 
             <c:if test="${requestScope['success'] ne null}">
                 <div class="alert alert-success alert-dismissible col-sm-offset-2 col-sm-10">

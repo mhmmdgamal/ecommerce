@@ -17,7 +17,8 @@
                 name="user" 
                 autocomplete="off"
                 placeholder="Type your username" 
-                required />
+                required 
+                value="mhmmd"/>
         </div>
         <div class="input-container">
             <input 
@@ -26,7 +27,8 @@
                 name="pass" 
                 autocomplete="new-password"
                 placeholder="Type your password" 
-                required />
+                required 
+                value="123"/>
         </div>
         <input class="btn btn-primary btn-block" name="login" type="submit" value="Login" />
     </form>

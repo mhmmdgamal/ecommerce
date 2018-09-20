@@ -62,10 +62,10 @@
                         </div>
                     </div>
                     <!-- End Add Comment -->
-                    <button class="btn btn-primary center-block" href="#">Edit your Item</button>
-                    <c:if test="${sessionScope['myItem'] eq true}">
-                        <button class="btn btn-primary center-block"  href="#">Edit your Item</button>
-                    </c:if>
+                    <a href="${initParam['customerPath']}edit/item?itemid=${item.id}" class="btn btn-primary center-block" role="button">Edit your Item</a>
+                    <%--<c:if test="${sessionScope['myItem'] eq true}">--%>
+                        <!--<button class="btn btn-primary center-block"  href="$deleteMe{customerPath}edit/item">Edit your Item</button>-->
+                    <%--</c:if>--%>
                 </c:when>
                 <c:otherwise>
                     <a href="${initParam['customerPath']}login">Login/Register</a> To Add Comment
