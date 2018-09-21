@@ -106,14 +106,16 @@ public class ItemController extends HttpServlet {
             long userId = Long.parseLong(request.getSession().getAttribute("userId") + "");
 
             // make new user and set info to it
-            User user = new User();
-            user.setId(userId);
+            User user = new User.Builder()
+                    .id(userId)
+                    .build();
 
             // make new comment and set info to it
-            Comment com = new Comment();
-            com.setComment(comment);
-            com.setItem(item);
-            com.setUser(user);
+            Comment com = new Comment.Builder()
+                    .comment(comment)
+                    .item(item)
+                    .user(user)
+                    .build();
 
             // add comment
             boolean commentAdded = new CommentDaoImpl(servletContext).addComment(com);

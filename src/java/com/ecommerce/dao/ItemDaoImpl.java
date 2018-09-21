@@ -60,22 +60,22 @@ public class ItemDaoImpl implements ItemDao {
 
         try (ResultSet rs = db.findAll(new String[]{"*"}, "items", "`tags` like '%" + tag + "%'" + " AND `approve`=1", "id", sort, null)) {
             while (rs.next()) {
-                Item item = new Item();
-
-                item.setId(rs.getLong("id"));
-                item.setName(rs.getString("name"));
-                item.setDescription(rs.getString("description"));
-                item.setPrice(rs.getString("price"));
-                item.setAddDate(rs.getDate("add_date"));
-                item.setCountryMade(rs.getString("country_made"));
-                item.setImage(rs.getString("image"));
-                item.setStatus(rs.getString("status"));
-                item.setRating(rs.getByte("rating"));
-                item.setApprove(rs.getByte("approve"));
-                item.setTags(rs.getString("tags"));
-                item.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
-                item.setCategory(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")));
-
+                Item item = new Item.Builder()
+                        .id(rs.getLong("id"))
+                        .name(rs.getString("name"))
+                        .description(rs.getString("description"))
+                        .price(rs.getString("price"))
+                        .addDate(rs.getDate("add_date"))
+                        .countryMade(rs.getString("country_made"))
+                        .image(rs.getString("image"))
+                        .status(rs.getString("status"))
+                        .rating(rs.getByte("rating"))
+                        .approve(rs.getByte("approve"))
+                        .tags(rs.getString("tags"))
+                        .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
+                        .category(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")))
+                        .build();
+                
                 items.add(item);
             }
         } catch (SQLException ex) {
@@ -85,7 +85,7 @@ public class ItemDaoImpl implements ItemDao {
 
         return items;
     }
-    
+
     /**
      * get all comments linked with the item
      *
@@ -102,14 +102,14 @@ public class ItemDaoImpl implements ItemDao {
             Comment comment;
 
             while (rs.next()) {
-                comment = new Comment();
-
-                comment.setId(rs.getLong("id"));
-                comment.setComment(rs.getString("comment"));
-                comment.setAddDate(rs.getDate("add_date"));
-                comment.setStatus(rs.getByte("status"));
-                comment.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
-                comment.setItem(new ItemDaoImpl(sc).getItemById(rs.getLong("item_id")));
+                comment = new Comment.Builder()
+                        .id(rs.getLong("id"))
+                        .comment(rs.getString("comment"))
+                        .addDate(rs.getDate("add_date"))
+                        .status(rs.getByte("status"))
+                        .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
+                        .item(new ItemDaoImpl(sc).getItemById(rs.getLong("item_id")))
+                        .build();
 
                 comments.add(comment);
             }
@@ -163,24 +163,25 @@ public class ItemDaoImpl implements ItemDao {
     @Override
     public List<Item> getAllItems(String sort) {
         List<Item> items = new ArrayList();
-        
+
         try (ResultSet rs = db.findAll(new String[]{"*"}, table, null, "id", sort, null)) {
             while (rs.next()) {
-                Item item = new Item();
-
-                item.setId(rs.getLong("id"));
-                item.setName(rs.getString("name"));
-                item.setDescription(rs.getString("description"));
-                item.setPrice(rs.getString("price"));
-                item.setAddDate(rs.getDate("add_date"));
-                item.setCountryMade(rs.getString("country_made"));
-                item.setImage(rs.getString("image"));
-                item.setStatus(rs.getString("status"));
-                item.setRating(rs.getByte("rating"));
-                item.setApprove(rs.getByte("approve"));
-                item.setTags(rs.getString("tags"));
-                item.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
-                item.setCategory(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")));
+                Item item = new Item.Builder()
+                        .id(rs.getLong("id"))
+                        .name(rs.getString("name"))
+                        .description(rs.getString("description"))
+                        .price(rs.getString("price"))
+                        .addDate(rs.getDate("add_date"))
+                        .countryMade(rs.getString("country_made"))
+                        .image(rs.getString("image"))
+                        .status(rs.getString("status"))
+                        .rating(rs.getByte("rating"))
+                        .approve(rs.getByte("approve"))
+                        .tags(rs.getString("tags"))
+                        .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
+                        .category(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")))
+                        .build();
+                
                 items.add(item);
             }
 
@@ -191,7 +192,7 @@ public class ItemDaoImpl implements ItemDao {
 
         return items;
     }
-    
+
     /**
      * get all items data from database
      *
@@ -205,21 +206,22 @@ public class ItemDaoImpl implements ItemDao {
         try (ResultSet rs = db.findAll(new String[]{"*"}, table, " `approve`=1", "id", sort, null)) {
 
             while (rs.next()) {
-                Item item = new Item();
-
-                item.setId(rs.getLong("id"));
-                item.setName(rs.getString("name"));
-                item.setDescription(rs.getString("description"));
-                item.setPrice(rs.getString("price"));
-                item.setAddDate(rs.getDate("add_date"));
-                item.setCountryMade(rs.getString("country_made"));
-                item.setImage(rs.getString("image"));
-                item.setStatus(rs.getString("status"));
-                item.setRating(rs.getByte("rating"));
-                item.setApprove(rs.getByte("approve"));
-                item.setTags(rs.getString("tags"));
-                item.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
-                item.setCategory(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")));
+                Item item = new Item.Builder()
+                        .id(rs.getLong("id"))
+                        .name(rs.getString("name"))
+                        .description(rs.getString("description"))
+                        .price(rs.getString("price"))
+                        .addDate(rs.getDate("add_date"))
+                        .countryMade(rs.getString("country_made"))
+                        .image(rs.getString("image"))
+                        .status(rs.getString("status"))
+                        .rating(rs.getByte("rating"))
+                        .approve(rs.getByte("approve"))
+                        .tags(rs.getString("tags"))
+                        .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
+                        .category(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")))
+                        .build();
+                
                 items.add(item);
             }
 
@@ -244,21 +246,22 @@ public class ItemDaoImpl implements ItemDao {
         try (ResultSet rs = db.findLatest(new String[]{"*"}, table, null, "id", "DESC", num + "")) {
 
             while (rs.next()) {
-                Item item = new Item();
-
-                item.setId(rs.getLong("id"));
-                item.setName(rs.getString("name"));
-                item.setDescription(rs.getString("description"));
-                item.setPrice(rs.getString("price"));
-                item.setAddDate(rs.getDate("add_date"));
-                item.setCountryMade(rs.getString("country_made"));
-                item.setImage(rs.getString("image"));
-                item.setStatus(rs.getString("status"));
-                item.setRating(rs.getByte("rating"));
-                item.setApprove(rs.getByte("approve"));
-                item.setTags(rs.getString("tags"));
-                item.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
-                item.setCategory(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")));
+                Item item = new Item.Builder()
+                        .id(rs.getLong("id"))
+                        .name(rs.getString("name"))
+                        .description(rs.getString("description"))
+                        .price(rs.getString("price"))
+                        .addDate(rs.getDate("add_date"))
+                        .countryMade(rs.getString("country_made"))
+                        .image(rs.getString("image"))
+                        .status(rs.getString("status"))
+                        .rating(rs.getByte("rating"))
+                        .approve(rs.getByte("approve"))
+                        .tags(rs.getString("tags"))
+                        .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
+                        .category(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")))
+                        .build();
+                
                 items.add(item);
             }
         } catch (SQLException ex) {
@@ -297,20 +300,21 @@ public class ItemDaoImpl implements ItemDao {
 
         try (ResultSet rs = db.findOne(new String[]{"*"}, table, "`id`=?", id)) {
             if (rs.next()) {
-                item = new Item();
-                item.setId(rs.getLong("id"));
-                item.setName(rs.getString("name"));
-                item.setDescription(rs.getString("description"));
-                item.setPrice(rs.getString("price"));
-                item.setAddDate(rs.getDate("add_date"));
-                item.setCountryMade(rs.getString("country_made"));
-                item.setImage(rs.getString("image"));
-                item.setStatus(rs.getString("status"));
-                item.setRating(rs.getByte("rating"));
-                item.setApprove(rs.getByte("approve"));
-                item.setTags(rs.getString("tags"));
-                item.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
-                item.setCategory(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")));
+                item = new Item.Builder()
+                        .id(rs.getLong("id"))
+                        .name(rs.getString("name"))
+                        .description(rs.getString("description"))
+                        .price(rs.getString("price"))
+                        .addDate(rs.getDate("add_date"))
+                        .countryMade(rs.getString("country_made"))
+                        .image(rs.getString("image"))
+                        .status(rs.getString("status"))
+                        .rating(rs.getByte("rating"))
+                        .approve(rs.getByte("approve"))
+                        .tags(rs.getString("tags"))
+                        .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
+                        .category(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")))
+                        .build();
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -319,7 +323,7 @@ public class ItemDaoImpl implements ItemDao {
 
         return item;
     }
-    
+
     /**
      * get specific item with id and be approved
      *
@@ -332,20 +336,21 @@ public class ItemDaoImpl implements ItemDao {
 
         try (ResultSet rs = db.findOne(new String[]{"*"}, table, "`id`=? AND `approve`=1", id)) {
             if (rs.next()) {
-                item = new Item();
-                item.setId(rs.getLong("id"));
-                item.setName(rs.getString("name"));
-                item.setDescription(rs.getString("description"));
-                item.setPrice(rs.getString("price"));
-                item.setAddDate(rs.getDate("add_date"));
-                item.setCountryMade(rs.getString("country_made"));
-                item.setImage(rs.getString("image"));
-                item.setStatus(rs.getString("status"));
-                item.setRating(rs.getByte("rating"));
-                item.setApprove(rs.getByte("approve"));
-                item.setTags(rs.getString("tags"));
-                item.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
-                item.setCategory(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")));
+                item = new Item.Builder()
+                        .id(rs.getLong("id"))
+                        .name(rs.getString("name"))
+                        .description(rs.getString("description"))
+                        .price(rs.getString("price"))
+                        .addDate(rs.getDate("add_date"))
+                        .countryMade(rs.getString("country_made"))
+                        .image(rs.getString("image"))
+                        .status(rs.getString("status"))
+                        .rating(rs.getByte("rating"))
+                        .approve(rs.getByte("approve"))
+                        .tags(rs.getString("tags"))
+                        .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
+                        .category(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")))
+                        .build();
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

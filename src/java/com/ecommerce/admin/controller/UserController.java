@@ -12,7 +12,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.servlet.annotation.WebServlet;
 
 //</editor-fold>
@@ -176,11 +175,12 @@ public class UserController extends HttpServlet {
                     Helper.forwardRequest(request, response, adminJspPath + "add_user.jsp");
                 } else {
                     // make new user and set info to it
-                    User user = new User();
-                    user.setName(username);
-                    user.setPassword(password);
-                    user.setEmail(email);
-                    user.setFullName(fullName);
+                    User user = new User.Builder()
+                            .name(username)
+                            .password(password)
+                            .email(email)
+                            .fullName(fullName)
+                            .build();
 
                     // add user
                     boolean userAdded = new UserDaoImpl(servletContext).addUser(user);
@@ -246,12 +246,13 @@ public class UserController extends HttpServlet {
                     Helper.forwardRequest(request, response, adminJspPath + "edit_user.jsp");
                 } else {
                     // make new user and set info to it
-                    User user = new User();
-                    user.setId(id);
-                    user.setName(username);
-                    user.setPassword(password);
-                    user.setEmail(email);
-                    user.setFullName(fullName);
+                    User user = new User.Builder()
+                            .id(id)
+                            .name(username)
+                            .password(password)
+                            .email(email)
+                            .fullName(fullName)
+                            .build();
 
                     // add user to the request
                     request.setAttribute("user", user);

@@ -16,30 +16,6 @@ public class Category implements Bean {
     private int allowComments;
     private int allowAds;
 
-    public Category(long id, String name, String description, int parent, int ordering, int visibility, int allowComments, int allowAds) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.parent = parent;
-        this.ordering = ordering;
-        this.visibility = visibility;
-        this.allowComments = allowComments;
-        this.allowAds = allowAds;
-    }
-
-    public Category(String name, String description, int parent, int ordering, int visibility, int allowComments, int allowAds) {
-        this.name = name;
-        this.description = description;
-        this.parent = parent;
-        this.ordering = ordering;
-        this.visibility = visibility;
-        this.allowComments = allowComments;
-        this.allowAds = allowAds;
-    }
-
-    public Category() {
-    }
-
     public long getId() {
         return id;
     }
@@ -129,6 +105,73 @@ public class Category implements Bean {
     @Override
     public String toString() {
         return "Category{" + "id=" + id + ", name=" + name + ", description=" + description + ", parent=" + parent + ", ordering=" + ordering + ", visibility=" + visibility + ", allowComments=" + allowComments + ", allowAds=" + allowAds + '}';
+    }
+
+    private Category(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.description = builder.description;
+        this.parent = builder.parent;
+        this.ordering = builder.ordering;
+        this.visibility = builder.visibility;
+        this.allowComments = builder.allowComments;
+        this.allowAds = builder.allowAds;
+    }
+
+    public static class Builder {
+
+        private long id;
+        private String name;
+        private String description;
+        private int parent;
+        private int ordering;
+        private int visibility;
+        private int allowComments;
+        private int allowAds;
+
+        public Builder id(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder parent(int parent) {
+            this.parent = parent;
+            return this;
+        }
+
+        public Builder ordering(int ordering) {
+            this.ordering = ordering;
+            return this;
+        }
+
+        public Builder visibility(int visibility) {
+            this.visibility = visibility;
+            return this;
+        }
+
+        public Builder allowComments(int allowComments) {
+            this.allowComments = allowComments;
+            return this;
+        }
+
+        public Builder allowAds(int allowAds) {
+            this.allowAds = allowAds;
+            return this;
+        }
+
+        public Category build() {
+            return new Category(this);
+        }
     }
 
 }

@@ -47,11 +47,12 @@ public class UserDaoImpl implements UserDao {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                user = new User();
-                user.setId(rs.getLong("id"));
-                user.setName(rs.getString("name"));
-                user.setPassword(rs.getString("password"));
-                user.setFullName(rs.getString("full_name"));
+                user = new User.Builder()
+                        .id(rs.getLong("id"))
+                        .name(rs.getString("name"))
+                        .password(rs.getString("password"))
+                        .fullName(rs.getString("full_name"))
+                        .build();
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -73,21 +74,21 @@ public class UserDaoImpl implements UserDao {
 
         try (ResultSet rs = db.findAll(new String[]{"*"}, "items", "`user_id`=" + id, "id", sort, null)) {
             while (rs.next()) {
-                Item item = new Item();
-
-                item.setId(rs.getLong("id"));
-                item.setName(rs.getString("name"));
-                item.setDescription(rs.getString("description"));
-                item.setPrice(rs.getString("price"));
-                item.setAddDate(rs.getDate("add_date"));
-                item.setCountryMade(rs.getString("country_made"));
-                item.setImage(rs.getString("image"));
-                item.setStatus(rs.getString("status"));
-                item.setRating(rs.getByte("rating"));
-                item.setApprove(rs.getByte("approve"));
-                item.setTags(rs.getString("tags"));
-                item.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
-                item.setCategory(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")));
+                Item item = new Item.Builder()
+                        .id(rs.getLong("id"))
+                        .name(rs.getString("name"))
+                        .description(rs.getString("description"))
+                        .price(rs.getString("price"))
+                        .addDate(rs.getDate("add_date"))
+                        .countryMade(rs.getString("country_made"))
+                        .image(rs.getString("image"))
+                        .status(rs.getString("status"))
+                        .rating(rs.getByte("rating"))
+                        .approve(rs.getByte("approve"))
+                        .tags(rs.getString("tags"))
+                        .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
+                        .category(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")))
+                        .build();
 
                 items.add(item);
             }
@@ -192,14 +193,15 @@ public class UserDaoImpl implements UserDao {
         try (ResultSet rs = db.findAll(new String[]{"*"}, table, where, "id", "DESC", null)) {
 
             while (rs.next()) {
-                User user = new User();
-                user.setId(rs.getLong("id"));
-                user.setName(rs.getString("name"));
-                user.setPassword(rs.getString("password"));
-                user.setEmail(rs.getString("email"));
-                user.setFullName(rs.getString("full_name"));
-                user.setRegStatus(rs.getInt("register_status"));
-                user.setDate(rs.getDate("date"));
+                User user = new User.Builder()
+                        .id(rs.getLong("id"))
+                        .name(rs.getString("name"))
+                        .password(rs.getString("password"))
+                        .fullName(rs.getString("full_name"))
+                        .regStatus(rs.getInt("register_status"))
+                        .date(rs.getDate("date"))
+                        .build();
+
                 users.add(user);
             }
         } catch (SQLException ex) {
@@ -222,15 +224,15 @@ public class UserDaoImpl implements UserDao {
 
         try (ResultSet rs = db.findLatest(new String[]{"*"}, table, "`group_id`!=1", "id", "DESC", num + "")) {
             while (rs.next()) {
-                User user = new User();
+                User user = new User.Builder()
+                        .id(rs.getLong("id"))
+                        .name(rs.getString("name"))
+                        .password(rs.getString("password"))
+                        .fullName(rs.getString("full_name"))
+                        .regStatus(rs.getInt("register_status"))
+                        .date(rs.getDate("date"))
+                        .build();
 
-                user.setId(rs.getLong("id"));
-                user.setName(rs.getString("name"));
-                user.setPassword(rs.getString("password"));
-                user.setEmail(rs.getString("email"));
-                user.setFullName(rs.getString("full_name"));
-                user.setRegStatus(rs.getInt("register_status"));
-                user.setDate(rs.getDate("date"));
                 users.add(user);
             }
         } catch (SQLException ex) {
@@ -269,12 +271,12 @@ public class UserDaoImpl implements UserDao {
 
         try (ResultSet rs = db.findOne(new String[]{"*"}, table, "`id`=?", id)) {
             if (rs.next()) {
-                user = new User();
-                user.setId(rs.getLong("id"));
-                user.setName(rs.getString("name"));
-                user.setPassword(rs.getString("password"));
-                user.setEmail(rs.getString("email"));
-                user.setFullName(rs.getString("full_name"));
+                user = new User.Builder()
+                        .id(rs.getLong("id"))
+                        .name(rs.getString("name"))
+                        .password(rs.getString("password"))
+                        .fullName(rs.getString("full_name"))
+                        .build();
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -300,14 +302,14 @@ public class UserDaoImpl implements UserDao {
             Comment comment;
 
             while (rs.next()) {
-                comment = new Comment();
-
-                comment.setId(rs.getLong("id"));
-                comment.setComment(rs.getString("comment"));
-                comment.setAddDate(rs.getDate("add_date"));
-                comment.setStatus(rs.getByte("status"));
-                comment.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
-                comment.setItem(new ItemDaoImpl(sc).getItemById(rs.getLong("item_id")));
+                comment = new Comment.Builder()
+                        .id(rs.getLong("id"))
+                        .comment(rs.getString("comment"))
+                        .addDate(rs.getDate("add_date"))
+                        .status(rs.getByte("status"))
+                        .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
+                        .item(new ItemDaoImpl(sc).getItemById(rs.getLong("item_id")))
+                        .build();
 
                 comments.add(comment);
             }

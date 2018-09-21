@@ -148,9 +148,10 @@ public class CommentController extends HttpServlet {
             String com = request.getParameter("comment");
 
             // make new comment and set info to it
-            Comment comment = new Comment();
-            comment.setId(id);
-            comment.setComment(com);
+            Comment comment = new Comment.Builder()
+                    .id(id)
+                    .comment(com)
+                    .build();
 
             // update comment
             boolean commentUpdated = new CommentDaoImpl(servletContext).updateComment(comment);

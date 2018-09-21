@@ -23,7 +23,7 @@ public class CategoryDaoImpl implements CategoryDao {
     public CategoryDaoImpl(ServletContext sc) {
         // get database instance from app context
         this.db = (MySQLDatabaseHelper) sc.getAttribute("db");
-        
+
         this.sc = sc;
     }
 
@@ -72,15 +72,15 @@ public class CategoryDaoImpl implements CategoryDao {
 
         try (ResultSet rs = db.findAll(new String[]{"*"}, table, null, "ordering", sort, null)) {
             while (rs.next()) {
-                Category category = new Category();
-
-                category.setId(rs.getLong("id"));
-                category.setName(rs.getString("name"));
-                category.setDescription(rs.getString("description"));
-                category.setOrdering(rs.getInt("ordering"));
-                category.setVisibility(rs.getInt("visibility"));
-                category.setAllowComments(rs.getInt("allow_comments"));
-                category.setAllowAds(rs.getInt("allow_ads"));
+                Category category = new Category.Builder()
+                        .id(rs.getLong("id"))
+                        .name(rs.getString("name"))
+                        .description(rs.getString("description"))
+                        .ordering(rs.getInt("ordering"))
+                        .visibility(rs.getInt("visibility"))
+                        .allowComments(rs.getInt("allow_comments"))
+                        .allowAds(rs.getInt("allow_ads"))
+                        .build();
                 categories.add(category);
             }
         } catch (SQLException ex) {
@@ -104,21 +104,21 @@ public class CategoryDaoImpl implements CategoryDao {
 
         try (ResultSet rs = db.findAll(new String[]{"*"}, "items", "`category_id`=" + id + " AND `approve`=1", "id", sort, null)) {
             while (rs.next()) {
-                Item item = new Item();
-
-                item.setId(rs.getLong("id"));
-                item.setName(rs.getString("name"));
-                item.setDescription(rs.getString("description"));
-                item.setPrice(rs.getString("price"));
-                item.setAddDate(rs.getDate("add_date"));
-                item.setCountryMade(rs.getString("country_made"));
-                item.setImage(rs.getString("image"));
-                item.setStatus(rs.getString("status"));
-                item.setRating(rs.getByte("rating"));
-                item.setApprove(rs.getByte("approve"));
-                item.setTags(rs.getString("tags"));
-                item.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
-                item.setCategory(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")));
+                Item item = new Item.Builder()
+               .id(rs.getLong("id"))
+               .name(rs.getString("name"))
+               .description(rs.getString("description"))
+               .price(rs.getString("price"))
+               .addDate(rs.getDate("add_date"))
+               .countryMade(rs.getString("country_made"))
+               .image(rs.getString("image"))
+               .status(rs.getString("status"))
+               .rating(rs.getByte("rating"))
+               .approve(rs.getByte("approve"))
+               .tags(rs.getString("tags"))
+               .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
+               .category(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")))
+               .build();
 
                 items.add(item);
             }
@@ -142,15 +142,15 @@ public class CategoryDaoImpl implements CategoryDao {
 
         try (ResultSet rs = db.findLatest(new String[]{"*"}, table, null, "id", "DESC", num + "")) {
             while (rs.next()) {
-                Category category = new Category();
-
-                category.setId(rs.getLong("id"));
-                category.setName(rs.getString("name"));
-                category.setDescription(rs.getString("description"));
-                category.setOrdering(rs.getInt("ordering"));
-                category.setVisibility(rs.getInt("visibility"));
-                category.setAllowComments(rs.getInt("allow_comments"));
-                category.setAllowAds(rs.getInt("allow_ads"));
+                Category category = new Category.Builder()
+                        .id(rs.getLong("id"))
+                        .name(rs.getString("name"))
+                        .description(rs.getString("description"))
+                        .ordering(rs.getInt("ordering"))
+                        .visibility(rs.getInt("visibility"))
+                        .allowComments(rs.getInt("allow_comments"))
+                        .allowAds(rs.getInt("allow_ads"))
+                        .build();
                 categories.add(category);
             }
         } catch (SQLException ex) {
@@ -189,14 +189,15 @@ public class CategoryDaoImpl implements CategoryDao {
 
         try (ResultSet rs = db.findOne(new String[]{"*"}, table, "`id`=?", id)) {
             if (rs.next()) {
-                category = new Category();
-                category.setId(rs.getLong("id"));
-                category.setName(rs.getString("name"));
-                category.setDescription(rs.getString("description"));
-                category.setOrdering(rs.getInt("ordering"));
-                category.setVisibility(rs.getInt("visibility"));
-                category.setAllowComments(rs.getInt("allow_comments"));
-                category.setAllowAds(rs.getInt("allow_ads"));
+                category = new Category.Builder()
+                        .id(rs.getLong("id"))
+                        .name(rs.getString("name"))
+                        .description(rs.getString("description"))
+                        .ordering(rs.getInt("ordering"))
+                        .visibility(rs.getInt("visibility"))
+                        .allowComments(rs.getInt("allow_comments"))
+                        .allowAds(rs.getInt("allow_ads"))
+                        .build();
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

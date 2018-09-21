@@ -215,23 +215,26 @@ public class ItemController extends HttpServlet {
                 Helper.forwardRequest(request, response, adminJspPath + "add_item.jsp");
             } else {
                 // make new user and set info to it
-                User user = new User();
-                user.setId(userId);
+                User user = new User.Builder()
+                        .id(userId)
+                        .build();
 
                 // make new category and set info to it
-                Category category = new Category();
-                category.setId(categoryId);
+                Category category = new Category.Builder()
+                        .id(userId)
+                        .build();
 
                 // make new item and set info to it 
-                Item item = new Item();
-                item.setName(name);
-                item.setDescription(description);
-                item.setPrice(price);
-                item.setCountryMade(countryMade);
-                item.setStatus(status);
-                item.setUser(user);
-                item.setCategory(category);
-                item.setTags(tags);
+                Item item = new Item.Builder()
+                        .name(name)
+                        .description(description)
+                        .price(price)
+                        .countryMade(countryMade)
+                        .status(status)
+                        .user(user)
+                        .category(category)
+                        .tags(tags)
+                        .build();
 
                 // add item 
                 boolean itemAdded = new ItemDaoImpl(servletContext).addItem(item);
@@ -304,30 +307,28 @@ public class ItemController extends HttpServlet {
             if (formErrors.size() > 0) {
                 Helper.forwardRequest(request, response, adminJspPath + "edit_item.jsp");
             } else {
-                // make new item 
-                Item item = new Item();
+               // make new user and set info to it
+                User user = new User.Builder()
+                        .id(userId)
+                        .build();
 
-                // make new user
-                User user = new User();
+                // make new category and set info to it
+                Category category = new Category.Builder()
+                        .id(userId)
+                        .build();
 
-                // make new category 
-                Category category = new Category();
-
-                // set info to user
-                user.setId(userId);
-                // set info to category
-                category.setId(categoryId);
-
-                // set info to item
-                item.setId(id);
-                item.setName(name);
-                item.setDescription(description);
-                item.setPrice(price);
-                item.setCountryMade(countryMade);
-                item.setStatus(status);
-                item.setUser(user);
-                item.setCategory(category);
-                item.setTags(tags);
+                // make new item and set info to it 
+                Item item = new Item.Builder()
+                        .id(id)
+                        .name(name)
+                        .description(description)
+                        .price(price)
+                        .countryMade(countryMade)
+                        .status(status)
+                        .user(user)
+                        .category(category)
+                        .tags(tags)
+                        .build();
 
                 // update item
                 boolean itemUpdated = new ItemDaoImpl(servletContext).updateItem(item);

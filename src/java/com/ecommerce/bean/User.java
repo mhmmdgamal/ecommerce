@@ -19,32 +19,6 @@ public class User implements Bean {
     private int regStatus;
     private Date date;
 
-    public User(long id, String name, String password, String email, String fullName, int groupId, int trustStatus, int regStatus, Date date) {
-        this.id = id;
-        this.name = name;
-        this.password = password;
-        this.email = email;
-        this.fullName = fullName;
-        this.groupId = groupId;
-        this.trustStatus = trustStatus;
-        this.regStatus = regStatus;
-        this.date = date;
-    }
-
-    public User(String name, String password, String email, String fullName, int groupId, int trustStatus, int regStatus, Date date) {
-        this.name = name;
-        this.password = password;
-        this.email = email;
-        this.fullName = fullName;
-        this.groupId = groupId;
-        this.trustStatus = trustStatus;
-        this.regStatus = regStatus;
-        this.date = date;
-    }
-
-    public User() {
-    }
-
     /**
      * @return the id
      */
@@ -105,9 +79,6 @@ public class User implements Bean {
      * @return the fullName
      */
     public String getFullName() {
-        if (fullName == null) {
-            return name;
-        }
         return fullName;
     }
 
@@ -199,5 +170,79 @@ public class User implements Bean {
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", name=" + name + ", password=" + password + ", email=" + email + ", fullName=" + fullName + '}';
+    }
+
+    private User(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.password = builder.password;
+        this.email = builder.email;
+        this.fullName = builder.fullName;
+        this.groupId = builder.groupId;
+        this.trustStatus = builder.trustStatus;
+        this.regStatus = builder.regStatus;
+        this.date = builder.date;
+    }
+
+    public static class Builder {
+
+        private long id;
+        private String name;
+        private String password;
+        private String email;
+        private String fullName;
+        private int groupId;
+        private int trustStatus;
+        private int regStatus;
+        private Date date;
+
+        public Builder id(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder fullName(String fullName) {
+            this.fullName = fullName;
+            return this;
+        }
+
+        public Builder groupId(int groupId) {
+            this.groupId = groupId;
+            return this;
+        }
+
+        public Builder trustStatus(int trustStatus) {
+            this.trustStatus = trustStatus;
+            return this;
+        }
+
+        public Builder regStatus(int regStatus) {
+            this.regStatus = regStatus;
+            return this;
+        }
+
+        public Builder date(Date date) {
+            this.date = date;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
     }
 }

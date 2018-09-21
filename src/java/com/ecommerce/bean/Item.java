@@ -23,40 +23,6 @@ public class Item implements Bean {
     private User user;
     private Category category;
 
-    public Item(long id, String name, String description, String price, Date addDate, String countryMade, String image, String status, byte rating, byte approve, String tags, User user, Category category) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.addDate = addDate;
-        this.countryMade = countryMade;
-        this.image = image;
-        this.status = status;
-        this.rating = rating;
-        this.approve = approve;
-        this.tags = tags;
-        this.user = user;
-        this.category = category;
-    }
-
-    public Item(String name, String description, String price, Date addDate, String countryMade, String image, String status, byte rating, byte approve, String tags, User user, Category category) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.addDate = addDate;
-        this.countryMade = countryMade;
-        this.image = image;
-        this.status = status;
-        this.rating = rating;
-        this.approve = approve;
-        this.tags = tags;
-        this.user = user;
-        this.category = category;
-    }
-
-    public Item() {
-    }
-
     public long getId() {
         return id;
     }
@@ -144,6 +110,22 @@ public class Item implements Bean {
     public void setTags(String tags) {
         this.tags = tags;
     }
+    
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     @Override
     public int hashCode() {
@@ -167,25 +149,115 @@ public class Item implements Bean {
         return this.id == other.id;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
     @Override
     public String toString() {
         return "Item{" + "id=" + id + ", name=" + name + ", description=" + description + ", price=" + price + ", addDate=" + addDate + ", countryMade=" + countryMade + ", image=" + image + ", status=" + status + ", rating=" + rating + ", approve=" + approve + ", tags=" + tags + ", user=" + user + ", category=" + category + '}';
+    }
+
+    private Item(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.description = builder.description;
+        this.price = builder.price;
+        this.addDate = builder.addDate;
+        this.countryMade = builder.countryMade;
+        this.image = builder.image;
+        this.status = builder.status;
+        this.rating = builder.rating;
+        this.approve = builder.approve;
+        this.tags = builder.tags;
+        this.user = builder.user;
+        this.category = builder.category;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private long id;
+        private String name;
+        private String description;
+        private String price;
+        private Date addDate;
+        private String countryMade;
+        private String image;
+        private String status;
+        private byte rating;
+        private byte approve;
+        private String tags;
+        private User user;
+        private Category category;
+
+        public Builder id(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder price(String price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder addDate(Date addDate) {
+            this.addDate = addDate;
+            return this;
+        }
+
+        public Builder countryMade(String countryMade) {
+            this.countryMade = countryMade;
+            return this;
+        }
+
+        public Builder image(String image) {
+            this.image = image;
+            return this;
+        }
+
+        public Builder status(String status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder rating(byte rating) {
+            this.rating = rating;
+            return this;
+        }
+
+        public Builder approve(byte approve) {
+            this.approve = approve;
+            return this;
+        }
+
+        public Builder tags(String tags) {
+            this.tags = tags;
+            return this;
+        }
+
+        public Builder user(User user) {
+            this.user = user;
+            return this;
+        }
+
+        public Builder category(Category category) {
+            this.category = category;
+            return this;
+        }
+
+        public Item build() {
+            return new Item(this);
+        }
     }
 
 }

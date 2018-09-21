@@ -30,7 +30,7 @@ public class CommentDaoImpl implements CommentDao {
 
     /**
      * approve comment depending on id
-     * 
+     *
      * @param id
      * @return true if approved false otherwise
      */
@@ -53,8 +53,8 @@ public class CommentDaoImpl implements CommentDao {
 
     /**
      * update comment
-     * 
-     * @param comment 
+     *
+     * @param comment
      * @return true if updated false otherwise
      */
     @Override
@@ -64,7 +64,7 @@ public class CommentDaoImpl implements CommentDao {
 
     /**
      * add comment
-     * 
+     *
      * @param comment
      * @return true if added false otherwise
      */
@@ -110,18 +110,17 @@ public class CommentDaoImpl implements CommentDao {
         if (id != 0) {
             itemId = " `item_id`=" + id + " AND status = 1";
         }
-        
+
         try (ResultSet rs = db.findAll(new String[]{"*"}, table, itemId, "id", sort, null)) {
             while (rs.next()) {
-                Comment comment = new Comment();
-
-                comment.setId(rs.getLong("id"));
-                comment.setComment(rs.getString("comment"));
-                comment.setAddDate(rs.getDate("add_date"));
-                comment.setStatus(rs.getByte("status"));
-                comment.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
-                comment.setItem(new ItemDaoImpl(sc).getItemById(rs.getLong("item_id")));
-
+                Comment comment = new Comment.Builder()
+                        .id(rs.getLong("id"))
+                        .comment(rs.getString("comment"))
+                        .addDate(rs.getDate("add_date"))
+                        .status(rs.getByte("status"))
+                        .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
+                        .item(new ItemDaoImpl(sc).getItemById(rs.getLong("item_id")))
+                        .build();
                 comments.add(comment);
             }
 
@@ -145,14 +144,14 @@ public class CommentDaoImpl implements CommentDao {
 
         try (ResultSet rs = db.findLatest(new String[]{"*"}, table, null, "id", "DESC", num + "")) {
             while (rs.next()) {
-                Comment comment = new Comment();
-
-                comment.setId(rs.getLong("id"));
-                comment.setComment(rs.getString("comment"));
-                comment.setAddDate(rs.getDate("add_date"));
-                comment.setStatus(rs.getByte("status"));
-                comment.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
-                comment.setItem(new ItemDaoImpl(sc).getItemById(rs.getLong("item_id")));
+                Comment comment = new Comment.Builder()
+                        .id(rs.getLong("id"))
+                        .comment(rs.getString("comment"))
+                        .addDate(rs.getDate("add_date"))
+                        .status(rs.getByte("status"))
+                        .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
+                        .item(new ItemDaoImpl(sc).getItemById(rs.getLong("item_id")))
+                        .build();
 
                 comments.add(comment);
             }
@@ -192,14 +191,14 @@ public class CommentDaoImpl implements CommentDao {
 
         try (ResultSet rs = db.findOne(new String[]{"*"}, table, "`id`=?", id)) {
             if (rs.next()) {
-                comment = new Comment();
-
-                comment.setId(rs.getLong("id"));
-                comment.setComment(rs.getString("comment"));
-                comment.setAddDate(rs.getDate("add_date"));
-                comment.setStatus(rs.getByte("status"));
-                comment.setUser(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")));
-                comment.setItem(new ItemDaoImpl(sc).getItemById(rs.getLong("item_id")));
+                comment = new Comment.Builder()
+                        .id(rs.getLong("id"))
+                        .comment(rs.getString("comment"))
+                        .addDate(rs.getDate("add_date"))
+                        .status(rs.getByte("status"))
+                        .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
+                        .item(new ItemDaoImpl(sc).getItemById(rs.getLong("item_id")))
+                        .build();
 
             }
         } catch (SQLException ex) {

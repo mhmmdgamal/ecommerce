@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 
 @WebServlet("/login") // == @WebServlet( urlPatterns = {"/login"} ) 
 public class LoginRegisterController extends HttpServlet {
@@ -161,10 +160,12 @@ public class LoginRegisterController extends HttpServlet {
     public boolean creatNewUser(String username, String password, String email, HttpSession session) {
 
         // make new user and set info to it
-        User user = new User();
-        user.setName(username);
-        user.setPassword(password);
-        user.setEmail(email);
+        User user = new User.Builder()
+                .name(username)
+                .password(password)
+                .email(email)
+                .build();
+
         // add user 
         return new UserDaoImpl(servletContext).addUser(user);
     }

@@ -16,25 +16,6 @@ public class Comment implements Bean {
     private User user;
     private Item item;
 
-    public Comment() {
-    }
-
-    public Comment(long id, String comment, byte status, Date addDate, User user, Item item) {
-        this.id = id;
-        this.comment = comment;
-        this.status = status;
-        this.addDate = addDate;
-        this.user = user;
-        this.item = item;
-    }
-
-    public Comment(String comment, byte status, Date addDate, User user, Item item) {
-        this.comment = comment;
-        this.status = status;
-        this.addDate = addDate;
-        this.user = user;
-        this.item = item;
-    }
 
     public long getId() {
         return id;
@@ -112,6 +93,59 @@ public class Comment implements Bean {
     @Override
     public String toString() {
         return "Comment{" + "id=" + id + ", comment=" + comment + ", status=" + status + ", addDate=" + addDate + ", user=" + user + ", item=" + item + '}';
+    }
+
+    private Comment(Builder builder) {
+        this.id = builder.id;
+        this.comment = builder.comment;
+        this.status = builder.status;
+        this.addDate = builder.addDate;
+        this.user = builder.user;
+        this.item = builder.item;
+    }
+
+    public static class Builder {
+
+        private long id;
+        private String comment;
+        private byte status;
+        private Date addDate;
+        private User user;
+        private Item item;
+
+        public Builder id(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder comment(String comment) {
+            this.comment = comment;
+            return this;
+        }
+
+        public Builder status(byte status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder addDate(Date addDate) {
+            this.addDate = addDate;
+            return this;
+        }
+
+        public Builder user(User user) {
+            this.user = user;
+            return this;
+        }
+
+        public Builder item(Item item) {
+            this.item = item;
+            return this;
+        }
+
+        public Comment build() {
+            return new Comment(this);
+        }
     }
 
 }

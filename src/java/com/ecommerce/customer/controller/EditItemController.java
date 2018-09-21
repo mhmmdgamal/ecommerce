@@ -47,7 +47,7 @@ public class EditItemController extends HttpServlet {
 
         // return the itemId if number or return 0
         long id = itemId != null && Helper.isNumber(itemId) ? Long.parseLong(itemId) : 0;
-                
+
         // get approve item
         item = new ItemDaoImpl(servletContext).getApprovedItemById(id);
 
@@ -107,7 +107,7 @@ public class EditItemController extends HttpServlet {
 
         // set errors to the request
         request.setAttribute("errors", formErrors);
-        
+
         //set item and categories because when we click on (edit Item button) 
         //we can write data in boxes again 
         request.setAttribute("item", item);
@@ -123,23 +123,26 @@ public class EditItemController extends HttpServlet {
             Long userId = Long.parseLong(request.getSession().getAttribute("userId") + "");
 
             // make new user and set info to it
-            User user = new User();
-            user.setId(userId);
+            User user = new User.Builder()
+                    .id(userId)
+                    .build();
 
             // make new category and set info to it
-            Category category = new Category();
-            category.setId(categoryId);
+            Category category = new Category.Builder()
+                    .id(categoryId)
+                    .build();
 
             // make new item and set info to it 
-            item = new Item();
-            item.setName(name);
-            item.setDescription(description);
-            item.setPrice(price);
-            item.setCountryMade(countryMade);
-            item.setStatus(status);
-            item.setUser(user);
-            item.setCategory(category);
-            item.setTags(tags);
+            item = new Item.Builder()
+                    .name(name)
+                    .description(description)
+                    .price(price)
+                    .countryMade(countryMade)
+                    .status(status)
+                    .user(user)
+                    .category(category)
+                    .tags(tags)
+                    .build();
 
             // add item 
             boolean itemUpdated = new ItemDaoImpl(servletContext).updateItem(item);

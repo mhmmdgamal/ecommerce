@@ -31,14 +31,13 @@ public class NewItemController extends HttpServlet {
         customerJspPath = servletContext.getInitParameter("customerJspPath");
     }
 
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         // set page title
         Helper.setTitle(request, "New Item");
-        
+
         // get all categories from database with assending order
         List<Category> categories = new CategoryDaoImpl(servletContext).getAllCategories("ASC");
 
@@ -52,16 +51,16 @@ public class NewItemController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         // set page title
         Helper.setTitle(request, "New Item");
-        
+
         // get all categories from database with assending order
         List<Category> categories = new CategoryDaoImpl(servletContext).getAllCategories("ASC");
 
         // set categories to the reqest
         request.setAttribute("categories", categories);
-        
+
         // get form params from the request
         String name = request.getParameter("name");
         String description = request.getParameter("description");
@@ -112,23 +111,26 @@ public class NewItemController extends HttpServlet {
             Long userId = Long.parseLong(request.getSession().getAttribute("userId") + "");
 
             // make new user and set info to it
-            User user = new User();
-            user.setId(userId);
+            User user = new User.Builder()
+                    .id(userId)
+                    .build();
 
             // make new category and set info to it
-            Category category = new Category();
-            category.setId(categoryId);
+            Category category = new Category.Builder()
+                    .id(categoryId)
+                    .build();
 
             // make new item and set info to it 
-            Item item = new Item();
-            item.setName(name);
-            item.setDescription(description);
-            item.setPrice(price);
-            item.setCountryMade(countryMade);
-            item.setStatus(status);
-            item.setUser(user);
-            item.setCategory(category);
-            item.setTags(tags);
+            Item item = new Item.Builder()
+                    .name(name)
+                    .description(description)
+                    .price(price)
+                    .countryMade(countryMade)
+                    .status(status)
+                    .user(user)
+                    .category(category)
+                    .tags(tags)
+                    .build();
 
             // add item 
             boolean itemAdded = new ItemDaoImpl(servletContext).addItem(item);

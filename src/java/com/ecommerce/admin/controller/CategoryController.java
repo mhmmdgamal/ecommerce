@@ -123,13 +123,14 @@ public class CategoryController extends HttpServlet {
             int ads = Integer.parseInt(request.getParameter("ads"));
 
             // make new category and set info to it 
-            Category category = new Category();
-            category.setName(name);
-            category.setDescription(description);
-            category.setOrdering(ordering);
-            category.setVisibility(visibility);
-            category.setAllowComments(commenting);
-            category.setAllowAds(ads);
+            Category category = new Category.Builder()
+                    .name(name)
+                    .description(description)
+                    .ordering(ordering)
+                    .visibility(visibility)
+                    .allowComments(commenting)
+                    .allowAds(ads)
+                    .build();
 
             // add new category 
             boolean categoryAdded = new CategoryDaoImpl(servletContext).addCategory(category);
@@ -155,14 +156,15 @@ public class CategoryController extends HttpServlet {
             int ads = Integer.parseInt(request.getParameter("ads"));
 
             // make new category and set info to it 
-            Category category = new Category();
-            category.setId(id);
-            category.setName(name);
-            category.setDescription(description);
-            category.setOrdering(ordering);
-            category.setVisibility(visibility);
-            category.setAllowComments(commenting);
-            category.setAllowAds(ads);
+            Category category = new Category.Builder()
+                    .id(id)
+                    .name(name)
+                    .description(description)
+                    .ordering(ordering)
+                    .visibility(visibility)
+                    .allowComments(commenting)
+                    .allowAds(ads)
+                    .build();
 
             // update category
             boolean categoryUpdated = new CategoryDaoImpl(servletContext).updateCategory(category);
