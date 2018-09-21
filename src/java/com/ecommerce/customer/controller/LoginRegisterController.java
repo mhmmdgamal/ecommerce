@@ -64,15 +64,16 @@ public class LoginRegisterController extends HttpServlet {
 
             if (user != null) {// check if user existed in DB 
                 // set session for User 
-                SetSession(user, session);
+                SetUserSession(user.getName(), user.getPassword(), session);
                 Helper.setTitle(request, "Home");
                 response.sendRedirect("home");
 
             } else {//user not exist in DB 
+                formErrors = new ArrayList<>();
+                formErrors.add("user not Existed! try again ");
                 // redirect to login page 
                 Helper.setTitle(request, "Login");
                 response.sendRedirect("login");
-                formErrors.add("user not Existed! try again ");
             }
             //////////////////////////////////////////////////////////////////
 
@@ -90,7 +91,9 @@ public class LoginRegisterController extends HttpServlet {
             if (formErrors.size() > 0) {// if there is errors
                 // set errors to the request
                 request.setAttribute("errors", formErrors);
-                // forword to add page
+
+                // forword to login page
+                Helper.setTitle(request, "Login");
                 Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp");
 
             } else {//if there is no errors
@@ -98,29 +101,33 @@ public class LoginRegisterController extends HttpServlet {
                 boolean userCreated = creatNewUser(username, password, email, session);
 
                 //check if user created 
-                if (!userCreated) {//if user not created 
+                if (userCreated) {//if user created successfully 
+                    // set success message if user added
+                    request.setAttribute("success", "Congrats You Are Now Registerd User");
+                    SetUserSession(username, password, session);
+                    // forword to home page
+                    Helper.setTitle(request, "Home");
+                    response.sendRedirect("home");
+                } else {//if user not created 
                     // add new error to errors 
                     formErrors.add("Sorry This User Is Exist");
                     //forword to login again 
+                    Helper.setTitle(request, "Login");
                     Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp");
-
-                } else {//if user created successfully 
-                    // set success message if user added
-                    request.setAttribute("success", "Congrats You Are Now Registerd User");
-                    // forword to home page
-                    Helper.forwardRequest(request, response, customerJspPath + "home.jsp");
                 }
             }
         }
     }
 
-    public void SetSession(User user, HttpSession session) {
+    public void SetUserSession(String username, String password, HttpSession session) {
+
+        // get logging user
+        User user = new UserDaoImpl(servletContext).getLoginUser(username, password, false);
 
         //set session for user if remember me not checked 
         session.setAttribute("user", user.getName());
         session.setAttribute("userId", user.getId());
-//        session.setAttribute("fullName", (user.getFullName().split(" ")[0]));
-        session.setAttribute("fullName", user.getName());
+        session.setAttribute("fullName", (user.getFullName().split(" ")[0]));
     }
 
     public List<String> validateParams(String username, String password, String confirmPassword, String email) {
@@ -158,7 +165,6 @@ public class LoginRegisterController extends HttpServlet {
         user.setName(username);
         user.setPassword(password);
         user.setEmail(email);
-        SetSession(user, session);
         // add user 
         return new UserDaoImpl(servletContext).addUser(user);
     }

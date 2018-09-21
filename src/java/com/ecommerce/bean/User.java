@@ -105,6 +105,9 @@ public class User implements Bean {
      * @return the fullName
      */
     public String getFullName() {
+        if (fullName == null) {
+            return name;
+        }
         return fullName;
     }
 
