@@ -1,5 +1,4 @@
-//
-
+// <editor-fold >
 package com.ecommerce.customer.controller;
 
 import com.ecommerce.bean.User;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
-import javax.xml.ws.Response;
 
 @WebServlet("/login") // == @WebServlet( urlPatterns = {"/login"} ) 
 public class LoginRegisterController extends HttpServlet {
@@ -30,6 +28,7 @@ public class LoginRegisterController extends HttpServlet {
         servletContext = getServletContext();
         customerJspPath = servletContext.getInitParameter("customerJspPath");
     }
+// </editor-fold >
 
     // <editor-fold >
     @Override
@@ -50,15 +49,32 @@ public class LoginRegisterController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        List<String> formErrors = null;
+        HttpSession session = request.getSession();
         //get param login to know if user do login or do register 
         String login = request.getParameter("login");
 
         if (login != null) {//if user login 
+            // get form params from the request
+            String username = request.getParameter("user");
+            String password = request.getParameter("pass");
 
-            // check parameter username and password if are existed in database 
-            //and if true setSession 
-            SetSessionForExistedUser(request, response);
+            // get logging user
+            User user = new UserDaoImpl(servletContext).getLoginUser(username, password, false);
+
+            if (user != null) {// check if user existed in DB 
+                // set session for User 
+                SetSession(user, session);
+                Helper.setTitle(request, "Home");
+                response.sendRedirect("home");
+
+            } else {//user not exist in DB 
+                // redirect to login page 
+                Helper.setTitle(request, "Login");
+                response.sendRedirect("login");
+                formErrors.add("user not Existed! try again ");
+            }
+            //////////////////////////////////////////////////////////////////
 
         } else {//if user registered 
 
@@ -69,7 +85,7 @@ public class LoginRegisterController extends HttpServlet {
             String email = request.getParameter("email");
 
             // validate the form params
-            List<String> formErrors = validateParams(username, password, confirmPassword, email);
+            formErrors = validateParams(username, password, confirmPassword, email);
 
             if (formErrors.size() > 0) {// if there is errors
                 // set errors to the request
@@ -79,7 +95,7 @@ public class LoginRegisterController extends HttpServlet {
 
             } else {//if there is no errors
                 //creat new user in Database
-                boolean userCreated = creatNewUser(username, password, email);
+                boolean userCreated = creatNewUser(username, password, email, session);
 
                 //check if user created 
                 if (!userCreated) {//if user not created 
@@ -98,46 +114,13 @@ public class LoginRegisterController extends HttpServlet {
         }
     }
 
-    public void SetSessionForExistedUser(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    public void SetSession(User user, HttpSession session) {
 
-        // get form params from the request
-        String username = request.getParameter("user");
-        String password = request.getParameter("pass");
-
-        // get logging user
-        User user = new UserDaoImpl(servletContext).getLoginUser(username, password, false);
-
-        // check if user exists
-        if (user != null) {
-            //set session for user
-            // if remember me not checked 
-            if (true) {
-                HttpSession session = request.getSession();
-                session.setAttribute("user", username);
-                session.setAttribute("userId", user.getId());
-                session.setAttribute("fullName", (user.getFullName().split(" ")[0]));
-
-            } //hide this now <editor-fold >
-            else {
-                //make 3 objects and store 3 up set Attribute 
-                Cookie user1 = new Cookie("user", username);
-                Cookie userId = new Cookie("userId", user.getId() + "");
-                Cookie fullName = new Cookie("user", (user.getFullName().split(" ")[0]));
-
-                //response.addCookie
-                response.addCookie(user1);
-                response.addCookie(userId);
-                response.addCookie(fullName);
-            }//</editor-fold >
-
-            Helper.setTitle(request, "Home");
-            response.sendRedirect("/home");
-
-        } else {//user not exist in DB 
-            // redirect to login page if user not exits
-            response.sendRedirect("login");
-        }
+        //set session for user if remember me not checked 
+        session.setAttribute("user", user.getName());
+        session.setAttribute("userId", user.getId());
+//        session.setAttribute("fullName", (user.getFullName().split(" ")[0]));
+        session.setAttribute("fullName", user.getName());
     }
 
     public List<String> validateParams(String username, String password, String confirmPassword, String email) {
@@ -168,83 +151,16 @@ public class LoginRegisterController extends HttpServlet {
         return formErrors;
     }
 
-    public boolean creatNewUser(String username, String password, String email) {
+    public boolean creatNewUser(String username, String password, String email, HttpSession session) {
 
         // make new user and set info to it
         User user = new User();
         user.setName(username);
         user.setPassword(password);
         user.setEmail(email);
-
-        // add user
-        boolean userAdded = new UserDaoImpl(servletContext).addUser(user);
-        if (!userAdded) {
-            return false;
-
-        } else {
-            return true;
-        }
-    }
-
-    public void addCookies(String user_name, String pass_word, HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        // Create cookies for first and last names.      
-        Cookie username = new Cookie("username", user_name);
-        Cookie password = new Cookie("password", pass_word);
-
-        // Set expiry date after 24 Hrs for both the cookies.
-        username.setMaxAge(60 * 60 * 24);
-        password.setMaxAge(60 * 60 * 24);
-
-        // Add both the cookies in the response header.
-        response.addCookie(username);
-        response.addCookie(password);
-    }
-
-    public boolean readCookies(HttpServletRequest request)
-            throws ServletException, IOException {
-
-        // Get an array of Cookies associated with this domain
-        Cookie[] cookies = request.getCookies();
-
-        if (cookies != null) {//if cookie exists 
-
-            HttpSession session = request.getSession();
-            session.setAttribute("username", cookies[0]);
-            session.setAttribute("password", cookies[1]);
-            return true;
-
-        } else {
-            //there is no cookies 
-            return false;
-        }
-    }
-
-    public void deleteCookie(String username, HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        Cookie cookie = null;
-        Cookie[] cookies = null;
-
-        // Get an array of Cookies associated with this domain
-        cookies = request.getCookies();
-
-        // Set response content type
-        response.setContentType("text/html");
-
-        if (cookies != null) {// if cookie founded 
-            for (int i = 0; i < cookies.length; i++) {
-                cookie = cookies[i];
-                //deleted cookie of user by setMaxAge = 0
-                if ((cookie.getName()).compareTo(username) == 0) {
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-                }
-            }
-        } else {
-            // cookie not found
-        }
+        SetSession(user, session);
+        // add user 
+        return new UserDaoImpl(servletContext).addUser(user);
     }
 
     @Override

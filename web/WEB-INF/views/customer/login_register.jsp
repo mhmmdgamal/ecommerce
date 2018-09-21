@@ -29,6 +29,9 @@
                 placeholder="Type your password" 
                 required 
                 value="123"/>
+            <label class="checkbox">
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
         </div>
         <input class="btn btn-primary btn-block" name="login" type="submit" value="Login" />
     </form>
@@ -44,7 +47,8 @@
                 name="user" 
                 autocomplete="off"
                 placeholder="Type your username" 
-                required />
+                required 
+                value="ahmed"/>
         </div>
         <div class="input-container">
             <input 
@@ -54,7 +58,8 @@
                 name="pass" 
                 autocomplete="new-password"
                 placeholder="Type a Complex password" 
-                required />
+                required 
+                value="ahmed"/>
         </div>
         <div class="input-container">
             <input 
@@ -64,15 +69,20 @@
                 name="pass2" 
                 autocomplete="new-password"
                 placeholder="Type a password again" 
-                required />
+                required 
+                value="ahmed"/>
         </div>
         <div class="input-container">
             <input 
                 class="form-control" 
                 type="email" 
                 name="email" 
-                placeholder="Type a Valid email" />
+                placeholder="Type a Valid email"
+                value="ahmedRamadan@gmai.com"/>
         </div>
+        <label class="checkbox">
+            <input type="checkbox" value="remember-me" checked="checked"> Remember me
+        </label>
         <input class="btn btn-success btn-block" name="signup" type="submit" value="Signup" />
     </form>
     <!-- End Signup Form -->
