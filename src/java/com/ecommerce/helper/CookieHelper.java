@@ -11,7 +11,7 @@ public class CookieHelper {
     public static void addCookie(String name, String value, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Create cookies for first and last names.      
+        //Create Cookie     
         Cookie cookie = new Cookie(name, value);
 
         // Set expiry date after 24 Hrs for both the cookies.

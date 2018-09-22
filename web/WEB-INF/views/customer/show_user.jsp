@@ -1,11 +1,11 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:import url="includes/templates/header.jsp" />
 
-<h1 class="text-center">My Profile</h1>
+<h1 class="text-center">${user.fullName}</h1>
 <div class="information block">
     <div class="container">
         <div class="panel panel-primary">
-            <div class="panel-heading">My Information</div>
+            <div class="panel-heading"> Information about ${user.name}</div>
             <div class="panel-body">
                 <ul class="list-unstyled">
                     <li>
@@ -25,16 +25,15 @@
                         <span>Registered Date</span> : ${user.date}
                     </li>
                 </ul>
-                <!--<develop>Button not work</develop>-->
-                <a href="${initParam['customerPath']}profile?editInfo=clicked " class="btn btn-default">Edit Information</a>
             </div>
         </div>
     </div>
 </div>
+<!--start show item--> 
 <div id="my-ads" class="my-ads block">
     <div class="container">
         <div class="panel panel-primary">
-            <div class="panel-heading">My Items</div>
+            <div class="panel-heading"> Items of ${user.name}</div>
             <div class="panel-body">
                 <c:choose>
                     <c:when test="${userItems.size() > 0}">
@@ -42,24 +41,27 @@
                             <c:forEach items="${userItems}" var="item">
                                 <div class="col-sm-6 col-md-3">
                                     <div class="thumbnail item-box">
-                                        <c:if test="${item.approve eq 0}">
-                                            <span class="approve-status">Waiting Approval</span>
+                                        <c:if test="${item.approve eq 1}">
+                                            <span class="price-tag">${item.price}</span>
+                                            <img class="img-responsive" src="${initParam['customerImgPath']}img.png" alt="No Image" />
+                                            <div class="caption">
+                                                <h3><a href="${initParam['customerPath']}items?itemid=${item.id}">${item.name}</a></h3>
+                                                <p>${item.description}</p>
+                                                <div class="date">${item.addDate}</div>
+                                            </div>
                                         </c:if>
-                                        <span class="price-tag">${item.price}</span>
-                                        <img class="img-responsive" src="${initParam['customerImgPath']}img.png" alt="No Image" />
-                                        <div class="caption">
-                                            <h3><a href="${initParam['customerPath']}items?itemid=${item.id}">${item.name}</a></h3>
-                                            <p>${item.description}</p>
-                                            <div class="date">${item.addDate}</div>
-                                        </div>
                                     </div>
                                 </div>
+                                <c:if test="${item.approve eq 0}">
+                                    <img class="img-responsive" src="${initParam['customerImgPath']}2.png" alt="No Image" />
+                                    <h3>there is a new item from ( ${user.name} ) will be displayed later ..
+                                        <br>follow ( ${user.name} ) to receive notification</h3>    
+                                </c:if>
                             </c:forEach>
-                            <div class="well"> Create <a href="${initParam['customerPath']}new-item">New Item</a></div>
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="well">Sorry There's No Items To Show, Create <a href="${initParam['customerPath']}new-item">New Item</a></div>
+                        <div class="well">Sorry There's No Items To Show</div>
                     </c:otherwise>
                 </c:choose>
             </div>

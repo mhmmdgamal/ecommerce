@@ -33,10 +33,20 @@
                             <i class="fa fa-tags fa-fw"></i>
                             <span>Category</span> : <a href="${initParam['customerPath']}categories?pageid=${item.category.id}">${item.category.name}</a>
                         </li>
-                        <li>
-                            <i class="fa fa-user fa-fw"></i>
-                            <span>Added By</span> : <a href="${initParam['customerPath']}users?userid=${item.user.id}">${item.user.name}</a>
-                        </li>
+                        <c:choose>
+                            <c:when test="${(item.user.id eq sessionScope['userId']) || (item.user.id eq cookie['userId']['value'])}">
+                                <li>
+                                    <i class="fa fa-user fa-fw"></i>
+                                    <span>Added By</span> : <a href="${initParam['customerPath']}profile?userid=${item.user.id}">${item.user.name}</a>
+                                </li>
+                            </c:when>
+                            <c:otherwise>
+                                <li>
+                                    <i class="fa fa-user fa-fw"></i>
+                                    <span>Added By</span> : <a href="${initParam['customerPath']}users?userid=${item.user.id}">${item.user.name}</a>
+                                </li>
+                            </c:otherwise>
+                        </c:choose>
                         <li class="tags-items">
                             <i class="fa fa-user fa-tags"></i>
                             <span>Tags</span> : 

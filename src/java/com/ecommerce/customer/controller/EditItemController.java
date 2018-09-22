@@ -1,3 +1,4 @@
+//<editor-fold >
 package com.ecommerce.customer.controller;
 
 import com.ecommerce.bean.Category;
@@ -8,13 +9,11 @@ import com.ecommerce.dao.ItemDaoImpl;
 import com.ecommerce.helper.CookieHelper;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
-import java.net.CookieHandler;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +32,7 @@ public class EditItemController extends HttpServlet {
         customerJspPath = servletContext.getInitParameter("customerJspPath");
     }
 
+    //</editor-fold >
     // <editor-fold >
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -57,7 +57,7 @@ public class EditItemController extends HttpServlet {
             // get all categories from database with assending order
             categories = new CategoryDaoImpl(servletContext).getAllCategories("ASC");
 
-            // set categories to the request
+            // set categories to the request 
             request.setAttribute("categories", categories);
 
             Helper.forwardRequest(request, response, customerJspPath + "edit_item.jsp");
@@ -83,51 +83,27 @@ public class EditItemController extends HttpServlet {
         int categoryId = Integer.parseInt(request.getParameter("category"));
         String tags = request.getParameter("tags");
 
-        // make empty list to errors
-        List<String> formErrors = new ArrayList();
+        // create empty list for errors
+        List<String> formErrors
+                // validate the form params 
+                = vildateFormParams(name, description, price, countryMade, status, categoryId);
 
-        // validate the form params
-        if (name == null || name.length() < 4) {
-            formErrors.add("Item Title Must Be At Least 4 Characters");
-        }
-
-        if (description == null || description.length() < 10) {
-            formErrors.add("Item Description Must Be At Least 10 Characters");
-        }
-
-        if (price == null) {
-            formErrors.add("Item Price Cant Be Empty");
-        }
-
-        if (countryMade == null || countryMade.length() < 2) {
-            formErrors.add("Item Title Must Be At Least 2 Characters");
-        }
-
-        if (status.equals("0")) {
-            formErrors.add("Item Status Cant Be Empty");
-        }
-
-        if (categoryId == 0) {
-            formErrors.add("Item Category Cant Be Empty");
-        }
-
-        // set errors to the request
+        // set errors in request
         request.setAttribute("errors", formErrors);
-
-        //set item and categories because when we click on (edit Item button) 
-        //we can write data in boxes again 
+        //set item in request
         request.setAttribute("item", item);
+        //set categories in request, for written old data in <select>tag again 
         request.setAttribute("categories", categories);
 
-        // check if no errors
-        if (formErrors.size() > 0) {
-            // forword to add page
+        // check errors
+        if (formErrors.size() > 0) {//if founded error in params
+            // forword to edit_item page again
             Helper.forwardRequest(request, response, customerJspPath + "edit_item.jsp");
-        } else {
 
+        } else {//if no errors in params 
             Long userId;
-            
-            if (CookieHelper.isCookie("userId", request, response)) {
+
+            if (CookieHelper.isCookie("userId", request, response)) {//if user have cookie
                 userId = Long.parseLong(CookieHelper.getCookie("userId", request, response));
             } else {
                 // get userId from session
@@ -174,6 +150,36 @@ public class EditItemController extends HttpServlet {
             // forword to add page
             Helper.forwardRequest(request, response, customerJspPath + "edit_item.jsp");
         }
+    }
+
+    public List<String> vildateFormParams(String name, String description, String price,
+            String countryMade, String status, int categoryId) {
+        List<String> formErrors = new ArrayList();
+
+        if (name == null || name.length() < 4) {
+            formErrors.add("Item Title Must Be At Least 4 Characters");
+        }
+
+        if (description == null || description.length() < 10) {
+            formErrors.add("Item Description Must Be At Least 10 Characters");
+        }
+
+        if (price == null) {
+            formErrors.add("Item Price Cant Be Empty");
+        }
+
+        if (countryMade == null || countryMade.length() < 2) {
+            formErrors.add("Item Title Must Be At Least 2 Characters");
+        }
+
+        if (status.equals("0")) {
+            formErrors.add("Item Status Cant Be Empty");
+        }
+
+        if (categoryId == 0) {
+            formErrors.add("Item Category Cant Be Empty");
+        }
+        return formErrors;
     }
 
     @Override

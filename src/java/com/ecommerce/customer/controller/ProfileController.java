@@ -8,6 +8,8 @@ import com.ecommerce.dao.UserDaoImpl;
 import com.ecommerce.helper.CookieHelper;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -15,7 +17,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-// </editor-fold>
 
 @WebServlet("/profile")
 public class ProfileController extends HttpServlet {
@@ -30,6 +31,8 @@ public class ProfileController extends HttpServlet {
         customerJspPath = servletContext.getInitParameter("customerJspPath");
     }
 
+    // </editor-fold>
+    //<editor-fold >
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -49,7 +52,6 @@ public class ProfileController extends HttpServlet {
         // get user with id 
         User user = new UserDaoImpl(servletContext).getUserById(userId);
 
-        
         System.out.println(user);
         // set user to request
         request.setAttribute("user", user);
@@ -66,13 +68,98 @@ public class ProfileController extends HttpServlet {
         // set user Comments to request
         request.setAttribute("userComments", userComments);
 
-        // forward to profile page
-        Helper.forwardRequest(request, response, customerJspPath + "profile.jsp");
+        String editInfo = request.getParameter("editInfo");
+        if (editInfo != null) {
+            // forward to edit profile page
+            Helper.forwardRequest(request, response, customerJspPath + "edit_profile.jsp");
+
+        } else {
+            // forward to profile page
+            Helper.forwardRequest(request, response, customerJspPath + "profile.jsp");
+        }
+
+        ////////////////////////////////////////////////////////////////////////
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+//        <error> cast 
+//        Long userId = (Long) request.getParameter("userId");
+        String name = request.getParameter("name");
+        String pass = request.getParameter("pass");
+        String email = request.getParameter("email");
+        String fullName = request.getParameter("fullName");
+        //<error> can not cast String to Date
+        //String date = request.getParameter("date");
+
+        Date date = new Date(2014, 02, 11);
+
+        List<String> formErrors = vildateFormParams(name, email, fullName);
+        // set errors to the request
+        request.setAttribute("errors", formErrors);
+
+        if (formErrors.size() > 0) {// if there is errors
+
+            // forword to login page
+            Helper.setTitle(request, "Profile");
+            Helper.forwardRequest(request, response, customerJspPath + "edit_profile.jsp");
+
+        } else {//if there is no errors
+
+            Long userId = null;
+
+            if (CookieHelper.isCookie("userId", request, response)) {
+                userId = Long.parseLong(CookieHelper.getCookie("userId", request, response));
+            } else {
+                // get userId from session
+                userId = (Long) request.getSession().getAttribute("userId");
+            }
+            User user = new User.Builder()
+                    .id(userId)
+                    .name(name)
+                    .password(pass)
+                    .email(email)
+                    .fullName(fullName)
+                    .date(date)
+                    .build();
+
+            boolean userUpdated = new UserDaoImpl(servletContext).updateUser(user);
+
+            if (!userUpdated) {
+                // add new error to errors if User not added
+                formErrors.add("can not update this User");
+            } else {
+                // set success message if User added
+                request.setAttribute("success", "User Has Been Updated");
+            }
+
+            // set User to request
+            request.setAttribute("user", user);
+
+            // forword to add page
+            Helper.forwardRequest(request, response, customerJspPath + "edit_profile.jsp");
+
+        }
+
+    }
+
+    public List<String> vildateFormParams(String name, String email,
+            String fullName) {
+        List<String> formErrors = new ArrayList();
+
+        if (name == null || name.length() < 4) {
+            formErrors.add("name Must Be At Least 4 Characters or more ..");
+        }
+        if (email == null || email.length() < 4) {
+            formErrors.add("Email Cant Be <strong>Empty</strong> and Must Be At Least 4 Characters ");
+        }
+        if (fullName == null || fullName.length() < 4) {
+            formErrors.add("fullName Cant Be <strong>Empty</strong> and Must Be At Least 4 Characters ");
+        }
+
+        return formErrors;
     }
 
     @Override

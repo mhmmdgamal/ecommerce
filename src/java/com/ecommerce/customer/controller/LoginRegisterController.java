@@ -128,7 +128,7 @@ public class LoginRegisterController extends HttpServlet {
                 if (userCreated) {//if user created successfully 
                     // set success message if user added
                     request.setAttribute("success", "Congrats You Are Now Registerd User");
-
+                    // if user doing remember Me 
                     if (remember != null && remember.equalsIgnoreCase("y")) {
                         // set user data to cookies 
                         CookieHelper.addCookie("user", username, response);
@@ -137,8 +137,8 @@ public class LoginRegisterController extends HttpServlet {
 
                         Helper.setTitle(request, "Home");
                         response.sendRedirect("home");
-                    } else {
-
+                    
+                    } else {//if user ignore remember Me 
                         SetUserSession(user, session);
 
                         // set page title and forword to home page

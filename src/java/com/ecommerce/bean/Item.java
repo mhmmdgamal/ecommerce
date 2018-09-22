@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ecommerce.bean;
 
 import java.sql.Date;
@@ -22,7 +17,9 @@ public class Item implements Bean {
     private String tags;
     private User user;
     private Category category;
-
+    
+    //Getter and Setter method 
+    //<editor-fold>
     public long getId() {
         return id;
     }
@@ -126,6 +123,7 @@ public class Item implements Bean {
     public void setCategory(Category category) {
         this.category = category;
     }
+//</editor-fold>
 
     @Override
     public int hashCode() {
@@ -153,7 +151,7 @@ public class Item implements Bean {
     public String toString() {
         return "Item{" + "id=" + id + ", name=" + name + ", description=" + description + ", price=" + price + ", addDate=" + addDate + ", countryMade=" + countryMade + ", image=" + image + ", status=" + status + ", rating=" + rating + ", approve=" + approve + ", tags=" + tags + ", user=" + user + ", category=" + category + '}';
     }
-
+    //private constructor of param bulider
     private Item(Builder builder) {
         this.id = builder.id;
         this.name = builder.name;
@@ -169,11 +167,11 @@ public class Item implements Bean {
         this.user = builder.user;
         this.category = builder.category;
     }
-
+    //public Method to getBuilder 
     public static Builder builder() {
         return new Builder();
     }
-
+    //Nested class 
     public static class Builder {
 
         private long id;
@@ -189,12 +187,12 @@ public class Item implements Bean {
         private String tags;
         private User user;
         private Category category;
-
+        //constructor
         public Builder id(long id) {
             this.id = id;
-            return this;
+            return this; //this = bulider
         }
-
+        //setValue and Return Bulider object 
         public Builder name(String name) {
             this.name = name;
             return this;
