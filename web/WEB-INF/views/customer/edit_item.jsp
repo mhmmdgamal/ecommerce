@@ -82,12 +82,11 @@
                             <div class="form-group form-group-lg">
                                 <label class="col-sm-3 control-label">Status</label>
                                 <div class="col-sm-10 col-md-9">
-                                    <select name="status" required value="New"  >
-                                        <option value="0" selected="selected">...</option>
-                                        <option value="1">New</option>
-                                        <option value="2">Like New</option>
-                                        <option value="3">Used</option>
-                                        <option value="4">Very Old</option>
+                                    <select name="status">
+                                        <option value="1" ${(item.status.equals("1")) ? "selected" : ""}>New</option>
+                                        <option value="2" ${(item.status.equals("2")) ? "selected" : ""}>Like New</option>
+                                        <option value="3" ${(item.status.equals("3")) ? "selected" : ""}>Used</option>
+                                        <option value="4" ${(item.status.equals("4")) ? "selected" : ""}>Very Old</option>
                                     </select>
                                 </div>
                             </div>
@@ -99,7 +98,7 @@
                                     <select name="category" required >
                                         <option value="0">...</option>
                                         <c:forEach items="${categories}" var="category">
-                                            <option value='${category.id}'>${category.name}</option>
+                                            <option value='${category.id}' ${(item.category.id eq category.id) ? "selected" : ""}>${category.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -130,7 +129,7 @@
                     <div class="col-md-4">
                         <div class="thumbnail item-box live-preview">
                             <span class="price-tag">
-                                $<span class="live-price">0</span>
+                                $<span class="live-price">${item.price}</span>
                             </span>
                             <img class="img-responsive" src="${initParam['customerImgPath']}img.png" alt="No Image" />
                             <div class="caption">
