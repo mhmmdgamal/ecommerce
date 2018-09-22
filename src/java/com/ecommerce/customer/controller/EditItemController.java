@@ -5,18 +5,21 @@ import com.ecommerce.bean.Item;
 import com.ecommerce.bean.User;
 import com.ecommerce.dao.CategoryDaoImpl;
 import com.ecommerce.dao.ItemDaoImpl;
+import com.ecommerce.helper.CookieHelper;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
+import java.net.CookieHandler;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "EditItemController", urlPatterns = {"/edit/item"})
+@WebServlet(name = "EditItemController", urlPatterns = {"/edit-item"})
 public class EditItemController extends HttpServlet {
 
     ServletContext servletContext = null;
@@ -24,10 +27,6 @@ public class EditItemController extends HttpServlet {
     Item item = null;
     List<Category> categories = null;
 
-    /**
-     * declare item and categories here because when you redirect to the same
-     * page (requested data destroyed) --> so how write the data in boxes again?
-     */
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
@@ -40,7 +39,7 @@ public class EditItemController extends HttpServlet {
             throws ServletException, IOException {
 
         // set page title
-        Helper.setTitle(request, "EditItem");
+        Helper.setTitle(request, "Edit Item");
 
         // get itemId param from the request
         String itemId = request.getParameter("itemid");
@@ -49,18 +48,24 @@ public class EditItemController extends HttpServlet {
         long id = itemId != null && Helper.isNumber(itemId) ? Long.parseLong(itemId) : 0;
 
         // get approve item
-        item = new ItemDaoImpl(servletContext).getApprovedItemById(id);
+        item = new ItemDaoImpl(servletContext).getItemById(id);
 
-        // set item to request
-        request.setAttribute("item", item);
+        if (item != null) {
+            // set item to request
+            request.setAttribute("item", item);
 
-        // get all categories from database with assending order
-        categories = new CategoryDaoImpl(servletContext).getAllCategories("ASC");
+            // get all categories from database with assending order
+            categories = new CategoryDaoImpl(servletContext).getAllCategories("ASC");
 
-        // set categories to the request
-        request.setAttribute("categories", categories);
+            // set categories to the request
+            request.setAttribute("categories", categories);
 
-        Helper.forwardRequest(request, response, customerJspPath + "edit_item.jsp");
+            Helper.forwardRequest(request, response, customerJspPath + "edit_item.jsp");
+
+        } else {
+            // redirect to the previous page with error message
+            Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
+        }
 
     }
 
@@ -69,6 +74,7 @@ public class EditItemController extends HttpServlet {
             throws ServletException, IOException {
 
         // get form params from the request
+        int id = Integer.parseInt(request.getParameter("itemid"));
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         String price = request.getParameter("price");
@@ -119,8 +125,14 @@ public class EditItemController extends HttpServlet {
             Helper.forwardRequest(request, response, customerJspPath + "edit_item.jsp");
         } else {
 
-            // get userId from session
-            Long userId = Long.parseLong(request.getSession().getAttribute("userId") + "");
+            Long userId;
+            
+            if (CookieHelper.isCookie("userId", request, response)) {
+                userId = Long.parseLong(CookieHelper.getCookie("userId", request, response));
+            } else {
+                // get userId from session
+                userId = (Long) request.getSession().getAttribute("userId");
+            }
 
             // make new user and set info to it
             User user = new User.Builder()
@@ -134,6 +146,7 @@ public class EditItemController extends HttpServlet {
 
             // make new item and set info to it 
             item = new Item.Builder()
+                    .id(id)
                     .name(name)
                     .description(description)
                     .price(price)
@@ -154,6 +167,10 @@ public class EditItemController extends HttpServlet {
                 // set success message if item added
                 request.setAttribute("success", "Item Has Been Updated");
             }
+
+            // set item to request
+            request.setAttribute("item", item);
+
             // forword to add page
             Helper.forwardRequest(request, response, customerJspPath + "edit_item.jsp");
         }

@@ -6,6 +6,7 @@ import com.ecommerce.bean.Item;
 import com.ecommerce.bean.User;
 import com.ecommerce.dao.CommentDaoImpl;
 import com.ecommerce.dao.ItemDaoImpl;
+import com.ecommerce.helper.CookieHelper;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,20 +44,44 @@ public class ItemController extends HttpServlet {
         // return the itemId if number or return 0
         long id = itemId != null && Helper.isNumber(itemId) ? Long.parseLong(itemId) : 0;
 
-        // get approve item
-        Item item = new ItemDaoImpl(servletContext).getApprovedItemById(id);
+        // get item
+        Item itemFounded = new ItemDaoImpl(servletContext).getItemById(id);
 
-        // set item to request
-        request.setAttribute("item", item);
+        if (itemFounded != null) {
+            // check if item is approved
+            if (itemFounded.getApprove() == 1) {
+                // set item to request
+                request.setAttribute("item", itemFounded);
+            } else {
+                Long userId;
 
-        // get all comments with descinding order links with item id
-        List<Comment> comments = new CommentDaoImpl(servletContext).getAllComments(id, "DESC");
+                if (CookieHelper.isCookie("userId", request, response)) {
+                    // get user id from cookie
+                    userId = Long.parseLong(CookieHelper.getCookie("userId", request, response));
+                } else {
+                    // get userId from session
+                    userId = (Long) request.getSession().getAttribute("userId");
+                }
 
-        // set comments to request
-        request.setAttribute("comments", comments);
+                // check if user ow this item                
+                if (itemFounded.getUser().getId() == userId) {
+                    // set item to request
+                    request.setAttribute("item", itemFounded);
+                }
+            }
+            // get all comments with descinding order links with item id
+            List<Comment> comments = new CommentDaoImpl(servletContext).getAllComments(id, "DESC");
 
-        // forword request to manage page
-        Helper.forwardRequest(request, response, customerJspPath + "show_item.jsp");
+            // set comments to request
+            request.setAttribute("comments", comments);
+
+            // forword request to manage page
+            Helper.forwardRequest(request, response, customerJspPath + "show_item.jsp");
+        } else {
+            // redirect to the previous page with error message
+            Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
+        }
+
     }
 
     @Override
@@ -90,7 +115,6 @@ public class ItemController extends HttpServlet {
         // get all comments with descinding order links with item id
         List<Comment> comments = new CommentDaoImpl(servletContext).getAllComments(id, "DESC");
 
-        System.out.println(comments);
         // set comments to request
         request.setAttribute("comments", comments);
 
@@ -100,10 +124,16 @@ public class ItemController extends HttpServlet {
             formErrors.add("You Must Add Comment");
 
             // forward to show items page
-//            Helper.forwardRequest(request, response, customerJspPath + "show_item.jsp");
+            Helper.forwardRequest(request, response, customerJspPath + "show_item.jsp");
         } else {
-            // git user id from session
-            long userId = Long.parseLong(request.getSession().getAttribute("userId") + "");
+            Long userId;
+
+            if (CookieHelper.isCookie("userId", request, response)) {
+                userId = Long.parseLong(CookieHelper.getCookie("userId", request, response));
+            } else {
+                // get userId from session
+                userId = (Long) request.getSession().getAttribute("userId");
+            }
 
             // make new user and set info to it
             User user = new User.Builder()
@@ -134,11 +164,10 @@ public class ItemController extends HttpServlet {
             Helper.forwardRequest(request, response, customerJspPath + "show_item.jsp");
         }
 
-        long userId = Long.parseLong(request.getSession().getAttribute("userId") + "");
-        if (userId == item.getUser().getId() || true) {
-            request.getSession().setAttribute("myItem", true);
-        }
-
+//        long userId = Long.parseLong(request.getSession().getAttribute("userId") + "");
+//        if (userId == item.getUser().getId() || true) {
+//            request.getSession().setAttribute("myItem", true);
+//        }
     }
 
     @Override

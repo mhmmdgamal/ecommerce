@@ -1,6 +1,7 @@
 // <editor-fold >
 package com.ecommerce.customer.controller;
 
+import com.ecommerce.helper.CookieHelper;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 // </editor-fold >
 
 @WebServlet("/logout")
@@ -25,6 +27,8 @@ public class LogoutController extends HttpServlet {
             // invaldate the session to logout
             session.invalidate();
         }
+        
+        CookieHelper.deleteCookies(request, response);
 
         // redirect to login page to new login
         response.sendRedirect("");

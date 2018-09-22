@@ -29,9 +29,8 @@
                 placeholder="Type your password" 
                 required 
                 value="123"/>
-            <label class="checkbox">
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
+            <input id="save" type="checkbox" name="remember" value="y">
+            <label for="save" >Remember me</label>
         </div>
         <input class="btn btn-primary btn-block" name="login" type="submit" value="Login" />
     </form>
@@ -80,9 +79,8 @@
                 placeholder="Type a Valid email"
                 value="ahmedRamadan@gmai.com"/>
         </div>
-        <label class="checkbox">
-            <input type="checkbox" value="remember-me" checked="checked"> Remember me
-        </label>
+        <input id="save" type="checkbox" name="remember" value="y">
+        <label for="save" >Remember me</label>
         <input class="btn btn-success btn-block" name="signup" type="submit" value="Signup" />
     </form>
     <!-- End Signup Form -->

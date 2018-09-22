@@ -5,68 +5,68 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 public class CookieHelper {
 
-    public static void addCookies(String user_name, String pass_word, HttpServletRequest request, HttpServletResponse response)
+    public static void addCookie(String name, String value, HttpServletResponse response)
             throws ServletException, IOException {
 
         // Create cookies for first and last names.      
-        Cookie username = new Cookie("username", user_name);
-        Cookie password = new Cookie("password", pass_word);
+        Cookie cookie = new Cookie(name, value);
 
         // Set expiry date after 24 Hrs for both the cookies.
-        username.setMaxAge(60 * 60 * 24);
-        password.setMaxAge(60 * 60 * 24);
+        cookie.setMaxAge(60 * 60 * 24);
 
         // Add both the cookies in the response header.
-        response.addCookie(username);
-        response.addCookie(password);
+        response.addCookie(cookie);
     }
 
-    public static boolean readCookies(HttpServletRequest request)
+    public static void deleteCookies(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         // Get an array of Cookies associated with this domain
         Cookie[] cookies = request.getCookies();
 
-        if (cookies != null) {//if cookie exists 
+        // Set response content type
+        response.setContentType("text/html");
 
-            HttpSession session = request.getSession();
-            session.setAttribute("username", cookies[0]);
-            session.setAttribute("password", cookies[1]);
-            return true;
-
-        } else {
-            //there is no cookies 
-            return false;
+        for (Cookie cookie : cookies) {
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
         }
     }
 
-    public static void deleteCookie(String username, HttpServletRequest request, HttpServletResponse response)
+    public static boolean isCookie(String name, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Cookie cookie = null;
-        Cookie[] cookies = null;
-
         // Get an array of Cookies associated with this domain
-        cookies = request.getCookies();
+        Cookie[] cookies = request.getCookies();
 
         // Set response content type
         response.setContentType("text/html");
 
-        if (cookies != null) {// if cookie founded 
-            for (int i = 0; i < cookies.length; i++) {
-                cookie = cookies[i];
-                //deleted cookie of user by setMaxAge = 0
-                if ((cookie.getName()).compareTo(username) == 0) {
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-                }
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals(name)) {
+                return true;
             }
-        } else {
-            // cookie not found
         }
+        return false;
+    }
+    
+    public static String getCookie(String name, HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // Get an array of Cookies associated with this domain
+        Cookie[] cookies = request.getCookies();
+
+        // Set response content type
+        response.setContentType("text/html");
+
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals(name)) {
+                return cookie.getValue();
+            }
+        }
+        return null;
     }
 }

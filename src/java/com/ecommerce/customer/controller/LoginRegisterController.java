@@ -3,6 +3,7 @@ package com.ecommerce.customer.controller;
 
 import com.ecommerce.bean.User;
 import com.ecommerce.dao.UserDaoImpl;
+import com.ecommerce.helper.CookieHelper;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class LoginRegisterController extends HttpServlet {
 
         HttpSession session = request.getSession();
 
-        if (session.getAttribute("user") != null) {
+        if ((session.getAttribute("user") != null) || (CookieHelper.isCookie("user", request, response))) {
             // redirect to home if session exists
             response.sendRedirect("");
         } else {
@@ -57,19 +58,33 @@ public class LoginRegisterController extends HttpServlet {
             // get form params from the request
             String username = request.getParameter("user");
             String password = request.getParameter("pass");
+            String remember = request.getParameter("remember");
 
             // get logging user
             User user = new UserDaoImpl(servletContext).getLoginUser(username, password, false);
 
             if (user != null) {// check if user existed in DB 
-                // set session for User 
-                SetUserSession(user.getName(), user.getPassword(), session);
-                Helper.setTitle(request, "Home");
-                response.sendRedirect("home");
+                if (remember != null && remember.equalsIgnoreCase("y")) {
+                    // set user data to cookies 
+                    CookieHelper.addCookie("user", username, response);
+                    CookieHelper.addCookie("userId", "" + user.getId(), response);
+                    CookieHelper.addCookie("fullName", (user.getFullName().split(" ")[0]), response);
+
+                    Helper.setTitle(request, "Home");
+                    response.sendRedirect("home");
+                } else {
+                    // set session for User 
+                    SetUserSession(user, session);
+
+                    Helper.setTitle(request, "Home");
+                    response.sendRedirect("home");
+                }
 
             } else {//user not exist in DB 
-                formErrors = new ArrayList<>();
+                formErrors = new ArrayList();
                 formErrors.add("user not Existed! try again ");
+
+                request.setAttribute("errors", formErrors);
                 // redirect to login page 
                 Helper.setTitle(request, "Login");
                 response.sendRedirect("login");
@@ -83,33 +98,57 @@ public class LoginRegisterController extends HttpServlet {
             String password = request.getParameter("pass");
             String confirmPassword = request.getParameter("pass2");
             String email = request.getParameter("email");
+            String remember = request.getParameter("remember");
 
             // validate the form params
             formErrors = validateParams(username, password, confirmPassword, email);
 
+            // set errors to the request
+            request.setAttribute("errors", formErrors);
+
             if (formErrors.size() > 0) {// if there is errors
-                // set errors to the request
-                request.setAttribute("errors", formErrors);
 
                 // forword to login page
                 Helper.setTitle(request, "Login");
                 Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp");
 
             } else {//if there is no errors
+
+                // make new user and set info to it
+                User user = new User.Builder()
+                        .name(username)
+                        .password(password)
+                        .email(email)
+                        .build();
+
                 //creat new user in Database
-                boolean userCreated = creatNewUser(username, password, email, session);
+                boolean userCreated = new UserDaoImpl(servletContext).addUser(user);
 
                 //check if user created 
                 if (userCreated) {//if user created successfully 
                     // set success message if user added
                     request.setAttribute("success", "Congrats You Are Now Registerd User");
-                    SetUserSession(username, password, session);
-                    // forword to home page
-                    Helper.setTitle(request, "Home");
-                    response.sendRedirect("home");
+
+                    if (remember != null && remember.equalsIgnoreCase("y")) {
+                        // set user data to cookies 
+                        CookieHelper.addCookie("user", username, response);
+                        CookieHelper.addCookie("userId", "" + user.getId(), response);
+                        CookieHelper.addCookie("fullName", (user.getFullName().split(" ")[0]), response);
+
+                        Helper.setTitle(request, "Home");
+                        response.sendRedirect("home");
+                    } else {
+
+                        SetUserSession(user, session);
+
+                        // set page title and forword to home page
+                        Helper.setTitle(request, "Home");
+                        response.sendRedirect("home");
+                    }
                 } else {//if user not created 
                     // add new error to errors 
                     formErrors.add("Sorry This User Is Exist");
+
                     //forword to login again 
                     Helper.setTitle(request, "Login");
                     Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp");
@@ -118,10 +157,7 @@ public class LoginRegisterController extends HttpServlet {
         }
     }
 
-    public void SetUserSession(String username, String password, HttpSession session) {
-
-        // get logging user
-        User user = new UserDaoImpl(servletContext).getLoginUser(username, password, false);
+    public void SetUserSession(User user, HttpSession session) {
 
         //set session for user if remember me not checked 
         session.setAttribute("user", user.getName());
@@ -155,19 +191,6 @@ public class LoginRegisterController extends HttpServlet {
             formErrors.add("Email Cant Be <strong>Empty</strong>");
         }
         return formErrors;
-    }
-
-    public boolean creatNewUser(String username, String password, String email, HttpSession session) {
-
-        // make new user and set info to it
-        User user = new User.Builder()
-                .name(username)
-                .password(password)
-                .email(email)
-                .build();
-
-        // add user 
-        return new UserDaoImpl(servletContext).addUser(user);
     }
 
     @Override

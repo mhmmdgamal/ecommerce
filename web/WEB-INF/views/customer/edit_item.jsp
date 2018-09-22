@@ -10,7 +10,10 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-8">
-                        <form class="form-horizontal main-form" action="${initParam['customerPath']}edit/item" method="POST">
+                        <form class="form-horizontal main-form" action="${initParam['customerPath']}edit-item" method="POST">
+                            <!-- Start id Field -->
+                            <input type="hidden" name="itemid" value="${item.id}" />
+                            <!-- End id Field -->
                             <!-- Start Name Field -->
                             <div class="form-group form-group-lg">
                                 <label class="col-sm-3 control-label">Name</label>
@@ -131,7 +134,7 @@
                             </span>
                             <img class="img-responsive" src="${initParam['customerImgPath']}img.png" alt="No Image" />
                             <div class="caption">
-                                <h3 class="live-title" >Title </h3>
+                                <h3 class="live-title" >Title: ${item.name}</h3>
                                 <p class="live-desc">Description: ${item.description}</p>
                             </div>
                         </div>

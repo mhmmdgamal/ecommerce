@@ -5,6 +5,7 @@
  */
 package com.ecommerce.filter;
 
+import com.ecommerce.helper.CookieHelper;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -21,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-@WebFilter(urlPatterns = {"/new-item", "/profile", "/edit/item"})
+@WebFilter(urlPatterns = {"/new-item", "/profile", "/edit-item"})
 public class UserLoginFilter implements Filter {
     
     private static final boolean debug = true;
@@ -42,9 +43,10 @@ public class UserLoginFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession();
-        
+          
+          
         // check if the username session is exists
-        if (session.getAttribute("user") == null) {
+        if ((session.getAttribute("user") == null) && (! CookieHelper.isCookie("user", req, res))) {
             // redirect to login page
             res.sendRedirect("login");
         } else {

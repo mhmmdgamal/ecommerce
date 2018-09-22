@@ -6,6 +6,7 @@ import com.ecommerce.bean.Item;
 import com.ecommerce.bean.User;
 import com.ecommerce.dao.CategoryDaoImpl;
 import com.ecommerce.dao.ItemDaoImpl;
+import com.ecommerce.helper.CookieHelper;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -107,9 +108,15 @@ public class NewItemController extends HttpServlet {
             Helper.forwardRequest(request, response, customerJspPath + "new_item.jsp");
         } else {
 
-            // get userId from session
-            Long userId = Long.parseLong(request.getSession().getAttribute("userId") + "");
-
+            Long userId;
+            
+            if (CookieHelper.isCookie("userId", request, response)) {
+                userId = Long.parseLong(CookieHelper.getCookie("userId", request, response));
+            } else {
+                // get userId from session
+                userId = (Long) request.getSession().getAttribute("userId");
+            }
+            
             // make new user and set info to it
             User user = new User.Builder()
                     .id(userId)

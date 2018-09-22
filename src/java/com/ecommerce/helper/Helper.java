@@ -58,7 +58,7 @@ public class Helper {
         }
         if (request.getHeader("referer") == null) {
             setTitle(request, "Home");
-            request.getRequestDispatcher("home").forward(request, response);
+            response.sendRedirect("");
         } else {
             setTitle(request, getTitleFromRefererLink(request.getHeader("referer")));
             response.sendRedirect(request.getHeader("referer"));

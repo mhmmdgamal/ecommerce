@@ -141,7 +141,6 @@ public class MySQLDatabaseHelper {
     public ResultSet findAll(String[] columns, String table, String where, String orderBy, String sort, String limit) throws SQLException {
 
         String query = prepareFindQuery(columns, table, where, orderBy, sort, limit);
-        System.out.println(query);
         Statement stmt = connection.createStatement();
 
         ResultSet rs = stmt.executeQuery(query);

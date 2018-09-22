@@ -276,6 +276,8 @@ public class UserDaoImpl implements UserDao {
                         .name(rs.getString("name"))
                         .password(rs.getString("password"))
                         .fullName(rs.getString("full_name"))
+                        .email(rs.getString("email"))
+                        .date(rs.getDate("date"))
                         .build();
             }
         } catch (SQLException ex) {
