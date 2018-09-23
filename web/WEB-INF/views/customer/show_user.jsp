@@ -41,22 +41,26 @@
                             <c:forEach items="${userItems}" var="item">
                                 <div class="col-sm-6 col-md-3">
                                     <div class="thumbnail item-box">
-                                        <c:if test="${item.approve eq 1}">
-                                            <span class="price-tag">${item.price}</span>
-                                            <img class="img-responsive" src="${initParam['customerImgPath']}img.png" alt="No Image" />
-                                            <div class="caption">
-                                                <h3><a href="${initParam['customerPath']}items?itemid=${item.id}">${item.name}</a></h3>
-                                                <p>${item.description}</p>
-                                                <div class="date">${item.addDate}</div>
-                                            </div>
-                                        </c:if>
+                                        <c:choose>
+                                            <c:when test="${item.approve eq 1}">
+                                                <span class="price-tag">${item.price}</span>
+                                                <img class="img-responsive" src="${initParam['customerImgPath']}img.png" alt="No Image" />
+                                                <div class="caption">
+                                                    <h3><a href="${initParam['customerPath']}items?itemid=${item.id}">${item.name}</a></h3>
+                                                    <p>${item.description}</p>
+                                                    <div class="date">${item.addDate}</div>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <img class="img-responsive" src="${initParam['customerImgPath']}2.png" alt="No Image" />
+                                                <div class="caption">
+                                                    <h3>there is a new item from ( ${user.name} ) will be displayed later ..
+                                                        <br>follow ( ${user.name} ) to receive notification</h3>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </div>
-                                <c:if test="${item.approve eq 0}">
-                                    <img class="img-responsive" src="${initParam['customerImgPath']}2.png" alt="No Image" />
-                                    <h3>there is a new item from ( ${user.name} ) will be displayed later ..
-                                        <br>follow ( ${user.name} ) to receive notification</h3>    
-                                </c:if>
                             </c:forEach>
                         </div>
                     </c:when>
