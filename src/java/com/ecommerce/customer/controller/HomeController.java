@@ -26,7 +26,6 @@ public class HomeController extends HttpServlet {
         customerJspPath = servletContext.getInitParameter("customerJspPath");
     }
 
-    // <editor-fold >
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -40,15 +39,4 @@ public class HomeController extends HttpServlet {
         // forword request to manage page
         Helper.forwardRequest(request, response, customerJspPath + "home.jsp");
     }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

@@ -54,16 +54,6 @@
                 </div>
                 <div class="collapse navbar-collapse" id="app-nav">
                     <ul class="nav navbar-nav navbar-right">
-                        <!--                       
-                        <?php
-                        $allCats = getAllFrom("*", "categories", "where parent = 0", "", "ID", "ASC");
-                        foreach ($allCats as $cat) {
-                            echo
-                            '<li><a href="categories.php?pageid=' . $cat['ID'] . '">
-				  ' . $cat['Name'] . '</a></li>';
-                        }?>
-                        -->
-
                         <c:forEach items="${navCategories}" var="category">
                             <li>
                                 <a href="${initParam['customerPath']}categories?pageid=${category.id}">${category.name}</a>
@@ -73,3 +63,18 @@
                 </div>
             </div>
         </nav> 
+
+        <%--
+        <error> i can't get value by Servelt Context in controller 
+                <c:set var="url" value="${header.referer}"
+                       scope="application" />
+
+        <c:out value="${applicationScope.url}"/>
+        <c:set var="previousPage" value="${header.referer}" scope="request"/>
+        <%  session.setAttribute("previousPage", request.getHeader("referer"));
+//            request.getServletContext().setAttribute("previousPage", request.getHeader("referer"));
+            out.print(session.getAttribute("previousPage"));
+        %>
+
+        <input type="hidden" name="previousPage" value="${header.referer}" />
+        --%>

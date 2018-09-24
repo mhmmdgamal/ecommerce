@@ -1,18 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ecommerce.helper;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import javax.xml.bind.DatatypeConverter;
 
-/**
- *
- * @author Mohamed
- */
 public class HashHelper {
     /**
      * hash string with md5 to 32 char
@@ -32,7 +23,7 @@ public class HashHelper {
         }
         return myHash;
     }
-    
+
     public static boolean stringVerify(String str, String strHashed){
         String hashed = HashHelper.stringHash(str);
         return hashed.equals(strHashed);

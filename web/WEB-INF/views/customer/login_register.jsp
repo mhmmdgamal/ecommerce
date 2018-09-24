@@ -28,7 +28,7 @@
                 autocomplete="new-password"
                 placeholder="Type your password" 
                 required 
-                value="123"/>
+                value="1234"/>
             <input id="save" type="checkbox" name="remember" value="y">
             <label for="save" >Remember me</label>
         </div>

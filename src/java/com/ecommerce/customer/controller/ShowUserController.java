@@ -4,7 +4,6 @@ import com.ecommerce.bean.Comment;
 import com.ecommerce.bean.Item;
 import com.ecommerce.bean.User;
 import com.ecommerce.dao.UserDaoImpl;
-import com.ecommerce.helper.CookieHelper;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
 import java.util.List;
@@ -16,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "UserController", urlPatterns = {"/users"})
-public class UserController extends HttpServlet {
+public class ShowUserController extends HttpServlet {
 
     ServletContext servletContext = null;
     String customerJspPath = null;

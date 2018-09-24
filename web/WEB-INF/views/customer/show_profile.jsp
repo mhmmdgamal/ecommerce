@@ -25,7 +25,7 @@
                         <span>Registered Date</span> : ${user.date}
                     </li>
                 </ul>
-                <!--<develop>Button not work</develop>-->
+                <!--<improve>Button not work-->
                 <a href="${initParam['customerPath']}profile?editInfo=clicked " class="btn btn-default">Edit Information</a>
             </div>
         </div>

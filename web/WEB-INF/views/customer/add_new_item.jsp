@@ -1,5 +1,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:import url="includes/templates/header.jsp" />
+<c:import url="includes/templates/check_one_error.jsp" />
 
 <h1 class="text-center">Create New Item</h1>
 <c:import url="includes/templates/check_errors.jsp" />

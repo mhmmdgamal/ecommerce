@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ecommerce.dao;
 
 import com.ecommerce.bean.Comment;
@@ -92,7 +87,7 @@ public class CommentDaoImpl implements CommentDao {
      */
     @Override
     public List<Comment> getAllComments(String sort) {
-        return getAllComments(0, sort);
+        return CommentDaoImpl.this.getAllCommentsOfItem(0, sort);
     }
 
     /**
@@ -103,7 +98,7 @@ public class CommentDaoImpl implements CommentDao {
      * @return found comments
      */
     @Override
-    public List<Comment> getAllComments(long id, String sort) {
+    public List<Comment> getAllCommentsOfItem(long id, String sort) {
         List<Comment> comments = new ArrayList();
 
         String itemId = null;

@@ -15,7 +15,7 @@ import javax.servlet.annotation.WebServlet;
 
 @WebServlet("/categories")
 // </editor-fold >
-public class CategoryController extends HttpServlet {
+public class ShowCategoryController extends HttpServlet {
     // <editor-fold >
     ServletContext servletContext = null;
 
@@ -44,11 +44,6 @@ public class CategoryController extends HttpServlet {
         } else {
             Helper.redriectToPrevPage(request, response, "You Must Add Page ID", true);
         }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
     }
 
     @Override

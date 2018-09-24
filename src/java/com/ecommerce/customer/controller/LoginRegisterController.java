@@ -27,6 +27,7 @@ public class LoginRegisterController extends HttpServlet {
         super.init(); //To change body of generated methods, choose Tools | Templates.
         servletContext = getServletContext();
         customerJspPath = servletContext.getInitParameter("customerJspPath");
+
     }
 // </editor-fold >
 
@@ -38,8 +39,10 @@ public class LoginRegisterController extends HttpServlet {
         HttpSession session = request.getSession();
 
         if ((session.getAttribute("user") != null) || (CookieHelper.isCookie("user", request, response))) {
-            // redirect to home if session exists
+            //<improve>redirect to home if session exists
             response.sendRedirect("");
+//            Helper.forwardRequest(request, response, customerJspPath + "home.jsp", "Login");
+
         } else {
             // forword the requset to the login page
             Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp", "Login");
@@ -70,14 +73,23 @@ public class LoginRegisterController extends HttpServlet {
                     CookieHelper.addCookie("userId", "" + user.getId(), response);
                     CookieHelper.addCookie("fullName", (user.getFullName().split(" ")[0]), response);
 
-                    Helper.setTitle(request, "Home");
-                    response.sendRedirect("home");
+                    if (true) {//previousPage == null <improve>
+                        Helper.setTitle(request, "Home");
+                        response.sendRedirect("home");
+                    } else {
+//                        Helper.setTitle(request, Helper.getPageName(previousPage));
+//                        response.sendRedirect(Helper.getPageName(previousPage));
+                    }
                 } else {
                     // set session for User 
                     SetUserSession(user, session);
-
-                    Helper.setTitle(request, "Home");
-                    response.sendRedirect("home");
+                    if (true) { //previousPage == null<improve>
+                        Helper.setTitle(request, "Home");
+                        response.sendRedirect("home");
+                    } else {
+//                        Helper.setTitle(request, Helper.getPageName(previousPage));
+//                        response.sendRedirect(Helper.getPageName(previousPage));
+                    }
                 }
 
             } else {//user not exist in DB 
@@ -137,7 +149,7 @@ public class LoginRegisterController extends HttpServlet {
 
                         Helper.setTitle(request, "Home");
                         response.sendRedirect("home");
-                    
+
                     } else {//if user ignore remember Me 
                         SetUserSession(user, session);
 

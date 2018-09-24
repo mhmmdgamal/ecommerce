@@ -1,3 +1,4 @@
+//<editor-fold >
 package com.ecommerce.filter;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class UrlFilter implements Filter {
 
     public UrlFilter() {
     }
+//</editor-fold >
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
@@ -45,19 +47,17 @@ public class UrlFilter implements Filter {
             chain.doFilter(request, response);
         }
     }
-//not important code in down ..don't look ! save your time
-    //<editor-fold   >
 
+    /**
+     * < not important code in down ..don't look ! save your time
+     */
+    //<editor-fold >
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
             log("UrlFilter:DoBeforeProcessing");
         }
 
-        // Write code here to process the request and/or response before
-        // the rest of the filter chain is invoked.
-        // For example, a logging filter might log items on the request object,
-        // such as the parameters.
         /*
 	for (Enumeration en = request.getParameterNames(); en.hasMoreElements(); ) {
 	    String name = (String)en.nextElement();

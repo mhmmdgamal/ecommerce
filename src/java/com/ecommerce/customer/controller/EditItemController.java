@@ -30,10 +30,14 @@ public class EditItemController extends HttpServlet {
     public void init() throws ServletException {
         servletContext = getServletContext();
         customerJspPath = servletContext.getInitParameter("customerJspPath");
-    }
+    }//</editor-fold >
 
-    //</editor-fold >
-    // <editor-fold >
+    /**
+     * doGet method do :
+     * <1> receive parameter id of item from URL
+     * <2> get item from DB
+     * <3> set data in request to fill text fields
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -66,9 +70,15 @@ public class EditItemController extends HttpServlet {
             // redirect to the previous page with error message
             Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
         }
-
     }
 
+    /**
+     * doPost method do :
+     * <1> receive parameter from FORM
+     * <2> check errors
+     * <3> if no errors update item in DB
+     * <4> set new item in request to fill text field again
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -101,49 +111,17 @@ public class EditItemController extends HttpServlet {
             Helper.forwardRequest(request, response, customerJspPath + "edit_item.jsp");
 
         } else {//if no errors in params 
-            Long userId;
 
-            if (CookieHelper.isCookie("userId", request, response)) {//if user have cookie
-                userId = Long.parseLong(CookieHelper.getCookie("userId", request, response));
-            } else {
-                // get userId from session
-                userId = (Long) request.getSession().getAttribute("userId");
-            }
-
-            // make new user and set info to it
-            User user = new User.Builder()
-                    .id(userId)
-                    .build();
-
-            // make new category and set info to it
-            Category category = new Category.Builder()
-                    .id(categoryId)
-                    .build();
-
-            // make new item and set info to it 
-            item = new Item.Builder()
-                    .id(id)
-                    .name(name)
-                    .description(description)
-                    .price(price)
-                    .countryMade(countryMade)
-                    .status(status)
-                    .user(user)
-                    .category(category)
-                    .tags(tags)
-                    .build();
-
-            // add item 
+            //get id of current user 
+            Long userId = getCurrentUserId(request, response);
+            //add params to item
+            item = createNewItem(id, name, description, price, countryMade, status, tags, id, categoryId);
+            // Update item 
             boolean itemUpdated = new ItemDaoImpl(servletContext).updateItem(item);
 
-            if (!itemUpdated) {
-                // add new error to errors if item not added
-                formErrors.add("can not update this item");
-            } else {
-                // set success message if item added
-                request.setAttribute("success", "Item Has Been Updated");
-            }
-
+            //set message success or error 
+            setMessageAlert(itemUpdated, request);
+            
             // set item to request
             request.setAttribute("item", item);
 
@@ -182,9 +160,64 @@ public class EditItemController extends HttpServlet {
         return formErrors;
     }
 
+    public Item createNewItem(int id, String name, String description, String price,
+            String countryMade, String status, String tags,
+            int userId, int categoryId) {
+
+        // make new user and set info to it
+        User user = new User.Builder()
+                .id(userId)
+                .build();
+
+        // make new category and set info to it
+        Category category = new Category.Builder()
+                .id(categoryId)
+                .build();
+
+        // make new item and set info to it 
+        Item item = new Item.Builder()
+                .id(id)
+                .name(name)
+                .description(description)
+                .price(price)
+                .countryMade(countryMade)
+                .status(status)
+                .user(user)
+                .category(category)
+                .tags(tags)
+                .build();
+        return item;
+    }
+
+    public long getCurrentUserId(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        long userId;
+
+        if (CookieHelper.isCookie("userId", request, response)) {
+            userId = Long.parseLong(CookieHelper.getCookie("userId", request, response));
+        } else {
+            // get userId from session
+            userId = (Long) request.getSession().getAttribute("userId");
+        }
+        return userId;
+    }
+
+    public void setMessageAlert(boolean itemUpdated, HttpServletRequest request) {
+
+        if (!itemUpdated) {
+            // add new error to errors if item not added
+            //<improve>formErrors.add("can not update this item");                 request.setAttribute("success", "Item Has Been Updated");
+            request.setAttribute("error", "can not update this item");
+
+        } else {
+            // set success message if item added
+            request.setAttribute("success", "Item Has Been Updated");
+        }
+    }
+
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

@@ -44,15 +44,16 @@ public class CookieHelper {
 
         // Set response content type
         response.setContentType("text/html");
-
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(name)) {
-                return true;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(name)) {
+                    return true;
+                }
             }
         }
         return false;
     }
-    
+
     public static String getCookie(String name, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 

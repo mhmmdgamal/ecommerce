@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 // </editor-fold>
 
 @WebServlet("/new-item")
-public class NewItemController extends HttpServlet {
+public class AddNewItemController extends HttpServlet {
 
     ServletContext servletContext = null;
     String customerJspPath = null;
@@ -46,7 +46,7 @@ public class NewItemController extends HttpServlet {
         request.setAttribute("categories", categories);
 
         // forward to new item page
-        Helper.forwardRequest(request, response, customerJspPath + "new_item.jsp");
+        Helper.forwardRequest(request, response, customerJspPath + "add_new_item.jsp");
     }
 
     @Override
@@ -59,10 +59,10 @@ public class NewItemController extends HttpServlet {
         // get all categories from database with assending order
         List<Category> categories = new CategoryDaoImpl(servletContext).getAllCategories("ASC");
 
-        // set categories to the reqest
+        // set categories to the request
         request.setAttribute("categories", categories);
 
-        // get form params from the request
+        // get FORM params from the request
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         String price = request.getParameter("price");
@@ -70,6 +70,36 @@ public class NewItemController extends HttpServlet {
         String status = request.getParameter("status");
         int categoryId = Integer.parseInt(request.getParameter("category"));
         String tags = request.getParameter("tags");
+
+        // make empty list to errors
+        List<String> formErrors
+                //vildate params of FORM 
+                = vildateParams(name, description, price, countryMade, status, categoryId);
+        // set errors to the request
+        request.setAttribute("errors", formErrors);
+
+        // check if no errors
+        if (formErrors.size() > 0) {
+            // forword to add page (to show error for user)
+            Helper.forwardRequest(request, response, customerJspPath + "add_new_item.jsp");
+
+        } else {
+            //get id of current user 
+            Long userId = getCurrentUserId(request, response);
+            //get item of new data 
+            Item item = createNewItem(name, description, price, countryMade, status, tags, userId, categoryId);
+
+            // add item to DB 
+            boolean itemAdded = new ItemDaoImpl(servletContext).addItem(item);
+            //set message success or error
+            setMessageAlert(itemAdded, request);
+            // forword to add page
+            Helper.forwardRequest(request, response, customerJspPath + "add_new_item.jsp");
+        }
+    }
+
+    public List<String> vildateParams(String name, String description,
+            String price, String countryMade, String status, long categoryId) {
 
         // make empty list to errors
         List<String> formErrors = new ArrayList();
@@ -98,65 +128,60 @@ public class NewItemController extends HttpServlet {
         if (categoryId == 0) {
             formErrors.add("Item Category Cant Be Empty");
         }
-
-        // set errors to the request
-        request.setAttribute("errors", formErrors);
-
-        // check if no errors
-        if (formErrors.size() > 0) {
-            // forword to add page
-            Helper.forwardRequest(request, response, customerJspPath + "new_item.jsp");
-        } else {
-
-            Long userId;
-            
-            if (CookieHelper.isCookie("userId", request, response)) {
-                userId = Long.parseLong(CookieHelper.getCookie("userId", request, response));
-            } else {
-                // get userId from session
-                userId = (Long) request.getSession().getAttribute("userId");
-            }
-            
-            // make new user and set info to it
-            User user = new User.Builder()
-                    .id(userId)
-                    .build();
-
-            // make new category and set info to it
-            Category category = new Category.Builder()
-                    .id(categoryId)
-                    .build();
-
-            // make new item and set info to it 
-            Item item = new Item.Builder()
-                    .name(name)
-                    .description(description)
-                    .price(price)
-                    .countryMade(countryMade)
-                    .status(status)
-                    .user(user)
-                    .category(category)
-                    .tags(tags)
-                    .build();
-
-            // add item 
-            boolean itemAdded = new ItemDaoImpl(servletContext).addItem(item);
-
-            if (!itemAdded) {
-                // add new error to errors if item not added
-                formErrors.add("Sorry This Item Is Exist");
-            } else {
-                // set success message if item added
-                request.setAttribute("success", "Item Has Been Added");
-            }
-            // forword to add page
-            Helper.forwardRequest(request, response, customerJspPath + "new_item.jsp");
-        }
+        return formErrors;
     }
 
-    @Override
-    public String getServletInfo() {
-        return "Short description";
+    public long getCurrentUserId(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        long userId;
+
+        if (CookieHelper.isCookie("userId", request, response)) {
+            userId = Long.parseLong(CookieHelper.getCookie("userId", request, response));
+        } else {
+            // get userId from session
+            userId = (Long) request.getSession().getAttribute("userId");
+        }
+        return userId;
+    }
+
+    public Item createNewItem(String name, String description, String price,
+            String countryMade, String status, String tags, long userId, long categoryId) {
+
+        // make new user and set info to it
+        User user = new User.Builder()
+                .id(userId)
+                .build();
+
+        // make new category and set info to it
+        Category category = new Category.Builder()
+                .id(categoryId)
+                .build();
+
+        // make new item and set info to it 
+        Item item = new Item.Builder()
+                .name(name)
+                .description(description)
+                .price(price)
+                .countryMade(countryMade)
+                .status(status)
+                .user(user)
+                .category(category)
+                .tags(tags)
+                .build();
+        return item;
+    }
+
+    public void setMessageAlert(boolean itemAdded, HttpServletRequest request) {
+
+        if (!itemAdded) {
+            // add new error to errors if item not added
+            //<improve>formErrors.add("Sorry This Item Is Exist");
+            request.setAttribute("error", "can not add this item! try again!");
+
+        } else {
+            // set success message if item added
+            request.setAttribute("success", "Item Has Been Added");
+        }
     }
 
 }

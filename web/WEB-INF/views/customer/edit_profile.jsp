@@ -1,6 +1,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:import url="includes/templates/header.jsp" />
 <c:import url="includes/templates/check_errors.jsp" />
+<c:import url="includes/templates/check_one_error.jsp" />
+
 
 <h1 class="text-center">Edit Information of Profile</h1>
 <div class="information block">
@@ -8,7 +10,7 @@
         <div class="panel panel-primary">
             <div class="panel-heading">Edit Information</div>
             <div class="panel-body">
-                <form class="form-horizontal main-form" action="${initParam['customerPath']}profile" method="POST">
+                <form class="form-horizontal main-form" action="${initParam['customerPath']}edit-profile" method="POST">
                     <!-- Start id Field -->
                     <input type="hidden" name="itemid" value="${useri.d}" />
                     <!-- End id Field -->
