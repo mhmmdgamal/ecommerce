@@ -71,16 +71,6 @@ public class LoginController extends HttpServlet {
             // redirect to login page if user not exits
             response.sendRedirect("login");
         }
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
     }// </editor-fold>
 
 }

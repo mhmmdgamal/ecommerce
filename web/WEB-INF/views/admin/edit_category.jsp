@@ -5,28 +5,9 @@
 <%@include file="includes/templates/navbar.jsp"%>
 
 <h1 class="text-center">Edit Category</h1>
-<div class="row">
-    <div class="container">
+<c:import url="includes/templates/check_one_error_sm10.jsp"/>
 
-        <c:if test="${requestScope['success'] ne null}">
-            <div class="alert alert-success alert-dismissible col-sm-offset-2 col-sm-10">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                ${success}
-            </div>
-                <c:remove var="success"/>
-        </c:if>
-        <c:if test="${requestScope['error'] ne null}">
-            <div class="alert alert-success alert-dismissible col-sm-offset-2 col-sm-10">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                ${error}
-            </div>
-                <c:remove var="error"/>
-        </c:if>
-
-    </div>
-</div>
 <div class="container">
-
     <form action="${initParam['adminPath']}categories?action=Edit" class="form-horizontal" method="POST">
 
         <input type="hidden" name="categoryid" value="${category.id}" />

@@ -3,24 +3,7 @@
 <c:import url="includes/templates/navbar.jsp"/>
 
 <h1 class="text-center">Manage Comments</h1>
-<div class="row">
-    <div class="container">
-        <c:if test="${sessionScope['error'] ne null}">
-            <div class="alert alert-danger alert-dismissible col-sm-12">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                ${error}
-            </div>
-            <c:remove var="error" />
-        </c:if>
-        <c:if test="${sessionScope['success'] ne null}">
-            <div class="alert alert-success alert-dismissible col-sm-12">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                ${success}
-            </div>
-            <c:remove var="success" />
-        </c:if>
-    </div>
-</div>
+<c:import url="includes/templates/check_one_error.jsp"/>
 
 <c:choose>
     <c:when test="${requestScope['comments'].size() gt 0}">

@@ -4,25 +4,7 @@
 
 <div class="home-stats">
     <h1 class="text-center">Dashboard</h1>
-    <div class="row">
-        <div class="container">
-            <c:if test="${sessionScope['error'] ne null}">
-                <div class="alert alert-danger alert-dismissible col-sm-12">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    ${error}
-                </div>
-                <c:remove var="error"/>                
-            </c:if>
-
-            <c:if test="${sessionScope['success'] ne null}">
-                <div class="alert alert-success alert-dismissible col-sm-12">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    ${success}
-                </div>
-                <c:remove var="success"/>                
-            </c:if>
-        </div>
-    </div>
+    <c:import url="includes/templates/check_one_error.jsp"/>
 
     <div class="container text-center">
         <div class="row">
@@ -30,9 +12,9 @@
                 <div class="stat st-members">
                     <i class="fa fa-users"></i>
                     <div class="info">
-                        Total Members
+                        Total Users
                         <span>
-                            <a href="${initParam['adminPath']}users">${numUsers}</a>
+                            <a href="${initParam['adminPath']}manage-users">${numUsers}</a>
                         </span>
                     </div>
                 </div>
@@ -41,7 +23,7 @@
                 <div class="stat st-pending">
                     <i class="fa fa-user-plus"></i>
                     <div class="info">
-                        Pending Members
+                        Pending Users
                         <span>
                             <a href="${initParam['adminPath']}users?action=Manage&page=Pending">
                                 ${numPendingUsers}
@@ -96,19 +78,19 @@
                                         <li>
                                             ${user.name}
 
-                                            <a href='${initParam['adminPath']}users?action=Edit&userid=${user.id}'>
+                                            <a href='${initParam['adminPath']}edit-user?userid=${user.id}'>
                                                 <span class='btn btn-success pull-right'>
                                                     <i class="fa fa-edit"></i> Edit
                                                 </span>
                                             </a>
 
-                                            <a href='${initParam['adminPath']}users?action=Delete&userid=${user.id}'>
+                                            <a href='${initParam['adminPath']}delete-user?userid=${user.id}'>
                                                 <span class='btn btn-danger pull-right confirm'>
                                                     <i class="fa fa-edit"></i> Delete
                                                 </span>
                                             </a>
                                             <c:if test="${user.regStatus eq 0}">
-                                                <a href='${initParam['adminPath']}users?action=Activate&userid=${user.id}'>
+                                                <a href='${initParam['adminPath']}active-user?userid=${user.id}'>
                                                     <span class='btn btn-info pull-right'>
                                                         <i class='fa fa-check'></i> Activate
                                                     </span>
@@ -119,7 +101,7 @@
                                     </c:forEach>
                                 </c:when>
                                 <c:otherwise>
-                                    There's No Members To Show
+                                    There's No Users To Show
                                 </c:otherwise>
                             </c:choose>
                         </ul>
@@ -164,7 +146,7 @@
                                     </c:forEach>
                                 </c:when>
                                 <c:otherwise>
-                                    There's No Members To Show
+                                    There's No Users To Show
                                 </c:otherwise>
                             </c:choose>
                         </ul>
@@ -198,7 +180,7 @@
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
-                                There's No Members To Show
+                                There's No Users To Show
                             </c:otherwise>
                         </c:choose>
                     </div>
