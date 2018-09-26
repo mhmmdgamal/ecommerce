@@ -1,4 +1,3 @@
-
 // <editor-fold >
 package com.ecommerce.customer.controller;
 
@@ -46,8 +45,14 @@ public class LoginRegisterController extends HttpServlet {
 //            Helper.forwardRequest(request, response, customerJspPath + "home.jsp", "Home");
 
         } else {
+            String previous = request.getParameter("previous");
+            
+            if (previous != null) {
+                previous = "?previous=" + previous;
+            }
+            
             // forword the requset to the login page
-            Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp", "Login");
+            Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp" + previous, "Login");
         }
     }
 
@@ -59,6 +64,8 @@ public class LoginRegisterController extends HttpServlet {
         //get param login to know if user do login or do register 
         String login = request.getParameter("login");
 
+        String previous = request.getParameter("previous");
+
         if (login != null) {//if user login 
             // get form params from the request
             String username = request.getParameter("user");
@@ -67,8 +74,7 @@ public class LoginRegisterController extends HttpServlet {
 
             // hash password
             String passwordHashed = HashHelper.stringHash(password);
-            System.out.println(passwordHashed);
-            
+
             // get logging user
             User user = new UserDaoImpl(servletContext).getLoginUser(username, passwordHashed, false);
 
@@ -79,23 +85,19 @@ public class LoginRegisterController extends HttpServlet {
                     CookieHelper.addCookie("userId", "" + user.getId(), response);
                     CookieHelper.addCookie("fullName", (user.getFullName().split(" ")[0]), response);
 
-                    if (true) {//previousPage == null <improve>
-                        Helper.setTitle(request, "Home");
-                        response.sendRedirect("home");
-                    } else {
-//                        Helper.setTitle(request, Helper.getPageName(previousPage));
-//                        response.sendRedirect(Helper.getPageName(previousPage));
-                    }
                 } else {
                     // set session for User 
                     SetUserSession(user, session);
-                    if (true) { //previousPage == null<improve>
-                        Helper.setTitle(request, "Home");
-                        response.sendRedirect("home");
-                    } else {
-//                        Helper.setTitle(request, Helper.getPageName(previousPage));
-//                        response.sendRedirect(Helper.getPageName(previousPage));
-                    }
+
+                }
+
+                    System.out.println(previous);
+                if (previous != null) {//previousPage == null <improve>
+                    Helper.setTitle(request, Helper.getTitleFromLink(previous));
+                    response.sendRedirect(previous);
+                } else {
+                    Helper.setTitle(request, "Home");
+                    response.sendRedirect("home");
                 }
 
             } else {//user not exist in DB 
@@ -105,7 +107,11 @@ public class LoginRegisterController extends HttpServlet {
                 request.setAttribute("errors", formErrors);
                 // redirect to login page 
                 Helper.setTitle(request, "Login");
-                response.sendRedirect("login");
+                if (previous != null) {
+                    Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp?previous=" + previous);
+                } else {
+                    Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp");
+                }
             }
             //////////////////////////////////////////////////////////////////
 
@@ -129,13 +135,18 @@ public class LoginRegisterController extends HttpServlet {
 
                 // forword to login page
                 Helper.setTitle(request, "Login");
-                Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp");
+
+                if (previous != null) {
+                    Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp?previous=" + previous);
+                } else {
+                    Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp");
+                }
 
             } else {//if there is no errors
 
                 // hash password
                 String passwordHashed = HashHelper.stringHash(password);
-                        
+
                 // make new user and set info to it
                 User user = new User.Builder()
                         .name(username)
@@ -158,24 +169,32 @@ public class LoginRegisterController extends HttpServlet {
                         CookieHelper.addCookie("userId", "" + user.getId(), response);
                         CookieHelper.addCookie("fullName", (user.getFullName().split(" ")[0]), response);
 
-                        Helper.setTitle(request, "Home");
-                        response.sendRedirect("home");
-
                     } else {//if user ignore remember Me 
                         SetUserSession(user, session);
-
-                        // set page title and forword to home page
+                    }
+                    
+                    System.out.println(previous);
+                    if (previous != null) {//previousPage == null <improve>
+                        Helper.setTitle(request, Helper.getTitleFromLink(previous));
+                        response.sendRedirect(previous);
+                    } else {
                         Helper.setTitle(request, "Home");
                         response.sendRedirect("home");
                     }
+
                 } else {//if user not created 
                     // add new error to errors 
                     formErrors.add("Sorry This User Is Exist");
 
                     //forword to login again 
                     Helper.setTitle(request, "Login");
-                    Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp");
+                    if (previous != null) {
+                        Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp?previous=" + previous);
+                    } else {
+                        Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp");
+                    }
                 }
+
             }
         }
     }

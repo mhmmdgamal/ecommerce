@@ -56,7 +56,7 @@ public class ItemDaoImpl implements ItemDao {
         try (ResultSet rs = db.select()
                 .table(table)
                 .where("`tags` LIKE '%" + tag + "%'")
-                .where("AND `approve`=1")
+                .where(" AND `approve`=1")
                 .orderBy("id")
                 .sort(sort)
                 .fetchData()) {
@@ -150,7 +150,7 @@ public class ItemDaoImpl implements ItemDao {
                     .data("category_id", item.getCategory().getId())
                     .data("user_id", item.getUser().getId())
                     .data("tags", item.getTags())
-                    .where("`id`=", item.getId())
+                    .where("`id`=?", item.getId())
                     .update();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -424,7 +424,7 @@ public class ItemDaoImpl implements ItemDao {
         try (ResultSet rs = db.select()
                 .table(table)
                 .where("`id`=?", id)
-                .where("AND `approve`=1")
+                .where(" AND `approve`=1")
                 .fetchData()) {
 
             if (rs.next()) {

@@ -163,7 +163,7 @@ public class UserDaoImpl implements UserDao {
                     .data("password", user.getPassword())
                     .data("email", user.getEmail())
                     .data("full_name", user.getFullName())
-                    .where("`id`=", user.getId())
+                    .where("`id`=?", user.getId())
                     .update();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -366,7 +366,7 @@ public class UserDaoImpl implements UserDao {
 
         try (ResultSet rs = db.select()
                 .table("comments")
-                .where("`user_id`=", id)
+                .where("`user_id`=?", id)
                 .orderBy("id")
                 .sort(sort)
                 .fetchData()) {

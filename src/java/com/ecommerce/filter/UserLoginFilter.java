@@ -40,8 +40,14 @@ public class UserLoginFilter implements Filter {
 
         // check if the username session is exists
         if ((session.getAttribute("user") == null) && (!CookieHelper.isCookie("user", req, res))) {
+            String prevUrl = req.getRequestURL().toString();
+            
+            if (req.getQueryString() != null) {
+                prevUrl = "?" + req.getQueryString();
+            }
+
             // redirect to login page
-            res.sendRedirect("login");
+            res.sendRedirect("login?previous=" + prevUrl);
         } else {
             chain.doFilter(req, res);
         }
@@ -63,8 +69,8 @@ public class UserLoginFilter implements Filter {
         /**
          * for (Enumeration en = request.getParameterNames();
          * en.hasMoreElements(); ) { String name = (String)en.nextElement();
-         * String values[] = request.getParameterValues(name); 
-         * int n = values.length; StringBuffer buf = new StringBuffer();
+         * String values[] = request.getParameterValues(name); int n =
+         * values.length; StringBuffer buf = new StringBuffer();
          * buf.append(name); buf.append("="); for(int i=0; i < n; i++) {
          * buf.append(values[i]); if (i < n-1) buf.append(","); }
          * log(buf.toString()); }

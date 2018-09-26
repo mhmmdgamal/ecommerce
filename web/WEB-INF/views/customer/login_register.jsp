@@ -10,6 +10,8 @@
     <!-- Start Login Form -->
     <form class="login" action="${initParam['customerPath']}login" method="POST">
         <!-- action will go to the LoginRegisterController -->
+        <input type="text" hidden name="previous" value="${param['previous']}">
+        
         <div class="input-container">
             <input 
                 class="form-control" 
@@ -37,6 +39,8 @@
     <!-- End Login Form -->
     <!-- Start Signup Form -->
     <form class="signup" action="${initParam['customerPath']}login" method="POST">
+        <input type="text" hidden name="previous" value="${param['previous']}">
+        
         <div class="input-container">
             <input 
                 pattern=".{4,}"

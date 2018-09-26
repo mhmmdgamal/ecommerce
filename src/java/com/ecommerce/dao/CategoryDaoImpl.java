@@ -44,7 +44,7 @@ public class CategoryDaoImpl implements CategoryDao {
                     .data("visibility", category.getVisibility())
                     .data("allow_comments", category.getAllowComments())
                     .data("allow_ads", category.getAllowAds())
-                    .where("`id`=", category.getId())
+                    .where("`id`=?", category.getId())
                     .update();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());

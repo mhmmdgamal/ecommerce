@@ -61,7 +61,7 @@ public class Helper {
             setTitle(request, "Home");
             response.sendRedirect("");
         } else {
-            setTitle(request, getTitleFromRefererLink(link));
+            setTitle(request, getTitleFromLink(link));
             response.sendRedirect(link);
         }
     }
@@ -117,7 +117,7 @@ public class Helper {
      * @param link
      * @return title
      */
-    public static String getTitleFromRefererLink(String link) {
+    public static String getTitleFromLink(String link) {
         /**
          * link like: http://localhost:8084/ecommerce/items?action=Add get
          * items?action=Add

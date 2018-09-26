@@ -54,7 +54,7 @@ public class CommentDaoImpl implements CommentDao {
         try {
             updated = db.table(table)
                     .data("comment", comment.getComment())
-                    .where("`id`=", comment.getId())
+                    .where("`id`=?", comment.getId())
                     .update();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -130,7 +130,7 @@ public class CommentDaoImpl implements CommentDao {
     public List<Comment> getItemComments(long id, String sort) {
         List<Comment> comments = new ArrayList();
 
-        String where = null;
+        String where = "";
         if (id != 0) {
             where = " `item_id`=" + id + " AND status = 1";
         }
