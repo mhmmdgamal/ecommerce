@@ -3,9 +3,8 @@ package com.ecommerce.dao;
 import com.ecommerce.bean.Comment;
 import com.ecommerce.bean.Item;
 import com.ecommerce.bean.User;
+import com.ecommerce.helper.Helper;
 import com.ecommerce.helper.MySQLDatabaseHelper;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,14 +13,12 @@ import javax.servlet.ServletContext;
 
 public class UserDaoImpl implements UserDao {
 
-    private final Connection connection;
     private final MySQLDatabaseHelper db;
     private final String table = "users";
     private final ServletContext sc;
 
     public UserDaoImpl(ServletContext sc) {
         this.db = (MySQLDatabaseHelper) sc.getAttribute("db");
-        this.connection = db.getConnection();
         this.sc = sc;
     }
 
@@ -36,15 +33,15 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getLoginUser(String userName, String password, boolean admin) {
 
-        String query = "SELECT `id`, `name`, `password`, `full_name` FROM `users` WHERE `name` = ? AND `password` = ?";
+        String where = "`name` = ? AND `password` = ?";
         if (admin) {
-            query += " AND `group_id` = 1 LIMIT 1";
+            where += " AND `group_id` = 1 LIMIT 1";
         }
         User user = null;
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, userName);
-            pstmt.setString(2, password);
-            ResultSet rs = pstmt.executeQuery();
+        try (ResultSet rs = db.select("id", "name", "password", "full_name")
+                .table(table)
+                .where(where, userName, password)
+                .fetchData()) {
 
             if (rs.next()) {
                 user = new User.Builder()
@@ -72,7 +69,13 @@ public class UserDaoImpl implements UserDao {
     public List<Item> getUserItems(long id, String sort) {
         List<Item> items = new ArrayList();
 
-        try (ResultSet rs = db.findAll(new String[]{"*"}, "items", "`user_id`=" + id, "id", sort, null)) {
+        try (ResultSet rs = db.select()
+                .table("items")
+                .where("`user_id`=?", id)
+                .orderBy("id")
+                .sort(sort)
+                .fetchData()) {
+
             while (rs.next()) {
                 Item item = new Item.Builder()
                         .id(rs.getLong("id"))
@@ -109,11 +112,16 @@ public class UserDaoImpl implements UserDao {
     public int getNumPendingUsers() {
         int count = 0;
         try {
-            return db.count(table, "`register_status`=0");
+            ResultSet rs
+                    = db.select("COUNT(id) AS count")
+                            .table(table)
+                            .where("`register_status`=0")
+                            .fetchData();
+
+            return rs.getInt("count");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-
         return count;
     }
 
@@ -126,19 +134,17 @@ public class UserDaoImpl implements UserDao {
     @Override
     public boolean activeUser(long id) {
 
-        String sql = "UPDATE `users` SET `register_status` = 1 WHERE `id` = ?";
-
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
-
-            int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0) {
-                return true;
-            }
+        boolean actived = false;
+        try {
+            actived = db.table(table)
+                    .data("register_status", 1)
+                    .where("`id`=?", id)
+                    .update();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
-        return false;
+        return actived;
     }
 
     /**
@@ -149,7 +155,20 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public boolean updateUser(User user) {
-        return db.update(user, table);
+        boolean updated = false;
+        try {
+            updated = db.table(table)
+                    .data("name", user.getName())
+                    .data("password", user.getPassword())
+                    .data("email", user.getEmail())
+                    .data("full_name", user.getFullName())
+                    .where("`id`=", user.getId())
+                    .update();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return updated;
     }
 
     /**
@@ -160,7 +179,20 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public boolean addUser(User user) {
-        return db.insert(user, table);
+        boolean inserted = false;
+        try {
+            inserted = db.table(table)
+                    .data("name", user.getName())
+                    .data("password", user.getPassword())
+                    .data("email", user.getEmail())
+                    .data("full_name", user.getFullName())
+                    .data("date", Helper.getCurrentDate())
+                    .insert();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return inserted;
     }
 
     /**
@@ -171,11 +203,21 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public boolean deleteUser(long id) {
-        return db.delete(table, id);
+        boolean deleted = false;
+        try {
+            deleted = db.table(table)
+                    .where("`id`=?", id)
+                    .delete();
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return deleted;
     }
 
     /**
-     * get all users data from database
+     * get all users data table database
      *
      * @param pendings
      * @return found users
@@ -190,7 +232,12 @@ public class UserDaoImpl implements UserDao {
             where = "`group_id`!=1 AND `register_status`=0";
         }
 
-        try (ResultSet rs = db.findAll(new String[]{"*"}, table, where, "id", "DESC", null)) {
+        try (ResultSet rs = db.select()
+                .table(table)
+                .where(where)
+                .orderBy("id")
+                .sort("DESC")
+                .fetchData()) {
 
             while (rs.next()) {
                 User user = new User.Builder()
@@ -213,7 +260,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     /**
-     * get latest users data from database depending on number
+     * get latest users data table database depending on number
      *
      * @param num
      * @return latest num users
@@ -222,7 +269,14 @@ public class UserDaoImpl implements UserDao {
     public List<User> getLatestUsers(int num) {
         List<User> users = new ArrayList();
 
-        try (ResultSet rs = db.findLatest(new String[]{"*"}, table, "`group_id`!=1", "id", "DESC", num + "")) {
+        try (ResultSet rs = db.select()
+                .table(table)
+                .where("`group_id`!=1")
+                .orderBy("id")
+                .sort("DESC")
+                .limit(num)
+                .fetchData()) {
+
             while (rs.next()) {
                 User user = new User.Builder()
                         .id(rs.getLong("id"))
@@ -252,7 +306,11 @@ public class UserDaoImpl implements UserDao {
     public int getNumUsers() {
         int count = 0;
         try {
-            return db.count(table, null);
+            ResultSet rs = db.select("COUNT(id) AS count")
+                    .table(table)
+                    .fetchData();
+
+            return rs.getInt("count");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -269,7 +327,11 @@ public class UserDaoImpl implements UserDao {
     public User getUserById(long id) {
         User user = null;
 
-        try (ResultSet rs = db.findOne(new String[]{"*"}, table, "`id`=?", id)) {
+        try (ResultSet rs = db.select()
+                .table(table)
+                .where("`id`=?", id)
+                .fetchData()) {
+
             if (rs.next()) {
                 user = new User.Builder()
                         .id(rs.getLong("id"))
@@ -299,7 +361,12 @@ public class UserDaoImpl implements UserDao {
     public List<Comment> getUserComments(Long id, String sort) {
         List<Comment> comments = new ArrayList();
 
-        try (ResultSet rs = db.findAll(new String[]{"*"}, "comments", "`user_id`=" + id, "id", sort, null)) {
+        try (ResultSet rs = db.select()
+                .table("comments")
+                .where("`user_id`=", id)
+                .orderBy("id")
+                .sort(sort)
+                .fetchData()) {
 
             Comment comment;
 
