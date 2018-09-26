@@ -26,12 +26,10 @@
                     </li>
                 </ul>
                 <!--<improve>Button not work-->
-                <a href="${initParam['customerPath']}profile?editInfo=clicked " class="btn btn-default">Edit Information</a>
+                <a href="${initParam['customerPath']}edit-profile" class="btn btn-default">Edit Information</a>
             </div>
         </div>
     </div>
-</div>
-<div id="my-ads" class="my-ads block">
     <div class="container">
         <div class="panel panel-primary">
             <div class="panel-heading">My Items</div>
@@ -55,7 +53,6 @@
                                     </div>
                                 </div>
                             </c:forEach>
-                            <div class="well"> Create <a href="${initParam['customerPath']}new-item">New Item</a></div>
                         </div>
                     </c:when>
                     <c:otherwise>
