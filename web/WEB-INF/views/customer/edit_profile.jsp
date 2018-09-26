@@ -12,7 +12,7 @@
             <div class="panel-body">
                 <form class="form-horizontal main-form" action="${initParam['customerPath']}edit-profile" method="POST">
                     <!-- Start id Field -->
-                    <input type="hidden" name="itemid" value="${useri.d}" />
+                    <input type="hidden" name="itemid" value="${user['id']}" />
                     <!-- End id Field -->
                     <div class="form-group form-group-lg">
                         <label class="col-sm-3 control-label"><span>Login Name</span> :</label>
@@ -26,7 +26,7 @@
                                 placeholder="Name of The Item"
                                 data-class=".live-title"
                                 required 
-                                value="${user.name}"/>
+                                value="${user['name']}"/>
                         </div>
                     </div>
                     <div class="form-group form-group-lg">
@@ -41,7 +41,7 @@
                                 placeholder="New password"
                                 data-class=".live-title"
                                 required 
-                                value="${user.password}"/>
+                                value="${user['password']}"/>
                         </div>
                     </div>
                     <div class="form-group form-group-lg">
@@ -56,7 +56,7 @@
                                 placeholder="Name of The Item"
                                 data-class=".live-title"
                                 required 
-                                value="${user.email}"/>
+                                value="${user['email']}"/>
                         </div>
                     </div>
                     <div class="form-group form-group-lg">
@@ -70,7 +70,7 @@
                                 class="form-control live"  
                                 placeholder="Name of The Item"
                                 data-class=".live-title"
-                                value="${user.fullName}"/>
+                                value="${user['fullName']}"/>
                         </div>
                     </div>
                     <div class="form-group form-group-lg">
@@ -84,7 +84,7 @@
                                 class="form-control live"  
                                 placeholder="Name of The Item"
                                 data-class=".live-title"
-                                value="${user.date}"/>
+                                value="${user['date']}"/>
                         </div>
                     </div>
                     <!-- Start Submit Field -->

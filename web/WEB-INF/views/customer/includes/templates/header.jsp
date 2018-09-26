@@ -56,7 +56,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <c:forEach items="${navCategories}" var="category">
                             <li>
-                                <a href="${initParam['customerPath']}categories?pageid=${category.id}">${category.name}</a>
+                                <a href="${initParam['customerPath']}categories?pageid=${category['id']}">${category['name']}</a>
                             </li>
                         </c:forEach>
                     </ul>

@@ -24,18 +24,18 @@
                     <c:forEach items="${requestScope['items']}" var="item">
 
                         <tr>
-                            <td>${item.id}</td>
-                            <td>${item.name}</td>
-                            <td>${item.description}</td>
-                            <td>${item.price}</td>
-                            <td>${item.addDate}</td>
-                            <td>${item.user.name}</td>
-                            <td>${item.category.name}</td>
+                            <td>${item['id']}</td>
+                            <td>${item['name']}</td>
+                            <td>${item['description']}</td>
+                            <td>${item['price']}</td>
+                            <td>${item['addDate']}</td>
+                            <td>${item['user']['name']}</td>
+                            <td>${item['category']['name']}</td>
                             <td>
-                                <a href='${initParam['adminPath']}items?action=Edit&itemid=${item.id}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
-                                <a href='${initParam['adminPath']}items?action=Delete&itemid=${item.id}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>
-                                <c:if test="${item.approve eq 0}">
-                                    <a href='${initParam['adminPath']}items?action=Approve&itemid=${item.id}' class='btn btn-info activate'> <i class='fa fa-check'></i> Approve</a>
+                                <a href='${initParam['adminPath']}items?action=Edit&itemid=${item['id']}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
+                                <a href='${initParam['adminPath']}items?action=Delete&itemid=${item['id']}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>
+                                <c:if test="${item['approve'] eq 0}">
+                                    <a href='${initParam['adminPath']}items?action=Approve&itemid=${item['id']}' class='btn btn-info activate'> <i class='fa fa-check'></i> Approve</a>
                                 </c:if>
                             </td>
                         </tr>

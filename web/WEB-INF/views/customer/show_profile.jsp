@@ -10,19 +10,19 @@
                 <ul class="list-unstyled">
                     <li>
                         <i class="fa fa-unlock-alt fa-fw"></i>
-                        <span>Login Name</span> : ${user.name}
+                        <span>Login Name</span> : ${user['name']}
                     </li>
                     <li>
                         <i class="fa fa-envelope-o fa-fw"></i>
-                        <span>Email</span> : ${user.email}
+                        <span>Email</span> : ${user['email']}
                     </li>
                     <li>
                         <i class="fa fa-user fa-fw"></i>
-                        <span>Full Name</span> : ${user.fullName}
+                        <span>Full Name</span> : ${user['fullName']}
                     </li>
                     <li>
                         <i class="fa fa-calendar fa-fw"></i>
-                        <span>Registered Date</span> : ${user.date}
+                        <span>Registered Date</span> : ${user['date']}
                     </li>
                 </ul>
                 <!--<improve>Button not work-->
@@ -42,15 +42,15 @@
                             <c:forEach items="${userItems}" var="item">
                                 <div class="col-sm-6 col-md-3">
                                     <div class="thumbnail item-box">
-                                        <c:if test="${item.approve eq 0}">
+                                        <c:if test="${item['approve'] eq 0}">
                                             <span class="approve-status">Waiting Approval</span>
                                         </c:if>
-                                        <span class="price-tag">${item.price}</span>
+                                        <span class="price-tag">${item['price']}</span>
                                         <img class="img-responsive" src="${initParam['customerImgPath']}img.png" alt="No Image" />
                                         <div class="caption">
-                                            <h3><a href="${initParam['customerPath']}items?itemid=${item.id}">${item.name}</a></h3>
-                                            <p>${item.description}</p>
-                                            <div class="date">${item.addDate}</div>
+                                            <h3><a href="${initParam['customerPath']}items?itemid=${item['id']}">${item['name']}</a></h3>
+                                            <p>${item['description']}</p>
+                                            <div class="date">${item['addDate']}</div>
                                         </div>
                                     </div>
                                 </div>

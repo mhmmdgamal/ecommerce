@@ -67,7 +67,7 @@
                         <i class="fa fa-users"></i> 
                         Latest ${latestUsers.size()} Registered Users 
                         <span class="toggle-info pull-right">
-                            <i class="fa fa-plus fa-lg"></i>
+                            <i class="fa fa-minus fa-lg"></i>
                         </span>
                     </div>
                     <div class="panel-body">
@@ -76,21 +76,21 @@
                                 <c:when test="${latestUsers.size() gt 0}">
                                     <c:forEach items="${latestUsers}" var="user">
                                         <li>
-                                            ${user.name}
+                                            ${user['name']}
 
-                                            <a href='${initParam['adminPath']}edit-user?userid=${user.id}'>
+                                            <a href='${initParam['adminPath']}edit-user?userid=${user['id']}'>
                                                 <span class='btn btn-success pull-right'>
                                                     <i class="fa fa-edit"></i> Edit
                                                 </span>
                                             </a>
 
-                                            <a href='${initParam['adminPath']}delete-user?userid=${user.id}'>
+                                            <a href='${initParam['adminPath']}delete-user?userid=${user['id']}'>
                                                 <span class='btn btn-danger pull-right confirm'>
                                                     <i class="fa fa-edit"></i> Delete
                                                 </span>
                                             </a>
-                                            <c:if test="${user.regStatus eq 0}">
-                                                <a href='${initParam['adminPath']}active-user?userid=${user.id}'>
+                                            <c:if test="${user['regStatus'] eq 0}">
+                                                <a href='${initParam['adminPath']}active-user?userid=${user['id']}'>
                                                     <span class='btn btn-info pull-right'>
                                                         <i class='fa fa-check'></i> Activate
                                                     </span>
@@ -113,7 +113,7 @@
                     <div class="panel-heading">
                         <i class="fa fa-tag"></i> Latest ${latestItems.size()} Items 
                         <span class="toggle-info pull-right">
-                            <i class="fa fa-plus fa-lg"></i>
+                            <i class="fa fa-minus fa-lg"></i>
                         </span>
                     </div>
                     <div class="panel-body">
@@ -122,21 +122,21 @@
                                 <c:when test="${latestItems.size() gt 0}">
                                     <c:forEach items="${latestItems}" var="item">
                                         <li>
-                                            ${item.name}
+                                            ${item['name']}
 
-                                            <a href='${initParam['adminPath']}items?action=Edit&itemid=${item.id}'>
+                                            <a href='${initParam['adminPath']}items?action=Edit&itemid=${item['id']}'>
                                                 <span class='btn btn-success pull-right'>
                                                     <i class="fa fa-edit"></i> Edit
                                                 </span>
                                             </a>
 
-                                            <a href='${initParam['adminPath']}items?action=Delete&itemid=${item.id}'>
+                                            <a href='${initParam['adminPath']}items?action=Delete&itemid=${item['id']}'>
                                                 <span class='btn btn-danger pull-right confirm'>
                                                     <i class="fa fa-edit"></i> Delete
                                                 </span>
                                             </a>
-                                            <c:if test="${item.approve eq 0}">
-                                                <a href='${initParam['adminPath']}items?action=Approve&itemid=${item.id}'>
+                                            <c:if test="${item['approve'] eq 0}">
+                                                <a href='${initParam['adminPath']}items?action=Approve&itemid=${item['id']}'>
                                                     <span class='btn btn-info pull-right'>
                                                         <i class='fa fa-check'></i> Activate
                                                     </span>
@@ -162,7 +162,7 @@
                         <i class="fa fa-comments-o"></i> 
                         Latest ${latestComments.size()} Comments 
                         <span class="toggle-info pull-right">
-                            <i class="fa fa-plus fa-lg"></i>
+                            <i class="fa fa-minus fa-lg"></i>
                         </span>
                     </div>
                     <div class="panel-body">
@@ -171,11 +171,11 @@
                                 <c:forEach items="${latestComments}" var="comment">
                                     <div class="comment-box">
                                         <span class="member-n">
-                                            <a href="${applicationScope[""]}users?action=Edit&userid=${comment.user.id}">
-                                                ${comment.user.name}
+                                            <a href="${initParam['adminPath']}users?action=Edit&userid=${comment['user']['id']}">
+                                                ${comment['user']['name']}
                                             </a>
                                         </span>
-                                        <p class="member-c">${comment.comment}</p>
+                                        <p class="member-c">${comment['comment']}</p>
                                     </div>
                                 </c:forEach>
                             </c:when>

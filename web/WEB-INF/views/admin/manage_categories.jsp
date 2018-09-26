@@ -14,8 +14,8 @@
                     <i class="fa fa-edit"></i> Manage Categories
                     <div class="option pull-right">
                         <i class="fa fa-sort"></i> Ordering: [
-                        <a class="${(sort == "ASC") ? "active" : "" }" href="?sort=ASC">Asc</a> | 
-                        <a class="${(sort == "DES") ? "active" : "" }" href="?sort=DESC">Desc</a> ] 
+                        <a class="${(sort == "ASC") ? "active" : "" }" href="?sort=ASC">ASC</a> | 
+                        <a class="${(sort == "DESC") ? "active" : "" }" href="?sort=DESC">DESC</a> ] 
                         <i class="fa fa-eye"></i> View: [
                         <span class="active" data-view="full">Full</span> |
                         <span data-view="classic">Classic</span> ]
@@ -26,22 +26,22 @@
                     <c:forEach items="${requestScope['categories']}" var="category">
                         <div class='cat'>
                             <div class='hidden-buttons'>
-                                <a href='${initParam['adminPath']}categories?action=Edit&categoryid=${category.id}' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Edit</a>
-                                <a href='${initParam['adminPath']}categories?action=Delete&categoryid=${category.id}' class='confirm btn btn-xs btn-danger'><i class='fa fa-close'></i> Delete</a>
+                                <a href='${initParam['adminPath']}categories?action=Edit&categoryid=${category['id']}' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Edit</a>
+                                <a href='${initParam['adminPath']}categories?action=Delete&categoryid=${category['id']}' class='confirm btn btn-xs btn-danger'><i class='fa fa-close'></i> Delete</a>
                             </div>
-                            <h3>${category.name}</h3>
+                            <h3>${category['name']}</h3>
                             <div class='full-view'>
-                                <p>${(category.description.equals("")) ? "This category has no description" : category.getDescription()}</p>
+                                <p>${(category['description'].equals("")) ? "This category has no description" : category['description']}</p>
 
-                                <c:if test="${category.visibility eq 1}">
+                                <c:if test="${category['visibility'] eq 1}">
                                     <span class="visibility cat-span"><i class="fa fa-eye"></i> Hidden</span> 
                                 </c:if>
 
-                                <c:if test="${category.allowComments eq 1}">
+                                <c:if test="${category['allowComments'] eq 1}">
                                     <span class="commenting cat-span"><i class="fa fa-close"></i> Comment Disabled</span> 
                                 </c:if>
 
-                                <c:if test="${category.allowAds eq 1}">     
+                                <c:if test="${category['allowAds'] eq 1}">     
                                     <span class="advertises cat-span"><i class="fa fa-close"></i> Ads Disabled</span> 
                                 </c:if>
 
@@ -74,7 +74,7 @@
 <c:otherwise>
 
     <div class="container">
-        <div class="nice-message">There\'s No Categories To Show</div>
+        <div class="nice-message">There's No Categories To Show</div>
         <a href="${initParam['adminPath']}categories?action=Add" class="btn btn-primary">
             <i class="fa fa-plus"></i> New Category
         </a>

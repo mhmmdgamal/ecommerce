@@ -13,7 +13,7 @@
                     <div class="col-md-8">
                         <form class="form-horizontal main-form" action="${initParam['customerPath']}edit-item" method="POST">
                             <!-- Start id Field -->
-                            <input type="hidden" name="itemid" value="${item.id}" />
+                            <input type="hidden" name="itemid" value="${item['id']}" />
                             <!-- End id Field -->
                             <!-- Start Name Field -->
                             <div class="form-group form-group-lg">
@@ -28,7 +28,7 @@
                                         placeholder="Name of The Item"
                                         data-class=".live-title"
                                         required 
-                                        value="${item.name}"/>
+                                        value="${item['name']}"/>
                                 </div>
                             </div>
                             <!-- End Name Field -->
@@ -45,7 +45,7 @@
                                         placeholder="Description of The Item" 
                                         data-class=".live-desc"
                                         required 
-                                        value="${item.description}"/>
+                                        value="${item['description']}"/>
                                 </div>
                             </div>
                             <!-- End Description Field -->
@@ -60,7 +60,7 @@
                                         placeholder="Price of The Item" 
                                         data-class=".live-price" 
                                         required 
-                                        value="${item.price}"/>
+                                        value="${item['price']}"/>
                                 </div>
                             </div>
                             <!-- End Price Field -->
@@ -74,7 +74,7 @@
                                         class="form-control" 
                                         placeholder="Country of Made" 
                                         required 
-                                        value="${item.countryMade}"
+                                        value="${item['countryMade']}"
                                         />
                                 </div>
                             </div>
@@ -84,10 +84,10 @@
                                 <label class="col-sm-3 control-label">Status</label>
                                 <div class="col-sm-10 col-md-9">
                                     <select name="status">
-                                        <option value="1" ${(item.status.equals("1")) ? "selected" : ""}>New</option>
-                                        <option value="2" ${(item.status.equals("2")) ? "selected" : ""}>Like New</option>
-                                        <option value="3" ${(item.status.equals("3")) ? "selected" : ""}>Used</option>
-                                        <option value="4" ${(item.status.equals("4")) ? "selected" : ""}>Very Old</option>
+                                        <option value="1" ${(item['status'].equals("1")) ? "selected" : ""}>New</option>
+                                        <option value="2" ${(item['status'].equals("2")) ? "selected" : ""}>Like New</option>
+                                        <option value="3" ${(item['status'].equals("3")) ? "selected" : ""}>Used</option>
+                                        <option value="4" ${(item['status'].equals("4")) ? "selected" : ""}>Very Old</option>
                                     </select>
                                 </div>
                             </div>
@@ -99,7 +99,7 @@
                                     <select name="category" required >
                                         <option value="0">...</option>
                                         <c:forEach items="${categories}" var="category">
-                                            <option value='${category.id}' ${(item.category.id eq category.id) ? "selected" : ""}>${category.name}</option>
+                                            <option value='${category['id']}' ${(item['category']['id'] eq category['id']) ? "selected" : ""}>${category['name']}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -114,7 +114,7 @@
                                         name="tags" 
                                         class="form-control" 
                                         placeholder="Separate Tags With Comma (,)"
-                                        value="${item.tags}"/>
+                                        value="${item['tags']}"/>
                                 </div>
                             </div>
                             <!-- End Tags Field -->
@@ -130,12 +130,12 @@
                     <div class="col-md-4">
                         <div class="thumbnail item-box live-preview">
                             <span class="price-tag">
-                                $<span class="live-price">${item.price}</span>
+                                $<span class="live-price">${item['price']}</span>
                             </span>
                             <img class="img-responsive" src="${initParam['customerImgPath']}img.png" alt="No Image" />
                             <div class="caption">
-                                <h3 class="live-title" >Title: ${item.name}</h3>
-                                <p class="live-desc">Description: ${item.description}</p>
+                                <h3 class="live-title" >Title: ${item['name']}</h3>
+                                <p class="live-desc">Description: ${item['description']}</p>
                             </div>
                         </div>
                     </div>

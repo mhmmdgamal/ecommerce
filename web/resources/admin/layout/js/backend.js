@@ -10,11 +10,11 @@ $(function () {
 
 		if ($(this).hasClass('selected')) {
 
-			$(this).html('<i class="fa fa-minus fa-lg"></i>');
+			$(this).html('<i class="fa fa-plus fa-lg"></i>');
 
 		} else {
 
-			$(this).html('<i class="fa fa-plus fa-lg"></i>');
+			$(this).html('<i class="fa fa-minus fa-lg"></i>');
 
 		}
 

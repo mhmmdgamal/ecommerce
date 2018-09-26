@@ -9,12 +9,12 @@
 
     <form action="${initParam['adminPath']}edit-user" class="form-horizontal" method="POST">
 
-        <input type="hidden" name="userid" value="${user.id}" />
+        <input type="hidden" name="userid" value="${user['id']}" />
         <!-- Start Username Field -->
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Username</label>
             <div class="col-sm-10 col-md-6">
-                <input type="text" name="username" class="form-control" value="${user.name}" autocomplete="off" required="required" />
+                <input type="text" name="username" class="form-control" value="${user['name']}" autocomplete="off" required="required" />
             </div>
         </div>
         <!-- End Username Field -->
@@ -22,7 +22,7 @@
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Password</label>
             <div class="col-sm-10 col-md-6">
-                <input type="hidden" name="oldPassword" value="${user.password}" />
+                <input type="hidden" name="oldPassword" value="${user['password']}" />
                 <input type="password" name="newPassword" class="form-control" autocomplete="new-password" placeholder="Leave Blank If You Dont Want To Change" />
             </div>
         </div>
@@ -31,7 +31,7 @@
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Email</label>
             <div class="col-sm-10 col-md-6">
-                <input type="email" name="email" value="${user.email}" class="form-control" required="required" />
+                <input type="email" name="email" value="${user['email']}" class="form-control" required="required" />
             </div>
         </div>
         <!-- End Email Field -->
@@ -39,7 +39,7 @@
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Full Name</label>
             <div class="col-sm-10 col-md-6">
-                <input type="text" name="full" value="${user.fullName}" class="form-control" required="required" />
+                <input type="text" name="full" value="${user['fullName']}" class="form-control" required="required" />
             </div>
         </div>
         <!-- End Full Name Field -->

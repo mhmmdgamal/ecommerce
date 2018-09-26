@@ -244,10 +244,11 @@ public final class MySQLDatabaseHelper {
     public ResultSet fetchData() throws SQLException {
 
         String query = this.fetchStatement();
+        System.out.println(query);
         PreparedStatement ps = this.buildQuery(query, this.bindings);
+        this.reset();
         ResultSet results = ps.executeQuery();
 
-        this.reset();
         return results;
     }
 
@@ -313,8 +314,8 @@ public final class MySQLDatabaseHelper {
         }
         System.out.println(query);
         PreparedStatement ps = this.buildQuery(query, this.bindings);
-        int rowsAffected = ps.executeUpdate();
         this.reset();
+        int rowsAffected = ps.executeUpdate();
         return (rowsAffected > 0);
     }
 
@@ -343,8 +344,8 @@ public final class MySQLDatabaseHelper {
         query += this.setFields();
         System.out.println(query);
         PreparedStatement ps = this.buildQuery(query, this.bindings);
-        int rowsAffected = ps.executeUpdate();
         this.reset();
+        int rowsAffected = ps.executeUpdate();
         return (rowsAffected > 0);
     }
 
@@ -362,8 +363,8 @@ public final class MySQLDatabaseHelper {
             query += " WHERE " + String.join(" ", this.wheres);
         }
         PreparedStatement ps = this.buildQuery(query, this.bindings);
-        int rowsAffected = ps.executeUpdate();
         this.reset();
+        int rowsAffected = ps.executeUpdate();
         return (rowsAffected > 0);
     }
 
@@ -462,15 +463,15 @@ public final class MySQLDatabaseHelper {
      * @return void
      */
     private void reset() {
-        this.bindings.clear();
-        this.data.clear();
-        this.joins.clear();
+        this.bindings = new ArrayList<>();
+        this.data = new LinkedHashMap<String, Object>();
+        this.joins = new ArrayList<>();
         this.limit = 0;
         this.offset = 0;
-        this.orderBy.clear();
-        this.selects.clear();
+        this.orderBy = new ArrayList<>();
+        this.selects = new ArrayList<>();
         this.sort = null;
         this.table = null;
-        this.wheres.clear();
+        this.wheres = new ArrayList<>();
     }
 }

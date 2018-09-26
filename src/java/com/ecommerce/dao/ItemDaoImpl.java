@@ -55,7 +55,7 @@ public class ItemDaoImpl implements ItemDao {
 
         try (ResultSet rs = db.select()
                 .table(table)
-                .where("`tags` LIKE '%?%'", tag)
+                .where("`tags` LIKE '%" + tag + "%'")
                 .where("AND `approve`=1")
                 .orderBy("id")
                 .sort(sort)
@@ -356,11 +356,13 @@ public class ItemDaoImpl implements ItemDao {
     public int getNumItems() {
         int count = 0;
         try {
-            ResultSet rs = db.select("COUNT(id) AS count")
+            ResultSet rs = db.select("COUNT(id)")
                     .table(table)
                     .fetchData();
 
-            return rs.getInt("count");
+            if (rs.next()) {
+                return rs.getInt("COUNT(id)");
+            }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }

@@ -25,7 +25,7 @@
                     </tr>
                     <c:forEach items="${requestScope['users']}" var="user">
                         <tr>
-                            <td>${user.getId()}</td>
+                            <td>${user['id']}</td>
                             <td>
                                 <% if (true) { %>     
                                 No Image
@@ -33,16 +33,16 @@
                                 <img src='uploads/avatars/avatar.jpg' alt='editthis' />
                                 <% }%>
                             </td>
-                            <td>${user.name}</td>
-                            <td>${user.email}</td>
-                            <td>${user.fullName}</td>
-                            <td>${user.date}</td>
+                            <td>${user['name']}</td>
+                            <td>${user['email']}</td>
+                            <td>${user['fullName']}</td>
+                            <td>${user['date']}</td>
                             <td>
-                                <a href='${initParam['adminPath']}edit-user?userid=${user.id}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
-                                <a href='${initParam['adminPath']}delete-user?userid=${user.id}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete </a>
+                                <a href='${initParam['adminPath']}edit-user?userid=${user['id']}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
+                                <a href='${initParam['adminPath']}delete-user?userid=${user['id']}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete </a>
 
-                                <c:if test="${user.regStatus eq 0}">
-                                    <a href='${initParam['adminPath']}active-user?userid=${user.id}' class='btn btn-info activate'><i class='fa fa-check'></i> Activate</a>
+                                <c:if test="${user['regStatus'] eq 0}">
+                                    <a href='${initParam['adminPath']}active-user?userid=${user['id']}' class='btn btn-info activate'><i class='fa fa-check'></i> Activate</a>
                                 </c:if>
                             </td>
                         </tr>

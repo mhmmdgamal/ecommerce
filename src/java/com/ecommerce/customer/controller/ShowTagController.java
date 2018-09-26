@@ -38,23 +38,32 @@ public class ShowTagController extends HttpServlet {
         Helper.setTitle(request, tag);
 
         // check if tag name exists
-        if (tag != null) {
-            // get tag items from database depending on tag name
-            List<Item> tagItems = new ItemDaoImpl(servletContext).getTagItems(tag, "ASC");
+        if (tag == null || tag.isEmpty()) {
 
-            // set tag items to request
-            request.setAttribute("tagItems", tagItems);
-
-            // set tag to request
-            request.setAttribute("tag", tag);
-
-        } else {
             String error = "You Must Enter Tag Name";
 
             // set error to request
             request.setAttribute("error", error);
+        } else {
+            // get tag items from database depending on tag name
+            List<Item> tagItems = new ItemDaoImpl(servletContext).getTagItems(tag, "ASC");
 
+            if (tagItems.size() > 0) {
+                // set tag items to request
+                request.setAttribute("tagItems", tagItems);
+
+                // set tag to request
+                request.setAttribute("tag", tag);
+
+            } else {
+                String error = "There's no item with tag: " + tag;
+
+                // set error to request
+                request.setAttribute("error", error);
+            }
         }
-        Helper.forwardRequest(request, response, customerJspPath + "show_items_of_tag.jsp");
+
+        Helper.forwardRequest(request, response, customerJspPath
+                + "show_items_of_tag.jsp");
     }
 }

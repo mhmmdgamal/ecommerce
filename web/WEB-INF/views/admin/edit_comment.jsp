@@ -9,12 +9,12 @@
 
     <form action="${initParam['adminPath']}comments?action=Edit" class="form-horizontal" method="POST">
 
-        <input type="hidden" name="commentid" value="${comment.id}" />
+        <input type="hidden" name="commentid" value="${comment['id']}" />
         <!-- Start Comment Field -->
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Comment</label>
             <div class="col-sm-10 col-md-6">
-                <textarea class="form-control" name="comment">${comment.comment}</textarea>
+                <textarea class="form-control" name="comment">${comment['comment']}</textarea>
             </div>
         </div>
         <!-- End Comment Field -->

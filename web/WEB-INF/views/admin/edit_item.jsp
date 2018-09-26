@@ -20,7 +20,7 @@
                     class="form-control" 
                     required="required"  
                     placeholder="Name of The Item"
-                    value="${item.name}" />
+                    value="${item['name']}" />
             </div>
         </div>
         <!-- End Name Field -->
@@ -34,7 +34,7 @@
                     class="form-control" 
                     required="required"  
                     placeholder="Description of The Item"
-                    value="${item.description}" />
+                    value="${item['description']}" />
             </div>
         </div>
         <!-- End Description Field -->
@@ -48,7 +48,7 @@
                     class="form-control" 
                     required="required" 
                     placeholder="Price of The Item"
-                    value="${item.price}" />
+                    value="${item['price']}" />
             </div>
         </div>
         <!-- End Price Field -->
@@ -62,7 +62,7 @@
                     class="form-control" 
                     required="required" 
                     placeholder="Country of Made"
-                    value="${item.countryMade}" />
+                    value="${item['countryMade']}" />
             </div>
         </div>
         <!-- End Country Field -->
@@ -71,10 +71,10 @@
             <label class="col-sm-2 control-label">Status</label>
             <div class="col-sm-10 col-md-6">
                 <select name="status">
-                    <option value="1" ${(item.status.equals("1")) ? "selected" : ""}>New</option>
-                    <option value="2" ${(item.status.equals("2")) ? "selected" : ""}>Like New</option>
-                    <option value="3" ${(item.status.equals("3")) ? "selected" : ""}>Used</option>
-                    <option value="4" ${(item.status.equals("4")) ? "selected" : ""}>Very Old</option>
+                    <option value="1" ${(item['status'].equals("1")) ? "selected" : ""}>New</option>
+                    <option value="2" ${(item['status'].equals("2")) ? "selected" : ""}>Like New</option>
+                    <option value="3" ${(item['status'].equals("3")) ? "selected" : ""}>Used</option>
+                    <option value="4" ${(item['status'].equals("4")) ? "selected" : ""}>Very Old</option>
                 </select>
             </div>
         </div>
@@ -86,8 +86,8 @@
                 <select name="user">
 
                     <c:forEach items="${requestScope['users']}" var="user">
-                        <option value='${user.id}' ${(item.user.id eq user.id) ? "selected" : ""}>
-                            ${user.name}
+                        <option value='${user['id']}' ${(item['user']['id'] eq user['id']) ? "selected" : ""}>
+                            ${user['name']}
                         </option>
 
                     </c:forEach>
@@ -101,8 +101,8 @@
             <div class="col-sm-10 col-md-6">
                 <select name="category">
                     <c:forEach items="${requestScope['categories']}" var="category">
-                        <option value='${category.id}' ${(item.category.id eq category.id) ? "selected" : ""}>
-                            ${category.name}
+                        <option value='${category['id']}' ${(item['category']['id'] eq category['id']) ? "selected" : ""}>
+                            ${category['name']}
                         </option>
                     </c:forEach>
 
@@ -133,7 +133,7 @@
                     name="tags" 
                     class="form-control" 
                     placeholder="Separate Tags With Comma (,)" 
-                    value="${item.tags}" />
+                    value="${item['tags']}" />
             </div>
         </div>
         <!-- End Tags Field -->
@@ -145,7 +145,7 @@
         </div>
         <!-- End Submit Field -->
     </form>
-    <h1 class="text-center">Manage [ ${item.name} ] Comments</h1>
+    <h1 class="text-center">Manage [ ${item['name']} ] Comments</h1>
     <div class="table-responsive">
         <table class="main-table text-center table table-bordered">
             <tr>
@@ -156,15 +156,15 @@
             </tr>
             <c:forEach items="${requestScope['itemComments']}" var="comment">
                 <tr>
-                    <td>${comment.comment}</td>
-                    <td>${comment.user.getName}</td>
-                    <td>${comment.addDate}</td>
+                    <td>${comment['comment']}</td>
+                    <td>${comment['user']['name']}</td>
+                    <td>${comment['addDate']}</td>
                     <td>
-                        <a href='${initParam['adminPath']}comments?action=Edit&commentid=${comment.id}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
-                        <a href='${initParam['adminPath']}comments?action=Delete&commentid=${comment.id}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete </a>
-                        <c:if test="${comment.status eq 0}">
+                        <a href='${initParam['adminPath']}comments?action=Edit&commentid=${comment['id']}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
+                        <a href='${initParam['adminPath']}comments?action=Delete&commentid=${comment['id']}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete </a>
+                        <c:if test="${comment['status'] eq 0}">
 
-                            <a href='${initParam['adminPath']}comments?action=Approve&commentid=${comment.id}' class='btn btn-info activate'><i class='fa fa-check'></i> Approve</a>
+                            <a href='${initParam['adminPath']}comments?action=Approve&commentid=${comment['id']}' class='btn btn-info activate'><i class='fa fa-check'></i> Approve</a>
                         </c:if>
                     </td>
                 </tr>

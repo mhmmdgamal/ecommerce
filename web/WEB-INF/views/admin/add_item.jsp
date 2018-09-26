@@ -82,7 +82,7 @@
                 <select name="user">
                     <option value="0">...</option>
                     <c:forEach items="${users}" var="user">
-                        <option value='${user.id}'>${user.name}</option>
+                        <option value='${user['id']}'>${user['name']}</option>
                     </c:forEach>
                     <!--                    <?php
                                         $allMembers = getAllFrom("*", "users", "", "", "UserID");
@@ -101,7 +101,7 @@
                 <select name="category">
                     <option value="0">...</option>
                     <c:forEach items="${categories}" var="category">
-                        <option value='${category.id}'>${category.name}</option>
+                        <option value='${category['id']}'>${category['name']}</option>
                     </c:forEach>
 
                     <!--                    <?php

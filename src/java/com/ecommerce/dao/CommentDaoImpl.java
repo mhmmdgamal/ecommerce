@@ -126,7 +126,6 @@ public class CommentDaoImpl implements CommentDao {
      * @param sort
      * @return found comments
      */
-    
     @Override
     public List<Comment> getItemComments(long id, String sort) {
         List<Comment> comments = new ArrayList();
@@ -210,11 +209,13 @@ public class CommentDaoImpl implements CommentDao {
     public int getNumComments() {
         int count = 0;
         try {
-            ResultSet rs = db.select("COUNT(id) AS count")
+            ResultSet rs = db.select("COUNT(id)")
                     .table(table)
                     .fetchData();
 
-            return rs.getInt("count");
+            if (rs.next()) {
+                return rs.getInt("COUNT(id)");
+            }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }

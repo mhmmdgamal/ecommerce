@@ -5,24 +5,24 @@
 <div class="information block">
     <div class="container">
         <div class="panel panel-primary">
-            <div class="panel-heading"> Information about ${user.name}</div>
+            <div class="panel-heading"> Information about ${user['name']}</div>
             <div class="panel-body">
                 <ul class="list-unstyled">
                     <li>
                         <i class="fa fa-unlock-alt fa-fw"></i>
-                        <span>Login Name</span> : ${user.name}
+                        <span>Login Name</span> : ${user['name']}
                     </li>
                     <li>
                         <i class="fa fa-envelope-o fa-fw"></i>
-                        <span>Email</span> : ${user.email}
+                        <span>Email</span> : ${user['email']}
                     </li>
                     <li>
                         <i class="fa fa-user fa-fw"></i>
-                        <span>Full Name</span> : ${user.fullName}
+                        <span>Full Name</span> : ${user['fullName']}
                     </li>
                     <li>
                         <i class="fa fa-calendar fa-fw"></i>
-                        <span>Registered Date</span> : ${user.date}
+                        <span>Registered Date</span> : ${user['date']}
                     </li>
                 </ul>
             </div>
@@ -33,7 +33,7 @@
 <div id="my-ads" class="my-ads block">
     <div class="container">
         <div class="panel panel-primary">
-            <div class="panel-heading"> Items of ${user.name}</div>
+            <div class="panel-heading"> Items of ${user['name']}</div>
             <div class="panel-body">
                 <c:choose>
                     <c:when test="${userItems.size() > 0}">
@@ -42,20 +42,20 @@
                                 <div class="col-sm-6 col-md-3">
                                     <div class="thumbnail item-box">
                                         <c:choose>
-                                            <c:when test="${item.approve eq 1}">
-                                                <span class="price-tag">${item.price}</span>
+                                            <c:when test="${item['approve'] eq 1}">
+                                                <span class="price-tag">${item['price']}</span>
                                                 <img class="img-responsive" src="${initParam['customerImgPath']}img.png" alt="No Image" />
                                                 <div class="caption">
-                                                    <h3><a href="${initParam['customerPath']}items?itemid=${item.id}">${item.name}</a></h3>
-                                                    <p>${item.description}</p>
+                                                    <h3><a href="${initParam['customerPath']}items?itemid=${item['id']}">${item['name']}</a></h3>
+                                                    <p>${item['description']}</p>
                                                     <div class="date">${item.addDate}</div>
                                                 </div>
                                             </c:when>
                                             <c:otherwise>
                                                 <img class="img-responsive" src="${initParam['customerImgPath']}2.png" alt="No Image" />
                                                 <div class="caption">
-                                                    <h3>there is a new item from ( ${user.name} ) will be displayed later ..
-                                                        <br>follow ( ${user.name} ) to receive notification</h3>
+                                                    <h3>there is a new item from ( ${user['name']} ) will be displayed later ..
+                                                        <br>follow ( ${user['name']} ) to receive notification</h3>
                                                 </div>
                                             </c:otherwise>
                                         </c:choose>
@@ -80,7 +80,7 @@
                 <c:choose>
                     <c:when test="${userComments.size() > 0}">
                         <c:forEach items="${userComments}" var="comment">
-                            <div class="well">${comment.comment}</div>
+                            <div class="well">${comment['comment']}</div>
                         </c:forEach>
                     </c:when>
                     <c:otherwise>

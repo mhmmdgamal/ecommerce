@@ -16,16 +16,16 @@
                     </tr>
                     <c:forEach items="${requestScope['comments']}" var="comment">
                         <tr>
-                            <td>${comment.id}</td>
-                            <td>${comment.comment}</td>
-                            <td>${comment.item.name}</td>
-                            <td>${comment.user.name}</td>
-                            <td>${comment.addDate}</td>
+                            <td>${comment['id']}</td>
+                            <td>${comment['comment']}</td>
+                            <td>${comment['item.name']}</td>
+                            <td>${comment['user.name']}</td>
+                            <td>${comment['addDate']}</td>
                             <td>
-                                <a href='${initParam['adminPath']}comments?action=Edit&commentid=${comment.id}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
-                                <a href='${initParam['adminPath']}comments?action=Delete&commentid=${comment.id}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>
-                                <c:if test="${comment.status eq 0}">
-                                    <a href='${initParam['adminPath']}comments?action=Approve&commentid=${comment.id}' class='btn btn-info activate'> <i class='fa fa-check'></i> Approve</a>
+                                <a href='${initParam['adminPath']}comments?action=Edit&commentid=${comment['id']}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
+                                <a href='${initParam['adminPath']}comments?action=Delete&commentid=${comment['id']}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>
+                                <c:if test="${comment['status'] eq 0}">
+                                    <a href='${initParam['adminPath']}comments?action=Approve&commentid=${comment['id']}' class='btn btn-info activate'> <i class='fa fa-check'></i> Approve</a>
                                 </c:if>
                             </td>
                         </tr>

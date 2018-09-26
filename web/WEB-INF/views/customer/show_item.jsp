@@ -6,7 +6,7 @@
 <c:choose>
     <c:when test="${item ne null}">
 
-        <h1 class="text-center">${item.name}</h1>
+        <h1 class="text-center">${item['name']}</h1>
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
@@ -14,49 +14,51 @@
                 </div>
 
                 <div class="col-md-9 item-info">
-                    <h2>${item.name}</h2>
-                    <p>${item.description}</p>
+                    <h2>${item['name']}</h2>
+                    <p>${item['description']}</p>
                     <ul class="list-unstyled">
                         <li>
                             <i class="fa fa-calendar fa-fw"></i>
-                            <span>Added Date</span> : ${item.addDate}
+                            <span>Added Date</span> : ${item['addDate']}
                         </li>
                         <li>
                             <i class="fa fa-money fa-fw"></i>
-                            <span>Price</span> : ${item.price}
+                            <span>Price</span> : ${item['price']}
                         </li>
                         <li>
                             <i class="fa fa-building fa-fw"></i>
-                            <span>Made In</span> : ${item.countryMade}
+                            <span>Made In</span> : ${item['countryMade']}
                         </li>
                         <li>
                             <i class="fa fa-tags fa-fw"></i>
-                            <span>Category</span> : <a href="${initParam['customerPath']}categories?pageid=${item.category.id}">${item.category.name}</a>
+                            <span>Category</span> : <a href="${initParam['customerPath']}categories?pageid=${item['category']['id']}">${item['category']['name']}</a>
                         </li>
                         <c:choose>
-                            <c:when test="${(item.user.id eq sessionScope['userId']) || (item.user.id eq cookie['userId']['value'])}">
+                            <c:when test="${(item['user']['id'] eq sessionScope['userId']) || (item['user']['id'] eq cookie['userId']['value'])}">
                                 <li>
                                     <i class="fa fa-user fa-fw"></i>
-                                    <span>Added By</span> : <a href="${initParam['customerPath']}profile?userid=${item.user.id}">${item.user.name}</a>
+                                    <span>Added By</span> : <a href="${initParam['customerPath']}profile?userid=${item['user']['id']}">${item['user']['name']}</a>
                                 </li>
                             </c:when>
                             <c:otherwise>
                                 <li>
                                     <i class="fa fa-user fa-fw"></i>
-                                    <span>Added By</span> : <a href="${initParam['customerPath']}users?userid=${item.user.id}">${item.user.name}</a>
+                                    <span>Added By</span> : <a href="${initParam['customerPath']}users?userid=${item['user']['id']}">${item['user']['name']}</a>
                                 </li>
                             </c:otherwise>
                         </c:choose>
                         <li class="tags-items">
                             <i class="fa fa-user fa-tags"></i>
                             <span>Tags</span> : 
-                            <c:forEach items="${Helper.explode(item.tags, ',')}" var="tag">
-                                <a href="${initParam['customerPath']}tags?name=${tag.toLowerCase()}">${tag}</a>
+                            <c:forEach items="${Helper.explode(item['tags'], ',')}" var="tag">
+                                <c:if test="${tag ne null && !tag.isEmpty()}">
+                                    <a href="${initParam['customerPath']}tags?name=${tag.toLowerCase()}">${tag}</a>
+                                </c:if>
                             </c:forEach>
                         </li>
                     </ul>
-                    <c:if test="${(item.user.id eq sessionScope['userId']) || (item.user.id eq cookie['userId']['value'])}">
-                        <a href="${initParam['customerPath']}edit-item?itemid=${item.id}" class="btn btn-default">Edit Item</a>
+                    <c:if test="${(item['user']['id'] eq sessionScope['userId']) || (item.user.id eq cookie['userId']['value'])}">
+                        <a href="${initParam['customerPath']}edit-item?itemid=${item['id']}" class="btn btn-default">Edit Item</a>
                     </c:if>
                 </div>
             </div>
@@ -68,7 +70,7 @@
                         <div class="col-md-offset-3">
                             <div class="add-comment">
                                 <h3>Add Your Comment</h3>
-                                <form action="${initParam['customerPath']}items?itemid=${item.id}" method="POST">
+                                <form action="${initParam['customerPath']}items?itemid=${item['id']}" method="POST">
                                     <textarea name="comment" required></textarea>
                                     <input class="btn btn-primary" type="submit" value="Add Comment">
                                 </form>
@@ -88,10 +90,10 @@
                     <div class="row">
                         <div class="col-sm-2 text-center">
                             <img class="img-responsive img-thumbnail img-circle center-block" src="${initParam['customerImgPath']}img.png" alt="No Image" />
-                            ${comment.user.name}
+                            ${comment['user']['name']}
                         </div>
                         <div class="col-sm-10">
-                            <p class="lead">${comment.comment}</p>
+                            <p class="lead">${comment['comment']}</p>
                         </div>
                     </div>
                 </div>

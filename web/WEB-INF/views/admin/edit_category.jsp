@@ -10,12 +10,12 @@
 <div class="container">
     <form action="${initParam['adminPath']}categories?action=Edit" class="form-horizontal" method="POST">
 
-        <input type="hidden" name="categoryid" value="${category.id}" />
+        <input type="hidden" name="categoryid" value="${category['id']}" />
         <!-- Start Name Field -->
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Name</label>
             <div class="col-sm-10 col-md-6">
-                <input type="text" name="name" class="form-control" required="required" placeholder="Name Of The Category" value="${category.name}" />
+                <input type="text" name="name" class="form-control" required="required" placeholder="Name Of The Category" value="${category['name']}" />
             </div>
         </div>
         <!-- End Name Field -->
@@ -23,7 +23,7 @@
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Description</label>
             <div class="col-sm-10 col-md-6">
-                <input type="text" name="description" class="form-control" placeholder="Describe The Category" value="${category.description}" />
+                <input type="text" name="description" class="form-control" placeholder="Describe The Category" value="${category['description']}" />
             </div>
         </div>
         <!-- End Description Field -->
@@ -31,7 +31,7 @@
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Ordering</label>
             <div class="col-sm-10 col-md-6">
-                <input type="text" name="ordering" class="form-control" placeholder="Number To Arrange The Categories" value="${category.ordering}" />
+                <input type="text" name="ordering" class="form-control" placeholder="Number To Arrange The Categories" value="${category['ordering']}" />
             </div>
         </div>
         <!-- End Ordering Field -->
@@ -58,11 +58,11 @@
             <label class="col-sm-2 control-label">Visible</label>
             <div class="col-sm-10 col-md-6">
                 <div>
-                    <input id="vis-yes" type="radio" name="visibility" value="0" ${(category.visibility) eq 0 ? "checked" : ""} />
+                    <input id="vis-yes" type="radio" name="visibility" value="0" ${(category['visibility']) eq 0 ? "checked" : ""} />
                     <label for="vis-yes">Yes</label> 
                 </div>
                 <div>
-                    <input id="vis-no" type="radio" name="visibility" value="1" ${(category.visibility) eq 1 ? "checked" : ""} />
+                    <input id="vis-no" type="radio" name="visibility" value="1" ${(category['visibility']) eq 1 ? "checked" : ""} />
                     <label for="vis-no">No</label> 
                 </div>
             </div>
@@ -73,11 +73,11 @@
             <label class="col-sm-2 control-label">Allow Commenting</label>
             <div class="col-sm-10 col-md-6">
                 <div>
-                    <input id="com-yes" type="radio" name="commenting" value="0" ${(category.allowComments) eq 0 ? "checked" : ""} />
+                    <input id="com-yes" type="radio" name="commenting" value="0" ${(category['allowComments']) eq 0 ? "checked" : ""} />
                     <label for="com-yes">Yes</label> 
                 </div>
                 <div>
-                    <input id="com-no" type="radio" name="commenting" value="1" ${(category.allowComments) == 1 ? "checked" : ""} />
+                    <input id="com-no" type="radio" name="commenting" value="1" ${(category['allowComments']) == 1 ? "checked" : ""} />
                     <label for="com-no">No</label> 
                 </div>
             </div>
@@ -88,11 +88,11 @@
             <label class="col-sm-2 control-label">Allow Ads</label>
             <div class="col-sm-10 col-md-6">
                 <div>
-                    <input id="ads-yes" type="radio" name="ads" value="0" ${(category.allowAds) eq 0 ? "checked" : ""} />
+                    <input id="ads-yes" type="radio" name="ads" value="0" ${(category['allowAds']) eq 0 ? "checked" : ""} />
                     <label for="ads-yes">Yes</label> 
                 </div>
                 <div>
-                    <input id="ads-no" type="radio" name="ads" value="1" ${(category.allowAds) eq 1 ? "checked" : ""} />
+                    <input id="ads-no" type="radio" name="ads" value="1" ${(category['allowAds']) eq 1 ? "checked" : ""} />
                     <label for="ads-no">No</label> 
                 </div>
             </div>
