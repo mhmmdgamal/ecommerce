@@ -7,17 +7,102 @@ import com.ecommerce.bean.Comment;
 import com.ecommerce.bean.Item;
 import com.ecommerce.bean.User;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 //</editor-fold >
 
-public class MySQLDatabaseHelper {
 
-    private static MySQLDatabaseHelper instance = null;
+public final class MySQLDatabaseHelper {
+
+    /**
+     * Table Name
+     *
+     * @var string
+     */
+    private String table;
+
+    /**
+     * Data Container
+     *
+     * @var map
+     */
+    private Map<String, Object> data = new LinkedHashMap();
+
+    /**
+     * Bindings Container
+     *
+     * @var array
+     */
+    private ArrayList bindings = new ArrayList();
+
+    /**
+     * Wheres
+     *
+     * @var array
+     */
+    private ArrayList wheres = new ArrayList();
+
+    /**
+     * Selects
+     *
+     * @var array
+     */
+    private ArrayList<String> selects = new ArrayList();
+
+    /**
+     * Limit
+     *
+     * @var int
+     */
+    private int limit;
+
+    /**
+     * Offset
+     *
+     * @var int
+     */
+    private int offset;
+
+    /**
+     * Joins
+     *
+     * @var array
+     */
+    private ArrayList<String> joins = new ArrayList();
+
+    /**
+     * Order By
+     *
+     * @array
+     */
+    private ArrayList<String> orderBy = new ArrayList();
+
+    /**
+     * Order By
+     *
+     * @var string
+     */
+    private String sort;
+
+    /**
+     * Connection
+     *
+     * @var Connection
+     */
     private Connection connection = null;
+
+    /**
+     * singleton instance of Database
+     */
+    private static MySQLDatabaseHelper instance = null;
 
     /**
      * connect to database
@@ -50,10 +135,6 @@ public class MySQLDatabaseHelper {
         return instance;
     }
 
-    public Connection getConnection() {
-        return connection;
-    }
-
     /**
      * close connection
      *
@@ -75,133 +156,333 @@ public class MySQLDatabaseHelper {
             ex.printStackTrace();
         }
     }
-
-    public boolean delete(String table, long id) {
-        String query = "DELETE FROM `" + table + "` WHERE `id`=?";
-
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setLong(1, id);
-
-            int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0) {
-                return true;
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-        return false;
+    
+    /**
+     * Get Database Connection Object PDO Object
+     *
+     * @return Connection
+     */
+    public Connection getConnection() {
+        return this.connection;
     }
 
-    public String prepareFindQuery(String[] columns, String table, String where, String orderBy, String sort, String limit) throws SQLException {
+    /**
+     * Set select clause
+     *
+     * @param selects
+     * @return this
+     */
+    public MySQLDatabaseHelper select(String... selects) {
+        this.selects.addAll(Arrays.asList(selects));
+        return this;
+    }
+
+    /**
+     * Set Join clause
+     *
+     * @param join
+     * @return this
+     */
+    public MySQLDatabaseHelper join(String join) {
+        this.joins.add(join);
+        return this;
+    }
+
+    /**
+     * Set Limit
+     *
+     * @param limit
+     * @return this
+     */
+    public MySQLDatabaseHelper limit(int limit) {
+        this.limit = limit;
+        return this;
+    }
+
+    /**
+     * Set and offset
+     *
+     * @param offset
+     * @return this
+     */
+    public MySQLDatabaseHelper offset(int offset) {
+        this.offset = offset;
+        return this;
+    }
+
+    /**
+     * Set Order By clause
+     *
+     * @param orderBy
+     * @return this
+     */
+    public MySQLDatabaseHelper orderBy(String orderBy) {
+        this.orderBy.add(orderBy);
+        return this;
+    }
+
+    /**
+     * Set sort clause
+     *
+     * @param sort
+     * @return this
+     */
+    public MySQLDatabaseHelper sort(String sort) {
+        if (sort.isEmpty()) {
+            sort = "ASC";
+        }
+        this.sort = sort;
+        return this;
+    }
+
+    /**
+     * Fetch Records table Table
+     *
+     * @return ResultSet | null
+     * @throws java.sql.SQLException
+     */
+    public ResultSet fetchData() throws SQLException {
+
+        String query = this.fetchStatement();
+        System.out.println(query);
+        PreparedStatement ps = this.buildQuery(query, this.bindings);
+        ResultSet results = ps.executeQuery();
+
+        this.reset();
+        return results;
+    }
+
+    /**
+     * Prepare fetch Statement
+     *
+     * @return string
+     */
+    private String fetchStatement() {
         String query = "SELECT ";
-
-        if (columns != null) {
-            if (columns.length == 1) {
-                String column = columns[0].trim();
-                if (column.equals("*")) {
-                    query += column;
-                } else {
-                    query += " `" + column + "` ";
-                }
-            } else {
-                for (int i = 0; i < columns.length; i++) {
-                    query += " `" + columns[i] + "`, ";
-                }
-                query = Helper.rTrim(query, ", ");
-            }
+        this.selects = Helper.replaceSpacesWithBlanck(this.selects);
+        this.selects.removeAll(Arrays.asList(null, ""));
+        if (Helper.isNotBlank(this.selects)) {
+            query += String.join(", ", this.selects);
+        } else {
+            query += "* ";
         }
-
-        if (table != null) {
-            query += " From `" + table + "` ";
+        query += " FROM " + this.table + " ";
+        if (Helper.isNotBlank(this.joins)) {
+            query += String.join(" ", this.joins);
         }
-
-        if (where != null) {
-            query += " WHERE " + where;
+        if (Helper.isNotBlank(this.wheres)) {
+            query += " WHERE " + String.join(" ", this.wheres) + " ";
         }
-
-        if (orderBy != null) {
-            query += " ORDER BY `" + orderBy + "` ";
+        if (Helper.isNotBlank(this.orderBy)) {
+            query += " ORDER BY " + String.join(" ", this.orderBy);
         }
-
-        if (sort != null) {
-            if (sort.equalsIgnoreCase("ASC") || sort.equalsIgnoreCase("DESC")) {
-                query += sort.toUpperCase();
-            } else {
-                query += "ASC";
-            }
+        if (Helper.isNotBlank(this.sort)) {
+            query += " " + sort;
         }
-
-        if (limit != null) {
-            query += " LIMIT " + limit;
+        if (this.limit != 0) {
+            query += " LIMIT " + this.limit;
+        }
+        if (this.offset != 0) {
+            query += " OFFSET " + this.offset;
         }
 
         return query;
     }
 
-    public ResultSet findAll(String[] columns, String table, String where, String orderBy, String sort, String limit) throws SQLException {
-
-        String query = prepareFindQuery(columns, table, where, orderBy, sort, limit);
-        Statement stmt = connection.createStatement();
-
-        ResultSet rs = stmt.executeQuery(query);
-        return rs;
+    /**
+     * Set the table name
+     *
+     * @param table
+     * @return this
+     */
+    public MySQLDatabaseHelper table(String table) {
+        this.table = table;
+        return this;
     }
 
-    public ResultSet findOne(String[] columns, String table, String where, long id) throws SQLException {
-        String query = prepareFindQuery(columns, table, where, null, null, null);
+    /**
+     * Delete Clause
+     *
+     * @return this
+     * @throws java.sql.SQLException
+     */
+    public boolean delete() throws SQLException {
 
-        PreparedStatement pstmt = connection.prepareStatement(query);
-        pstmt.setLong(1, id);
-
-        ResultSet rs = pstmt.executeQuery();
-        return rs;
-    }
-
-    public int count(String table, String where) throws SQLException {
-        String query = "SELECT COUNT(id) AS count FROM `" + table + "`";
-        if (where != null) {
-            query += " WHERE " + where;
+        String query = "DELETE FROM " + this.table + " ";
+        if (Helper.isNotBlank(this.wheres)) {
+            query += " WHERE " + String.join(" ", this.wheres);
         }
-
-        int count = 0;
-        Statement stmt = connection.createStatement();
-
-        ResultSet rs = stmt.executeQuery(query);
-        if (rs.next()) {
-            count = rs.getInt("count");
-        }
-        return count;
+        System.out.println(query);
+        PreparedStatement ps = this.buildQuery(query, this.bindings);
+        int rowsAffected = ps.executeUpdate();
+        this.reset();
+        return (rowsAffected > 0);
     }
 
-    public ResultSet findLatest(String[] columns, String table, String where, String orderBy, String sort, String limit) throws SQLException {
-        String query = prepareFindQuery(columns, table, where, orderBy, sort, limit);
+    /**
+     * Set The Data that will be stored in database table
+     *
+     * @param key
+     * @param value
+     * @return this
+     */
+    public MySQLDatabaseHelper data(String key, Object value) {
+        this.data.put(key, value);
+        this.setBindings(value);
+        return this;
+    }
 
-        Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery(query);
+    /**
+     * Insert Data to database
+     *
+     * @return this
+     * @throws java.sql.SQLException
+     */
+    public boolean insert() throws SQLException {
 
-        return rs;
+        String query = "INSERT INTO " + this.table + " SET ";
+        query += this.setFields();
+        System.out.println(query);
+        PreparedStatement ps = this.buildQuery(query, this.bindings);
+        int rowsAffected = ps.executeUpdate();
+        this.reset();
+        return (rowsAffected > 0);
+    }
+
+    /**
+     * Update Data In database
+     *
+     * @return this
+     * @throws java.sql.SQLException
+     */
+    public boolean update() throws SQLException {
+
+        String query = "UPDATE " + this.table + " SET ";
+        query += this.setFields();
+        if (Helper.isNotBlank(this.wheres)) {
+            query += " WHERE " + String.join(" ", this.wheres);
+        }
+        PreparedStatement ps = this.buildQuery(query, this.bindings);
+        int rowsAffected = ps.executeUpdate();
+        this.reset();
+        return (rowsAffected > 0);
+    }
+
+    /**
+     * Set the fields for insert and update
+     *
+     * @return string
+     */
+    private String setFields() {
+        String query = "";
+        for (String key : this.data.keySet()) {
+            query += "`" + key + "` = ? , ";
+        }
+        query = Helper.rTrim(query, ", ");
+        return query;
+    }
+
+    /**
+     * Add New Where clause
+     *
+     * @param query
+     * @param wheres
+     * @return this
+     */
+    public MySQLDatabaseHelper where(String query, Object... wheres) {
+        this.setBindings(wheres);
+        this.wheres.add(query);
+        return this;
+    }
+
+    /**
+     * Add New Where clause
+     *
+     * @param query
+     * @return this
+     */
+    public MySQLDatabaseHelper where(String query) {
+        this.wheres.add(query);
+        return this;
+    }
+
+    /**
+     * Execute the given buildQuery statement
+     *
+     * @param query
+     * @param bindings
+     * @return PreparedStatement object
+     * @throws java.sql.SQLException
+     */
+    public PreparedStatement buildQuery(String query, ArrayList bindings) throws SQLException {
+        PreparedStatement ps = this.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        int count = 1;
+        for (Object binding : this.bindings) {
+            if (binding instanceof String) {
+                ps.setString(count, (String) binding);
+                ++count;
+            } else if (binding instanceof Byte) {
+                ps.setByte(count, (byte) binding);
+                ++count;
+            } else if (binding instanceof Short) {
+                ps.setShort(count, (short) binding);
+                ++count;
+            } else if (binding instanceof Integer) {
+                ps.setInt(count, (int) binding);
+                ++count;
+            } else if (binding instanceof Long) {
+                ps.setLong(count, (long) binding);
+                ++count;
+            } else if (binding instanceof Float) {
+                ps.setFloat(count, (float) binding);
+                ++count;
+            } else if (binding instanceof Double) {
+                ps.setDouble(count, (double) binding);
+                ++count;
+            } else if (binding instanceof Date) {
+                ps.setDate(count, (Date) binding);
+                ++count;
+            }
+        }
+        return ps;
+    }
+
+    /**
+     * Add the given value to bindings
+     *
+     * @param value
+     * @return void
+     */
+    private void setBindings(Object... value) {
+        this.bindings.addAll(Arrays.asList(value));
+    }
+
+    /**
+     * Reset All Data
+     *
+     * @return void
+     */
+    private void reset() {
+        this.limit = 0;
+        this.table = null;
+        this.offset = 0;
+        this.data = null;
+        this.joins = null;
+        this.wheres = null;
+        this.orderBy = null;
+        this.selects = null;
+        this.bindings = null;
     }
 
     public boolean insert(Bean bean, String table) {
         String query = "INSERT INTO `" + table + "` SET ";
-        String userQuery = "`name`=?, `password`=?, `email`=?, `full_name`=?, `Date`=now()";
         String categoryQuery = "`name`=?, `description`=?, `ordering`=?, `visibility`=?, `allow_comments`=?, `allow_ads`=?";
         String commentQuery = "`comment`=?,`status`=?,`add_date`=now(),`item_id`=?,`user_id`=?";
         String itemQuery = "`name`=?,`description`=?,`price`=?,`add_date`=now(),`country_made`=?,`image`=?,`status`=?,`rating`=?,`approve`=?,`category_id`=?,`user_id`=?,`tags`=?";
 
         PreparedStatement pstmt = null;
         try {
-            if (bean instanceof User) {
-                User user = (User) bean;
-                query += userQuery;
-
-                pstmt = connection.prepareStatement(query);
-
-                pstmt.setString(1, user.getName());
-                pstmt.setString(2, user.getPassword());
-                pstmt.setString(3, user.getEmail());
-                pstmt.setString(4, user.getFullName());
-            } else if (bean instanceof Category) {
+           if (bean instanceof Category) {
                 Category category = (Category) bean;
                 query += categoryQuery;
 
