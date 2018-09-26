@@ -1,6 +1,10 @@
 package com.ecommerce.helper;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -152,4 +156,57 @@ public class Helper {
         return pattern.matcher(str).replaceAll("");
     }
 
+    /**
+     * check if the object is blank
+     *
+     * @param obj
+     * @return boolean
+     */
+    public static boolean isBlank(Object obj) {
+        if (obj instanceof String) {
+            String str = (String) obj;
+            return (str.isEmpty());
+        } else if (obj instanceof Map) {
+            Map map = (Map) obj;
+            return (map.isEmpty());
+        } else {
+            List list = (List) obj;
+            return (list == null || list.isEmpty());
+        }
+    }
+
+    /**
+     * check if the object is not blank
+     *
+     * @param obj
+     * @return boolean
+     */
+    public static boolean isNotBlank(Object obj) {
+        return !isBlank(obj);
+    }
+
+    /**
+     * replace any white space in element of list with blank string
+     *
+     * @param str
+     * @return Array List
+     */
+    public static ArrayList replaceSpacesWithBlanck(ArrayList str) {
+        for (int i = 0; i < str.size(); i++) {
+            String newELement = ((String) str.get(i)).replaceAll("[ ]+", "");
+            str.set(i, newELement);
+        }
+        return str;
+    }
+
+    /**
+     * get current date
+     *
+     * @return current date
+     */
+    public static Date getCurrentDate() {
+        long millis = System.currentTimeMillis();
+        Date date = new Date(millis);
+        return date;
+    }
 }
