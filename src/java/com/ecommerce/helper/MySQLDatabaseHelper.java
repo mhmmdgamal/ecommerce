@@ -244,7 +244,6 @@ public final class MySQLDatabaseHelper {
     public ResultSet fetchData() throws SQLException {
 
         String query = this.fetchStatement();
-        System.out.println(query);
         PreparedStatement ps = this.buildQuery(query, this.bindings);
         ResultSet results = ps.executeQuery();
 
@@ -274,7 +273,7 @@ public final class MySQLDatabaseHelper {
             query += " WHERE " + String.join(" ", this.wheres) + " ";
         }
         if (Helper.isNotBlank(this.orderBy)) {
-            query += " ORDER BY " + String.join(" ", this.orderBy);
+            query += " ORDER BY " + String.join(", ", this.orderBy);
         }
         if (Helper.isNotBlank(this.sort)) {
             query += " " + sort;
@@ -463,143 +462,15 @@ public final class MySQLDatabaseHelper {
      * @return void
      */
     private void reset() {
+        this.bindings.clear();
+        this.data.clear();
+        this.joins.clear();
         this.limit = 0;
-        this.table = null;
         this.offset = 0;
-        this.data = null;
-        this.joins = null;
-        this.wheres = null;
-        this.orderBy = null;
-        this.selects = null;
-        this.bindings = null;
-    }
-
-    public boolean insert(Bean bean, String table) {
-        String query = "INSERT INTO `" + table + "` SET ";
-        String categoryQuery = "`name`=?, `description`=?, `ordering`=?, `visibility`=?, `allow_comments`=?, `allow_ads`=?";
-        String commentQuery = "`comment`=?,`status`=?,`add_date`=now(),`item_id`=?,`user_id`=?";
-        String itemQuery = "`name`=?,`description`=?,`price`=?,`add_date`=now(),`country_made`=?,`image`=?,`status`=?,`rating`=?,`approve`=?,`category_id`=?,`user_id`=?,`tags`=?";
-
-        PreparedStatement pstmt = null;
-        try {
-           if (bean instanceof Category) {
-                Category category = (Category) bean;
-                query += categoryQuery;
-
-                pstmt = connection.prepareStatement(query);
-
-                pstmt.setString(1, category.getName());
-                pstmt.setString(2, category.getDescription());
-                pstmt.setInt(3, category.getOrdering());
-                pstmt.setInt(4, category.getVisibility());
-                pstmt.setInt(5, category.getAllowComments());
-                pstmt.setInt(6, category.getAllowAds());
-            } else if (bean instanceof Comment) {
-                Comment comment = (Comment) bean;
-                query += commentQuery;
-
-                pstmt = connection.prepareStatement(query);
-
-                pstmt.setString(1, comment.getComment());
-                pstmt.setByte(2, comment.getStatus());
-                pstmt.setLong(3, comment.getItem().getId());
-                pstmt.setLong(4, comment.getUser().getId());
-            } else if (bean instanceof Item) {
-                Item item = (Item) bean;
-                query += itemQuery;
-
-                pstmt = connection.prepareStatement(query);
-
-                pstmt.setString(1, item.getName());
-                pstmt.setString(2, item.getDescription());
-                pstmt.setString(3, item.getPrice());
-                pstmt.setString(4, item.getCountryMade());
-                pstmt.setString(5, item.getImage());
-                pstmt.setString(6, item.getStatus());
-                pstmt.setShort(7, item.getRating());
-                pstmt.setShort(8, item.getApprove());
-                pstmt.setLong(9, item.getCategory().getId());
-                pstmt.setLong(10, item.getUser().getId());
-                pstmt.setString(11, item.getTags());
-            }
-            int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0) {
-                return true;
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean update(Bean bean, String table) {
-        String query = "UPDATE `" + table + "` SET ";
-        String userQuery = "`name`=?, `password`=?, `email`=?, `full_name`=? WHERE `id`=?";
-        String categoryQuery = "`name`=?, `description`=?, `ordering`=?, `visibility`=?, `allow_comments`=?, `allow_ads`=? WHERE `id`=?";
-        String commentQuery = "`comment`=? WHERE `id`=?";
-        String itemQuery = "`name`=?,`description`=?,`price`=?,`country_made`=?,`image`=?,`status`=?,`rating`=?,`category_id`=?,`user_id`=?,`tags`=? WHERE `id`=?";
-
-        PreparedStatement pstmt = null;
-        try {
-            if (bean instanceof User) {
-                User user = (User) bean;
-                query += userQuery;
-
-                pstmt = connection.prepareStatement(query);
-
-                pstmt.setString(1, user.getName());
-                pstmt.setString(2, user.getPassword());
-                pstmt.setString(3, user.getEmail());
-                pstmt.setString(4, user.getFullName());
-                pstmt.setLong(5, user.getId());
-            } else if (bean instanceof Category) {
-                Category category = (Category) bean;
-                query += categoryQuery;
-
-                pstmt = connection.prepareStatement(query);
-
-                pstmt.setString(1, category.getName());
-                pstmt.setString(2, category.getDescription());
-                pstmt.setInt(3, category.getOrdering());
-                pstmt.setInt(4, category.getVisibility());
-                pstmt.setInt(5, category.getAllowComments());
-                pstmt.setInt(6, category.getAllowAds());
-                pstmt.setLong(7, category.getId());
-            } else if (bean instanceof Comment) {
-                Comment comment = (Comment) bean;
-                query += commentQuery;
-
-                pstmt = connection.prepareStatement(query);
-
-                pstmt.setString(1, comment.getComment());
-                pstmt.setLong(2, comment.getId());;
-            } else if (bean instanceof Item) {
-                Item item = (Item) bean;
-                query += itemQuery;
-
-                pstmt = connection.prepareStatement(query);
-
-                pstmt.setString(1, item.getName());
-                pstmt.setString(2, item.getDescription());
-                pstmt.setString(3, item.getPrice());
-                pstmt.setString(4, item.getCountryMade());
-                pstmt.setString(5, item.getImage());
-                pstmt.setString(6, item.getStatus());
-                pstmt.setShort(7, item.getRating());
-                pstmt.setLong(8, item.getCategory().getId());
-                pstmt.setLong(9, item.getUser().getId());
-                pstmt.setString(10, item.getTags());
-                pstmt.setLong(11, item.getId());
-            }
-            int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0) {
-                return true;
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        }
-        return false;
+        this.orderBy.clear();
+        this.selects.clear();
+        this.sort = null;
+        this.table = null;
+        this.wheres.clear();
     }
 }
