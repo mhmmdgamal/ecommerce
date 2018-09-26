@@ -114,14 +114,44 @@ public class EditItemController extends HttpServlet {
 
             //get id of current user 
             Long userId = getCurrentUserId(request, response);
-            //add params to item
-            item = createNewItem(id, name, description, price, countryMade, status, tags, id, categoryId);
+
+            // make new user and set info to it
+            User user = new User.Builder()
+                    .id(userId)
+                    .build();
+
+            // make new category and set info to it
+            Category category = new Category.Builder()
+                    .id(categoryId)
+                    .build();
+
+            // make new item and set info to it 
+            item = new Item.Builder()
+                    .id(id)
+                    .name(name)
+                    .description(description)
+                    .price(price)
+                    .countryMade(countryMade)
+                    .status(status)
+                    .user(user)
+                    .category(category)
+                    .tags(tags)
+                    .build();
+
             // Update item 
             boolean itemUpdated = new ItemDaoImpl(servletContext).updateItem(item);
 
             //set message success or error 
-            setMessageAlert(itemUpdated, request);
-            
+            if (!itemUpdated) {
+                // add new error to errors if item not added
+                //<improve>formErrors.add("can not update this item");                 request.setAttribute("success", "Item Has Been Updated");
+                request.setAttribute("error", "can not update this item");
+
+            } else {
+                // set success message if item added
+                request.setAttribute("success", "Item Has Been Updated");
+            }
+
             // set item to request
             request.setAttribute("item", item);
 
@@ -160,35 +190,6 @@ public class EditItemController extends HttpServlet {
         return formErrors;
     }
 
-    public Item createNewItem(int id, String name, String description, String price,
-            String countryMade, String status, String tags,
-            int userId, int categoryId) {
-
-        // make new user and set info to it
-        User user = new User.Builder()
-                .id(userId)
-                .build();
-
-        // make new category and set info to it
-        Category category = new Category.Builder()
-                .id(categoryId)
-                .build();
-
-        // make new item and set info to it 
-        Item item = new Item.Builder()
-                .id(id)
-                .name(name)
-                .description(description)
-                .price(price)
-                .countryMade(countryMade)
-                .status(status)
-                .user(user)
-                .category(category)
-                .tags(tags)
-                .build();
-        return item;
-    }
-
     public long getCurrentUserId(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         long userId;
@@ -200,19 +201,6 @@ public class EditItemController extends HttpServlet {
             userId = (Long) request.getSession().getAttribute("userId");
         }
         return userId;
-    }
-
-    public void setMessageAlert(boolean itemUpdated, HttpServletRequest request) {
-
-        if (!itemUpdated) {
-            // add new error to errors if item not added
-            //<improve>formErrors.add("can not update this item");                 request.setAttribute("success", "Item Has Been Updated");
-            request.setAttribute("error", "can not update this item");
-
-        } else {
-            // set success message if item added
-            request.setAttribute("success", "Item Has Been Updated");
-        }
     }
 
     @Override

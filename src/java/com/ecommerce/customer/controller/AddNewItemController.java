@@ -86,13 +86,42 @@ public class AddNewItemController extends HttpServlet {
         } else {
             //get id of current user 
             Long userId = getCurrentUserId(request, response);
-            //get item of new data 
-            Item item = createNewItem(name, description, price, countryMade, status, tags, userId, categoryId);
+
+            // make new user and set info to it
+            User user = new User.Builder()
+                    .id(userId)
+                    .build();
+
+            // make new category and set info to it
+            Category category = new Category.Builder()
+                    .id(categoryId)
+                    .build();
+
+            // make new item and set info to it 
+            Item item = new Item.Builder()
+                    .name(name)
+                    .description(description)
+                    .price(price)
+                    .countryMade(countryMade)
+                    .status(status)
+                    .user(user)
+                    .category(category)
+                    .tags(tags)
+                    .build();
 
             // add item to DB 
             boolean itemAdded = new ItemDaoImpl(servletContext).addItem(item);
-            //set message success or error
-            setMessageAlert(itemAdded, request);
+            
+            if (!itemAdded) {
+                // add new error to errors if item not added
+                //<improve>formErrors.add("Sorry This Item Is Exist");
+                request.setAttribute("error", "can not add this item! try again!");
+
+            } else {
+                // set success message if item added
+                request.setAttribute("success", "Item Has Been Added");
+            }
+
             // forword to add page
             Helper.forwardRequest(request, response, customerJspPath + "add_new_item.jsp");
         }
@@ -143,45 +172,4 @@ public class AddNewItemController extends HttpServlet {
         }
         return userId;
     }
-
-    public Item createNewItem(String name, String description, String price,
-            String countryMade, String status, String tags, long userId, long categoryId) {
-
-        // make new user and set info to it
-        User user = new User.Builder()
-                .id(userId)
-                .build();
-
-        // make new category and set info to it
-        Category category = new Category.Builder()
-                .id(categoryId)
-                .build();
-
-        // make new item and set info to it 
-        Item item = new Item.Builder()
-                .name(name)
-                .description(description)
-                .price(price)
-                .countryMade(countryMade)
-                .status(status)
-                .user(user)
-                .category(category)
-                .tags(tags)
-                .build();
-        return item;
-    }
-
-    public void setMessageAlert(boolean itemAdded, HttpServletRequest request) {
-
-        if (!itemAdded) {
-            // add new error to errors if item not added
-            //<improve>formErrors.add("Sorry This Item Is Exist");
-            request.setAttribute("error", "can not add this item! try again!");
-
-        } else {
-            // set success message if item added
-            request.setAttribute("success", "Item Has Been Added");
-        }
-    }
-
 }

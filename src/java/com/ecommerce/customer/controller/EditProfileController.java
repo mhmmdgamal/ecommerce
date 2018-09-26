@@ -64,12 +64,29 @@ public class EditProfileController extends HttpServlet {
             Long userId = getCurrentUserId(request, response);
 
             //create new user
-            User user = createNewUser(userId, name, pass, email, fullName, date);
+            User user = new User.Builder()
+                    .id(userId)
+                    .name(name)
+                    .password(pass)
+                    .email(email)
+                    .fullName(fullName)
+                    .date(date)
+                    .build();
+
             //update user data 
             boolean userUpdated = new UserDaoImpl(servletContext).updateUser(user);
 
             //set message success or error
-            setMessageAlert(userUpdated, request);
+            if (!userUpdated) {
+                // add new error to errors if User not added
+                //<improve>formErrors.add("can not update this User");             request.setAttribute("success", "User Has Been Updated");
+                request.setAttribute("error", "can not update this User");
+
+            } else {
+                // set success message if User added
+                request.setAttribute("success", "User Has Been Updated");
+            }
+
             // set User to request
             request.setAttribute("user", user);
 
@@ -107,34 +124,6 @@ public class EditProfileController extends HttpServlet {
             userId = (Long) request.getSession().getAttribute("userId");
         }
         return userId;
-    }
-
-    public User createNewUser(long userId, String name, String pass, String email,
-            String fullName, Date date) {
-
-        User user = new User.Builder()
-                .id(userId)
-                .name(name)
-                .password(pass)
-                .email(email)
-                .fullName(fullName)
-                .date(date)
-                .build();
-        return user;
-    }
-
-    public void setMessageAlert(boolean userUpdated, HttpServletRequest request) {
-
-        if (!userUpdated) {
-            // add new error to errors if User not added
-            //<improve>formErrors.add("can not update this User");             request.setAttribute("success", "User Has Been Updated");
-            request.setAttribute("error", "can not update this User");
-
-        } else {
-            // set success message if User added
-            request.setAttribute("success", "User Has Been Updated");
-        }
-
     }
 
     @Override

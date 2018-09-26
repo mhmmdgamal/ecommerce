@@ -126,19 +126,36 @@ public class ShowItemController extends HttpServlet {
 
             // forward to show items page
             Helper.forwardRequest(request, response, customerJspPath + "show_item.jsp");
-        
+
         } else {// if no errors in textfield Comment
             //get user id
             Long userId = getUserId(request, response);
-            
-            //create object comment and send data to it 
-            Comment com = creatNewComment(comment, item, userId);
+
+            // make new user and set info to it
+            User user = new User.Builder()
+                    .id(userId)
+                    .build();
+
+            // make new comment and set info to it
+            Comment com = new Comment.Builder()
+                    .comment(comment)
+                    .item(item)
+                    .user(user)
+                    .build();
 
             // add comment to DB 
             boolean commentAdded = new CommentDaoImpl(servletContext).addComment(com);
-           
+
             //if comment added set message success  or set error
-            setAlert(commentAdded, request);
+            if (!commentAdded) {//if comment does not updated successfully
+                String error = "error in add";
+                // set error message to request 
+                request.setAttribute("error", error);
+
+            } else {
+                // set success message to request if comment updated successfully
+                request.setAttribute("success", "comment added");
+            }
 
             // forword request to manage page
             Helper.forwardRequest(request, response, customerJspPath + "show_item.jsp");
@@ -157,35 +174,6 @@ public class ShowItemController extends HttpServlet {
             userId = (Long) request.getSession().getAttribute("userId");
         }
         return userId;
-    }
-
-    public Comment creatNewComment(String comment, Item item, long userId) {
-
-        // make new user and set info to it
-        User user = new User.Builder()
-                .id(userId)
-                .build();
-
-        // make new comment and set info to it
-        Comment com = new Comment.Builder()
-                .comment(comment)
-                .item(item)
-                .user(user)
-                .build();
-        return com;
-    }
-
-    public void setAlert(boolean commentAdded, HttpServletRequest request) {
-
-        if (!commentAdded) {//if comment does not updated successfully
-            String error = "error in add";
-            // set error message to request 
-            request.setAttribute("error", error);
-
-        } else {
-            // set success message to request if comment updated successfully
-            request.setAttribute("success", "comment added");
-        }
     }
 
     @Override
