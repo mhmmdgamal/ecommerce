@@ -2,11 +2,8 @@ package com.ecommerce.dao;
 
 import com.ecommerce.bean.Comment;
 import com.ecommerce.bean.Item;
-import com.ecommerce.bean.User;
 import com.ecommerce.helper.Helper;
 import com.ecommerce.helper.MySQLDatabaseHelper;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -150,8 +147,8 @@ public class ItemDaoImpl implements ItemDao {
                     .data("image", item.getImage())
                     .data("status", item.getStatus())
                     .data("rating", item.getRating())
-                    .data("category_id", item.getCategory())
-                    .data("user_id", item.getUser())
+                    .data("category_id", item.getCategory().getId())
+                    .data("user_id", item.getUser().getId())
                     .data("tags", item.getTags())
                     .where("`id`=", item.getId())
                     .update();
@@ -180,8 +177,8 @@ public class ItemDaoImpl implements ItemDao {
                     .data("image", item.getImage())
                     .data("status", item.getStatus())
                     .data("rating", item.getRating())
-                    .data("category_id", item.getCategory())
-                    .data("user_id", item.getUser())
+                    .data("category_id", item.getCategory().getId())
+                    .data("user_id", item.getUser().getId())
                     .data("approve", item.getApprove())
                     .data("add_date", Helper.getCurrentDate())
                     .data("tags", item.getTags())
@@ -215,6 +212,7 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     /**
+     * <improve>improve this function to use join</improve>
      * get all items data table database
      *
      * @param sort
@@ -259,6 +257,7 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     /**
+     * <improve>improve this function to use join</improve>
      * get all items data table database
      *
      * @param sort
@@ -304,6 +303,7 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     /**
+     * <improve>improve this function to use join</improve>
      * get latest items data table database depending on number
      *
      * @param num
@@ -368,6 +368,7 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     /**
+     * <improve>improve this function to use join</improve>
      * get specific item with id
      *
      * @param id
@@ -408,6 +409,7 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     /**
+     * <improve>improve this function to use join</improve>
      * get specific item with id and be approved
      *
      * @param id
