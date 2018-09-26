@@ -148,7 +148,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
         try (ResultSet rs = db.select()
                 .table("items")
-                .where("`category_id=?`", id)
+                .where("`category_id`=?", id)
                 .where(" AND `approve`=1")
                 .orderBy("id")
                 .sort(sort)

@@ -49,6 +49,8 @@ public class LoginRegisterController extends HttpServlet {
             
             if (previous != null) {
                 previous = "?previous=" + previous;
+            } else {
+                previous = "";
             }
             
             // forword the requset to the login page
@@ -91,9 +93,7 @@ public class LoginRegisterController extends HttpServlet {
 
                 }
 
-                    System.out.println(previous);
                 if (previous != null) {//previousPage == null <improve>
-                    Helper.setTitle(request, Helper.getTitleFromLink(previous));
                     response.sendRedirect(previous);
                 } else {
                     Helper.setTitle(request, "Home");
@@ -175,10 +175,8 @@ public class LoginRegisterController extends HttpServlet {
                     
                     System.out.println(previous);
                     if (previous != null) {//previousPage == null <improve>
-                        Helper.setTitle(request, Helper.getTitleFromLink(previous));
                         response.sendRedirect(previous);
                     } else {
-                        Helper.setTitle(request, "Home");
                         response.sendRedirect("home");
                     }
 
