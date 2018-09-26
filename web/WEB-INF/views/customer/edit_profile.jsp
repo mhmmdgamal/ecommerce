@@ -1,10 +1,10 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:import url="includes/templates/header.jsp" />
-<c:import url="includes/templates/check_errors.jsp" />
-<c:import url="includes/templates/check_one_error.jsp" />
 
 
 <h1 class="text-center">Edit Information of Profile</h1>
+<c:import url="includes/templates/check_errors.jsp" />
+<c:import url="includes/templates/check_one_error.jsp" />
 <div class="information block">
     <div class="container">
         <div class="panel panel-primary">
@@ -12,7 +12,7 @@
             <div class="panel-body">
                 <form class="form-horizontal main-form" action="${initParam['customerPath']}edit-profile" method="POST">
                     <!-- Start id Field -->
-                    <input type="hidden" name="itemid" value="${user['id']}" />
+                    <input type="hidden" name="userid" value="${user['id']}" />
                     <!-- End id Field -->
                     <div class="form-group form-group-lg">
                         <label class="col-sm-3 control-label"><span>Login Name</span> :</label>
@@ -71,20 +71,6 @@
                                 placeholder="Name of The Item"
                                 data-class=".live-title"
                                 value="${user['fullName']}"/>
-                        </div>
-                    </div>
-                    <div class="form-group form-group-lg">
-                        <label class="col-sm-3 control-label"><span>Registered Date</span> : </label>
-                        <div class="col-sm-10 col-md-9">
-                            <input 
-                                pattern=".{4,}"
-                                title="This Field Require At Least 4 Characters"
-                                type="text" 
-                                name="date" 
-                                class="form-control live"  
-                                placeholder="Name of The Item"
-                                data-class=".live-title"
-                                value="${user['date']}"/>
                         </div>
                     </div>
                     <!-- Start Submit Field -->

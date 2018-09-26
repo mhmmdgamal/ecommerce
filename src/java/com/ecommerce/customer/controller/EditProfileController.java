@@ -32,6 +32,28 @@ public class EditProfileController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Long userId = null;
+
+        if (CookieHelper.isCookie("userId", request, response)) {
+            userId = Long.parseLong(CookieHelper.getCookie("userId", request, response));
+        } else {
+            // get userId from session
+            userId = (Long) request.getSession().getAttribute("userId");
+        }
+
+        // get user with id 
+        User user = new UserDaoImpl(servletContext).getUserById(userId);
+
+        if (user != null) {
+            // set user to request
+            request.setAttribute("user", user);
+
+            // forward to edit profile page
+            Helper.forwardRequest(request, response, customerJspPath + "edit_profile.jsp");
+        } else {
+            Helper.redriectToPrevPage(request, response, "This user is not found", true);
+        }
+
     }
 
     @Override
@@ -39,14 +61,11 @@ public class EditProfileController extends HttpServlet {
             throws ServletException, IOException {
 
 //        <error> not able to cast string to long
-//        Long userId = (Long) request.getParameter("userId");
+//        Long userId = Long.parseLong(request.getParameter("userId"));
         String name = request.getParameter("name");
         String pass = request.getParameter("pass");
         String email = request.getParameter("email");
         String fullName = request.getParameter("fullName");
-        //<error> can not cast String to Date
-        //String date = request.getParameter("date");
-        Date date = new Date(2014, 02, 11);
 
         List<String> formErrors = vildateFormParams(name, email, fullName);
         // set errors to the request
@@ -70,7 +89,6 @@ public class EditProfileController extends HttpServlet {
                     .password(pass)
                     .email(email)
                     .fullName(fullName)
-                    .date(date)
                     .build();
 
             //update user data 

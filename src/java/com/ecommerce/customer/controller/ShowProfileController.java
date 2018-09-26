@@ -50,7 +50,6 @@ public class ShowProfileController extends HttpServlet {
         // get user with id 
         User user = new UserDaoImpl(servletContext).getUserById(userId);
 
-        System.out.println(user);
         // set user to request
         request.setAttribute("user", user);
 
@@ -66,15 +65,8 @@ public class ShowProfileController extends HttpServlet {
         // set user Comments to request
         request.setAttribute("userComments", userComments);
 
-        String editInfo = request.getParameter("editInfo");
-        if (editInfo != null) {
-            // forward to edit profile page
-            Helper.forwardRequest(request, response, customerJspPath + "edit_profile.jsp");
-
-        } else {
-            // forward to profile page
-            Helper.forwardRequest(request, response, customerJspPath + "show_profile.jsp");
-        }
+        // forward to profile page
+        Helper.forwardRequest(request, response, customerJspPath + "show_profile.jsp");
     }
 
     @Override
