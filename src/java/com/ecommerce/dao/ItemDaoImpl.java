@@ -2,6 +2,8 @@ package com.ecommerce.dao;
 
 import com.ecommerce.bean.Comment;
 import com.ecommerce.bean.Item;
+import com.ecommerce.bean.User;
+import com.ecommerce.helper.Helper;
 import com.ecommerce.helper.MySQLDatabaseHelper;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +15,6 @@ import javax.servlet.ServletContext;
 
 public class ItemDaoImpl implements ItemDao {
 
-    private final Connection connection;
     private final MySQLDatabaseHelper db;
     private final String table = "items";
     private final ServletContext sc;
@@ -21,7 +22,6 @@ public class ItemDaoImpl implements ItemDao {
     public ItemDaoImpl(ServletContext sc) {
         this.sc = sc;
         this.db = (MySQLDatabaseHelper) sc.getAttribute("db");
-        this.connection = db.getConnection();
     }
 
     /**
@@ -32,19 +32,17 @@ public class ItemDaoImpl implements ItemDao {
      */
     @Override
     public boolean approveItem(long id) {
-        String sql = "UPDATE `items` SET `approve` = 1 WHERE `id` = ?";
-
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
-
-            int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0) {
-                return true;
-            }
+        boolean approved = false;
+        try {
+            approved = db.table(table)
+                    .data("approve", 1)
+                    .where("`id`=?", id)
+                    .update();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
-        return false;
+        return approved;
     }
 
     /**
@@ -58,7 +56,14 @@ public class ItemDaoImpl implements ItemDao {
     public List<Item> getTagItems(String tag, String sort) {
         List<Item> items = new ArrayList();
 
-        try (ResultSet rs = db.findAll(new String[]{"*"}, "items", "`tags` like '%" + tag + "%'" + " AND `approve`=1", "id", sort, null)) {
+        try (ResultSet rs = db.select()
+                .table(table)
+                .where("`tags` LIKE '%?%'", tag)
+                .where("AND `approve`=1")
+                .orderBy("id")
+                .sort(sort)
+                .fetchData()) {
+
             while (rs.next()) {
                 Item item = new Item.Builder()
                         .id(rs.getLong("id"))
@@ -75,7 +80,7 @@ public class ItemDaoImpl implements ItemDao {
                         .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
                         .category(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")))
                         .build();
-                
+
                 items.add(item);
             }
         } catch (SQLException ex) {
@@ -87,6 +92,7 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     /**
+     * <improve>improve this function to use join</improve>
      * get all comments linked with the item
      *
      * @param id
@@ -97,7 +103,12 @@ public class ItemDaoImpl implements ItemDao {
     public List<Comment> getItemComments(long id, String sort) {
         List<Comment> comments = new ArrayList();
 
-        try (ResultSet rs = db.findAll(new String[]{"*"}, "comments", "`item_id`=" + id, "id", sort, null)) {
+        try (ResultSet rs = db.select()
+                .table(table)
+                .where("`item_id`=?", id)
+                .orderBy("id")
+                .sort(sort)
+                .fetchData()) {
 
             Comment comment;
 
@@ -129,7 +140,26 @@ public class ItemDaoImpl implements ItemDao {
      */
     @Override
     public boolean updateItem(Item item) {
-        return db.update(item, table);
+        boolean updated = false;
+        try {
+            updated = db.table(table)
+                    .data("name", item.getName())
+                    .data("description", item.getDescription())
+                    .data("price", item.getPrice())
+                    .data("country_made", item.getCountryMade())
+                    .data("image", item.getImage())
+                    .data("status", item.getStatus())
+                    .data("rating", item.getRating())
+                    .data("category_id", item.getCategory())
+                    .data("user_id", item.getUser())
+                    .data("tags", item.getTags())
+                    .where("`id`=", item.getId())
+                    .update();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return updated;
     }
 
     /**
@@ -140,7 +170,27 @@ public class ItemDaoImpl implements ItemDao {
      */
     @Override
     public boolean addItem(Item item) {
-        return db.insert(item, table);
+        boolean inserted = false;
+        try {
+            inserted = db.table(table)
+                    .data("name", item.getName())
+                    .data("description", item.getDescription())
+                    .data("price", item.getPrice())
+                    .data("country_made", item.getCountryMade())
+                    .data("image", item.getImage())
+                    .data("status", item.getStatus())
+                    .data("rating", item.getRating())
+                    .data("category_id", item.getCategory())
+                    .data("user_id", item.getUser())
+                    .data("approve", item.getApprove())
+                    .data("add_date", Helper.getCurrentDate())
+                    .data("tags", item.getTags())
+                    .insert();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return inserted;
     }
 
     /**
@@ -151,11 +201,21 @@ public class ItemDaoImpl implements ItemDao {
      */
     @Override
     public boolean deleteItem(long id) {
-        return db.delete(table, id);
+        boolean deleted = false;
+        try {
+            deleted = db.table(table)
+                    .where("`id`=?", id)
+                    .delete();
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return deleted;
     }
 
     /**
-     * get all items data from database
+     * get all items data table database
      *
      * @param sort
      * @return found items
@@ -164,7 +224,12 @@ public class ItemDaoImpl implements ItemDao {
     public List<Item> getAllItems(String sort) {
         List<Item> items = new ArrayList();
 
-        try (ResultSet rs = db.findAll(new String[]{"*"}, table, null, "id", sort, null)) {
+        try (ResultSet rs = db.select()
+                .table(table)
+                .orderBy("id")
+                .sort(sort)
+                .fetchData()) {
+
             while (rs.next()) {
                 Item item = new Item.Builder()
                         .id(rs.getLong("id"))
@@ -181,7 +246,7 @@ public class ItemDaoImpl implements ItemDao {
                         .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
                         .category(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")))
                         .build();
-                
+
                 items.add(item);
             }
 
@@ -194,7 +259,7 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     /**
-     * get all items data from database
+     * get all items data table database
      *
      * @param sort
      * @return found items
@@ -203,7 +268,12 @@ public class ItemDaoImpl implements ItemDao {
     public List<Item> getAllApprovedItems(String sort) {
         List<Item> items = new ArrayList();
 
-        try (ResultSet rs = db.findAll(new String[]{"*"}, table, " `approve`=1", "id", sort, null)) {
+        try (ResultSet rs = db.select()
+                .table(table)
+                .where("`approve`=1")
+                .orderBy("id")
+                .sort(sort)
+                .fetchData()) {
 
             while (rs.next()) {
                 Item item = new Item.Builder()
@@ -221,7 +291,7 @@ public class ItemDaoImpl implements ItemDao {
                         .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
                         .category(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")))
                         .build();
-                
+
                 items.add(item);
             }
 
@@ -234,7 +304,7 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     /**
-     * get latest items data from database depending on number
+     * get latest items data table database depending on number
      *
      * @param num
      * @return latest num items
@@ -243,7 +313,12 @@ public class ItemDaoImpl implements ItemDao {
     public List<Item> getLatestItems(int num) {
         List<Item> items = new ArrayList();
 
-        try (ResultSet rs = db.findLatest(new String[]{"*"}, table, null, "id", "DESC", num + "")) {
+        try (ResultSet rs = db.select()
+                .table(table)
+                .orderBy("id")
+                .sort("DESC")
+                .limit(num)
+                .fetchData()) {
 
             while (rs.next()) {
                 Item item = new Item.Builder()
@@ -261,7 +336,7 @@ public class ItemDaoImpl implements ItemDao {
                         .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
                         .category(new CategoryDaoImpl(sc).getCategoryById(rs.getLong("category_id")))
                         .build();
-                
+
                 items.add(item);
             }
         } catch (SQLException ex) {
@@ -281,7 +356,11 @@ public class ItemDaoImpl implements ItemDao {
     public int getNumItems() {
         int count = 0;
         try {
-            return db.count(table, null);
+            ResultSet rs = db.select("COUNT(id) AS count")
+                    .table(table)
+                    .fetchData();
+
+            return rs.getInt("count");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -298,7 +377,11 @@ public class ItemDaoImpl implements ItemDao {
     public Item getItemById(long id) {
         Item item = null;
 
-        try (ResultSet rs = db.findOne(new String[]{"*"}, table, "`id`=?", id)) {
+        try (ResultSet rs = db.select()
+                .table(table)
+                .where("`id`=?", id)
+                .fetchData()) {
+
             if (rs.next()) {
                 item = new Item.Builder()
                         .id(rs.getLong("id"))
@@ -334,7 +417,12 @@ public class ItemDaoImpl implements ItemDao {
     public Item getApprovedItemById(long id) {
         Item item = null;
 
-        try (ResultSet rs = db.findOne(new String[]{"*"}, table, "`id`=? AND `approve`=1", id)) {
+        try (ResultSet rs = db.select()
+                .table(table)
+                .where("`id`=?", id)
+                .where("AND `approve`=1")
+                .fetchData()) {
+
             if (rs.next()) {
                 item = new Item.Builder()
                         .id(rs.getLong("id"))
