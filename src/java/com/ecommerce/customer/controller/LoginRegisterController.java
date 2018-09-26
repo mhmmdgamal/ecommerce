@@ -1,9 +1,11 @@
+
 // <editor-fold >
 package com.ecommerce.customer.controller;
 
 import com.ecommerce.bean.User;
 import com.ecommerce.dao.UserDaoImpl;
 import com.ecommerce.helper.CookieHelper;
+import com.ecommerce.helper.HashHelper;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ public class LoginRegisterController extends HttpServlet {
         if ((session.getAttribute("user") != null) || (CookieHelper.isCookie("user", request, response))) {
             //<improve>redirect to home if session exists
             response.sendRedirect("");
-//            Helper.forwardRequest(request, response, customerJspPath + "home.jsp", "Login");
+//            Helper.forwardRequest(request, response, customerJspPath + "home.jsp", "Home");
 
         } else {
             // forword the requset to the login page
@@ -63,8 +65,12 @@ public class LoginRegisterController extends HttpServlet {
             String password = request.getParameter("pass");
             String remember = request.getParameter("remember");
 
+            // hash password
+            String passwordHashed = HashHelper.stringHash(password);
+            System.out.println(passwordHashed);
+            
             // get logging user
-            User user = new UserDaoImpl(servletContext).getLoginUser(username, password, false);
+            User user = new UserDaoImpl(servletContext).getLoginUser(username, passwordHashed, false);
 
             if (user != null) {// check if user existed in DB 
                 if (remember != null && remember.equalsIgnoreCase("y")) {
@@ -126,10 +132,13 @@ public class LoginRegisterController extends HttpServlet {
 
             } else {//if there is no errors
 
+                // hash password
+                String passwordHashed = HashHelper.stringHash(password);
+                        
                 // make new user and set info to it
                 User user = new User.Builder()
                         .name(username)
-                        .password(password)
+                        .password(passwordHashed)
                         .email(email)
                         .build();
 

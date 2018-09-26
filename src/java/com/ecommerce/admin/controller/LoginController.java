@@ -3,6 +3,7 @@ package com.ecommerce.admin.controller;
 
 import com.ecommerce.bean.User;
 import com.ecommerce.dao.UserDaoImpl;
+import com.ecommerce.helper.HashHelper;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
 import javax.servlet.ServletContext;
@@ -49,9 +50,10 @@ public class LoginController extends HttpServlet {
         // get form params from the request
         String userName = request.getParameter("user");
         String password = request.getParameter("pass");
+        String passwordHashed = HashHelper.stringHash(password);
 
         // get logging user
-        User user = new UserDaoImpl(servletContext).getLoginUser(userName, password, true);
+        User user = new UserDaoImpl(servletContext).getLoginUser(userName, passwordHashed, true);
 
         // check if user exists
         if (user != null) {
