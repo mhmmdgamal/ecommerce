@@ -79,6 +79,18 @@
                 placeholder="Type a Valid email"
                 value="ahmedRamadan@gmai.com"/>
         </div>
+        <div class="input-container">
+            <input 
+                pattern=".{4,}"
+                title="Full Name must contain 4 or more characters"
+                class="form-control" 
+                type="text" 
+                name="full_name" 
+                autocomplete="off"
+                placeholder="Type your Full Name" 
+                required 
+                value="ahmed ramadan teleb"/>
+        </div>
         <input id="save" type="checkbox" name="remember" value="y">
         <label for="save" >Remember me</label>
         <input class="btn btn-success btn-block" name="signup" type="submit" value="Signup" />

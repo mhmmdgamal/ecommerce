@@ -116,6 +116,7 @@ public class LoginRegisterController extends HttpServlet {
             String password = request.getParameter("pass");
             String confirmPassword = request.getParameter("pass2");
             String email = request.getParameter("email");
+            String fullName = request.getParameter("full_name");
             String remember = request.getParameter("remember");
 
             // validate the form params
@@ -140,6 +141,7 @@ public class LoginRegisterController extends HttpServlet {
                         .name(username)
                         .password(passwordHashed)
                         .email(email)
+                        .fullName(fullName)
                         .build();
 
                 //creat new user in Database
