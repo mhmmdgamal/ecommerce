@@ -1,9 +1,8 @@
 package com.ecommerce.dao;
 
 import com.ecommerce.bean.Comment;
+import com.ecommerce.helper.Helper;
 import com.ecommerce.helper.MySQLDatabaseHelper;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import javax.servlet.ServletContext;
 
 public class CommentDaoImpl implements CommentDao {
 
-    private final Connection connection;
     private final MySQLDatabaseHelper db;
     private final String table = "comments";
     private final ServletContext sc;
@@ -20,7 +18,6 @@ public class CommentDaoImpl implements CommentDao {
     public CommentDaoImpl(ServletContext sc) {
         this.sc = sc;
         this.db = (MySQLDatabaseHelper) sc.getAttribute("db");
-        this.connection = db.getConnection();
     }
 
     /**
@@ -31,19 +28,18 @@ public class CommentDaoImpl implements CommentDao {
      */
     @Override
     public boolean approveComment(long id) {
-        String sql = "UPDATE `items` SET `status` = 1 WHERE `id` = ?";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
-
-            int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0) {
-                return true;
-            }
+        boolean approved = false;
+        try {
+            approved = db.table(table)
+                    .data("status", 1)
+                    .where("`id`=?", id)
+                    .update();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
-        return false;
+        return approved;
     }
 
     /**
@@ -54,7 +50,17 @@ public class CommentDaoImpl implements CommentDao {
      */
     @Override
     public boolean updateComment(Comment comment) {
-        return db.update(comment, table);
+        boolean updated = false;
+        try {
+            updated = db.table(table)
+                    .data("comment", comment.getComment())
+                    .where("`id`=", comment.getId())
+                    .update();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return updated;
     }
 
     /**
@@ -65,7 +71,20 @@ public class CommentDaoImpl implements CommentDao {
      */
     @Override
     public boolean addComment(Comment comment) {
-        return db.insert(comment, table);
+        boolean inserted = false;
+        try {
+            inserted = db.table(table)
+                    .data("comment", comment.getComment())
+                    .data("status", comment.getStatus())
+                    .data("add_date", Helper.getCurrentDate())
+                    .data("item_id", comment.getItem().getId())
+                    .data("user_id", comment.getUser().getId())
+                    .insert();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return inserted;
     }
 
     /**
@@ -76,37 +95,53 @@ public class CommentDaoImpl implements CommentDao {
      */
     @Override
     public boolean deleteComment(long id) {
-        return db.delete(table, id);
+        boolean deleted = false;
+        try {
+            deleted = db.table(table)
+                    .where("`id`=?", id)
+                    .delete();
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return deleted;
     }
 
     /**
-     * get all comments data from database
+     * get all comments data table database
      *
      * @param sort
      * @return found comments
      */
     @Override
     public List<Comment> getAllComments(String sort) {
-        return CommentDaoImpl.this.getAllCommentsOfItem(0, sort);
+        return this.getAllItemComments(0, sort);
     }
 
     /**
-     * get all comments data from database depending on item id
+     * get all comments data table database depending on item id
      *
      * @param id
      * @param sort
      * @return found comments
      */
     @Override
-    public List<Comment> getAllCommentsOfItem(long id, String sort) {
+    public List<Comment> getAllItemComments(long id, String sort) {
         List<Comment> comments = new ArrayList();
 
-        String itemId = null;
+        String where = null;
         if (id != 0) {
-            itemId = " `item_id`=" + id + " AND status = 1";
+            where = " `item_id`=" + id + " AND status = 1";
         }
 
-        try (ResultSet rs = db.findAll(new String[]{"*"}, table, itemId, "id", sort, null)) {
+        try (ResultSet rs = db.select()
+                .table(table)
+                .where(where)
+                .orderBy("id")
+                .sort(sort)
+                .fetchData()) {
+
             while (rs.next()) {
                 Comment comment = new Comment.Builder()
                         .id(rs.getLong("id"))
@@ -128,7 +163,8 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     /**
-     * get latest comments data from database depending on number
+     * <improve>improve this function to use join</improve>
+     * get latest comments data table database depending on number
      *
      * @param num
      * @return latest num comments
@@ -137,7 +173,13 @@ public class CommentDaoImpl implements CommentDao {
     public List<Comment> getLatestComments(int num) {
         List<Comment> comments = new ArrayList();
 
-        try (ResultSet rs = db.findLatest(new String[]{"*"}, table, null, "id", "DESC", num + "")) {
+        try (ResultSet rs = db.select()
+                .table(table)
+                .orderBy("id")
+                .sort("DESC")
+                .limit(num)
+                .fetchData()) {
+
             while (rs.next()) {
                 Comment comment = new Comment.Builder()
                         .id(rs.getLong("id"))
@@ -167,7 +209,11 @@ public class CommentDaoImpl implements CommentDao {
     public int getNumComments() {
         int count = 0;
         try {
-            return db.count(table, null);
+            ResultSet rs = db.select("COUNT(id) AS count")
+                    .table(table)
+                    .fetchData();
+
+            return rs.getInt("count");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -175,6 +221,7 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     /**
+     * <improve>improve this function to use join</improve>
      * get specific comment with id
      *
      * @param id
@@ -184,7 +231,11 @@ public class CommentDaoImpl implements CommentDao {
     public Comment getCommentById(long id) {
         Comment comment = null;
 
-        try (ResultSet rs = db.findOne(new String[]{"*"}, table, "`id`=?", id)) {
+        try (ResultSet rs = db.select()
+                .table(table)
+                .where("`id`=?", id)
+                .fetchData()) {
+
             if (rs.next()) {
                 comment = new Comment.Builder()
                         .id(rs.getLong("id"))
