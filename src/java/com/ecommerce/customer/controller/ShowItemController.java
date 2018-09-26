@@ -69,10 +69,10 @@ public class ShowItemController extends HttpServlet {
                 }
             }
             // get all comments with descinding order links with item id
-            List<Comment> commentsOfItem = new CommentDaoImpl(servletContext).getAllCommentsOfItem(id, "DESC");
+            List<Comment> itemComments = new CommentDaoImpl(servletContext).getItemComments(id, "DESC");
 
             // set comments to request
-            request.setAttribute("commentsOfItem", commentsOfItem);
+            request.setAttribute("itemComments", itemComments);
 
             // forword request to manage page
             Helper.forwardRequest(request, response, customerJspPath + "show_item.jsp");
@@ -114,7 +114,7 @@ public class ShowItemController extends HttpServlet {
         request.setAttribute("item", item);
 
         // get all comments with descinding order links with item id
-        List<Comment> commentsOfItem = new CommentDaoImpl(servletContext).getAllCommentsOfItem(id, "DESC");
+        List<Comment> commentsOfItem = new CommentDaoImpl(servletContext).getItemComments(id, "DESC");
 
         // set comments to request
         request.setAttribute("commentsOfItem", commentsOfItem);

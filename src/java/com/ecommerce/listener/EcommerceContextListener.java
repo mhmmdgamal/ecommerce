@@ -22,7 +22,7 @@ public class EcommerceContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext sc = sce.getServletContext();
 
-        // get database init params from app context  
+        // get database init params table app context  
         String dbUrl = sc.getInitParameter("dbUrl");
         String dbUsername = sc.getInitParameter("dbUsername");
         String dbPassword = sc.getInitParameter("dbPassword");

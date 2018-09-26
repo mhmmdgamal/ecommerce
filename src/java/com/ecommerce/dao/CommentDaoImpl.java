@@ -116,7 +116,7 @@ public class CommentDaoImpl implements CommentDao {
      */
     @Override
     public List<Comment> getAllComments(String sort) {
-        return this.getAllItemComments(0, sort);
+        return this.getItemComments(0, sort);
     }
 
     /**
@@ -126,8 +126,9 @@ public class CommentDaoImpl implements CommentDao {
      * @param sort
      * @return found comments
      */
+    
     @Override
-    public List<Comment> getAllItemComments(long id, String sort) {
+    public List<Comment> getItemComments(long id, String sort) {
         List<Comment> comments = new ArrayList();
 
         String where = null;

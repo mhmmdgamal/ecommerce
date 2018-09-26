@@ -82,7 +82,7 @@
                 </c:otherwise>
             </c:choose>
             <hr class="custom-hr">
-            <c:forEach items="${commentsOfItem}" var="comment">
+            <c:forEach items="${itemComments}" var="comment">
 
                 <div class="comment-box">
                     <div class="row">

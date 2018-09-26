@@ -13,7 +13,7 @@ public interface CommentDao {
 
     public List<Comment> getAllComments(String sort);
 
-    public List<Comment> getAllCommentsOfItem(long itemId, String sort);
+    public List<Comment> getItemComments(long itemId, String sort);
     
     public Comment getCommentById(long id);
 
