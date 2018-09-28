@@ -86,7 +86,7 @@ public class EditUserController extends HttpServlet {
             Helper.forwardRequest(request, response, adminJspPath + "edit_user.jsp");
         } else {
             // make new user and set info to it
-            User user = new User.Builder()
+            User user = User.builder()
                     .id(id)
                     .name(username)
                     .password(password)

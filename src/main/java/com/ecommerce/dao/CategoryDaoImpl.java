@@ -116,7 +116,7 @@ public class CategoryDaoImpl implements CategoryDao {
                 .fetchData()) {
 
             while (rs.next()) {
-                Category category = new Category.Builder()
+                Category category = Category.builder()
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .description(rs.getString("description"))
@@ -155,7 +155,7 @@ public class CategoryDaoImpl implements CategoryDao {
                 .fetchData()) {
 
             while (rs.next()) {
-                Item item = new Item.Builder()
+                Item item = Item.builder()
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .description(rs.getString("description"))
@@ -199,7 +199,7 @@ public class CategoryDaoImpl implements CategoryDao {
                 .fetchData()) {
 
             while (rs.next()) {
-                Category category = new Category.Builder()
+                Category category = Category.builder()
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .description(rs.getString("description"))
@@ -256,7 +256,7 @@ public class CategoryDaoImpl implements CategoryDao {
                 .fetchData()) {
 
             if (rs.next()) {
-                category = new Category.Builder()
+                category = Category.builder()
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .description(rs.getString("description"))

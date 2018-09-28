@@ -83,7 +83,7 @@ public class EditProfileController extends HttpServlet {
             Long userId = getCurrentUserId(request, response);
 
             //create new user
-            User user = new User.Builder()
+            User user = User.builder()
                     .id(userId)
                     .name(name)
                     .password(pass)

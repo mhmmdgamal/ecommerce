@@ -88,17 +88,17 @@ public class AddNewItemController extends HttpServlet {
             Long userId = getCurrentUserId(request, response);
 
             // make new user and set info to it
-            User user = new User.Builder()
+            User user = User.builder()
                     .id(userId)
                     .build();
 
             // make new category and set info to it
-            Category category = new Category.Builder()
+            Category category = Category.builder()
                     .id(categoryId)
                     .build();
 
             // make new item and set info to it 
-            Item item = new Item.Builder()
+            Item item = Item.builder()
                     .name(name)
                     .description(description)
                     .price(price)

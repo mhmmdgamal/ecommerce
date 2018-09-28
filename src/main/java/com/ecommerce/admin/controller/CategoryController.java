@@ -123,7 +123,7 @@ public class CategoryController extends HttpServlet {
             int ads = Integer.parseInt(request.getParameter("ads"));
 
             // make new category and set info to it 
-            Category category = new Category.Builder()
+            Category category = Category.builder()
                     .name(name)
                     .description(description)
                     .ordering(ordering)
@@ -156,7 +156,7 @@ public class CategoryController extends HttpServlet {
             int ads = Integer.parseInt(request.getParameter("ads"));
 
             // make new category and set info to it 
-            Category category = new Category.Builder()
+            Category category = Category.builder()
                     .id(id)
                     .name(name)
                     .description(description)

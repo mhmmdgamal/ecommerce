@@ -148,7 +148,7 @@ public class LoginRegisterController extends HttpServlet {
                 String passwordHashed = HashHelper.stringHash(password);
 
                 // make new user and set info to it
-                User user = new User.Builder()
+                User user = User.builder()
                         .name(username)
                         .password(passwordHashed)
                         .email(email)

@@ -44,7 +44,7 @@ public class UserDaoImpl implements UserDao {
                 .fetchData()) {
 
             if (rs.next()) {
-                user = new User.Builder()
+                user = User.builder()
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .password(rs.getString("password"))
@@ -77,7 +77,7 @@ public class UserDaoImpl implements UserDao {
                 .fetchData()) {
 
             while (rs.next()) {
-                Item item = new Item.Builder()
+                Item item = Item.builder()
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .description(rs.getString("description"))
@@ -241,7 +241,7 @@ public class UserDaoImpl implements UserDao {
                 .fetchData()) {
 
             while (rs.next()) {
-                User user = new User.Builder()
+                User user = User.builder()
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .password(rs.getString("password"))
@@ -279,7 +279,7 @@ public class UserDaoImpl implements UserDao {
                 .fetchData()) {
 
             while (rs.next()) {
-                User user = new User.Builder()
+                User user = User.builder()
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .password(rs.getString("password"))
@@ -336,7 +336,7 @@ public class UserDaoImpl implements UserDao {
                 .fetchData()) {
 
             if (rs.next()) {
-                user = new User.Builder()
+                user = User.builder()
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .password(rs.getString("password"))
@@ -374,7 +374,7 @@ public class UserDaoImpl implements UserDao {
             Comment comment;
 
             while (rs.next()) {
-                comment = new Comment.Builder()
+                comment = Comment.builder()
                         .id(rs.getLong("id"))
                         .comment(rs.getString("comment"))
                         .addDate(rs.getDate("add_date"))

@@ -148,7 +148,7 @@ public class CommentController extends HttpServlet {
             String com = request.getParameter("comment");
 
             // make new comment and set info to it
-            Comment comment = new Comment.Builder()
+            Comment comment = Comment.builder()
                     .id(id)
                     .comment(com)
                     .build();

@@ -62,7 +62,7 @@ public class ItemDaoImpl implements ItemDao {
                 .fetchData()) {
 
             while (rs.next()) {
-                Item item = new Item.Builder()
+                Item item = Item.builder()
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .description(rs.getString("description"))
@@ -110,7 +110,7 @@ public class ItemDaoImpl implements ItemDao {
             Comment comment;
 
             while (rs.next()) {
-                comment = new Comment.Builder()
+                comment = Comment.builder()
                         .id(rs.getLong("id"))
                         .comment(rs.getString("comment"))
                         .addDate(rs.getDate("add_date"))
@@ -229,7 +229,7 @@ public class ItemDaoImpl implements ItemDao {
                 .fetchData()) {
 
             while (rs.next()) {
-                Item item = new Item.Builder()
+                Item item = Item.builder()
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .description(rs.getString("description"))
@@ -275,7 +275,7 @@ public class ItemDaoImpl implements ItemDao {
                 .fetchData()) {
 
             while (rs.next()) {
-                Item item = new Item.Builder()
+                Item item = Item.builder()
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .description(rs.getString("description"))
@@ -321,7 +321,7 @@ public class ItemDaoImpl implements ItemDao {
                 .fetchData()) {
 
             while (rs.next()) {
-                Item item = new Item.Builder()
+                Item item = Item.builder()
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .description(rs.getString("description"))
@@ -386,7 +386,7 @@ public class ItemDaoImpl implements ItemDao {
                 .fetchData()) {
 
             if (rs.next()) {
-                item = new Item.Builder()
+                item = Item.builder()
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .description(rs.getString("description"))
@@ -428,7 +428,7 @@ public class ItemDaoImpl implements ItemDao {
                 .fetchData()) {
 
             if (rs.next()) {
-                item = new Item.Builder()
+                item = Item.builder()
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .description(rs.getString("description"))

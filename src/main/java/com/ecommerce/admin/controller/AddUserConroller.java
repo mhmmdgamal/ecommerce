@@ -72,7 +72,7 @@ public class AddUserConroller extends HttpServlet {
             Helper.forwardRequest(request, response, adminJspPath + "add_user.jsp");
         } else {
             // make new user and set info to it
-            User user = new User.Builder()
+            User user = User.builder()
                     .name(username)
                     .password(password)
                     .email(email)

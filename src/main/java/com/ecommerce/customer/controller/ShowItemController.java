@@ -132,12 +132,12 @@ public class ShowItemController extends HttpServlet {
             Long userId = getUserId(request, response);
 
             // make new user and set info to it
-            User user = new User.Builder()
+            User user = User.builder()
                     .id(userId)
                     .build();
 
             // make new comment and set info to it
-            Comment com = new Comment.Builder()
+            Comment com = Comment.builder()
                     .comment(comment)
                     .item(item)
                     .user(user)

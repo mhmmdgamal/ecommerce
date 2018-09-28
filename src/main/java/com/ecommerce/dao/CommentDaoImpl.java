@@ -143,7 +143,7 @@ public class CommentDaoImpl implements CommentDao {
                 .fetchData()) {
 
             while (rs.next()) {
-                Comment comment = new Comment.Builder()
+                Comment comment = Comment.builder()
                         .id(rs.getLong("id"))
                         .comment(rs.getString("comment"))
                         .addDate(rs.getDate("add_date"))
@@ -181,7 +181,7 @@ public class CommentDaoImpl implements CommentDao {
                 .fetchData()) {
 
             while (rs.next()) {
-                Comment comment = new Comment.Builder()
+                Comment comment = Comment.builder()
                         .id(rs.getLong("id"))
                         .comment(rs.getString("comment"))
                         .addDate(rs.getDate("add_date"))
@@ -239,7 +239,7 @@ public class CommentDaoImpl implements CommentDao {
                 .fetchData()) {
 
             if (rs.next()) {
-                comment = new Comment.Builder()
+                comment = Comment.builder()
                         .id(rs.getLong("id"))
                         .comment(rs.getString("comment"))
                         .addDate(rs.getDate("add_date"))
