@@ -113,9 +113,9 @@ public final class MySQLDatabaseHelper {
      */
     private MySQLDatabaseHelper(String url, String userName, String password) {
         try {
-//            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             this.connection = DriverManager.getConnection(url, userName, password);
-        } catch (/*ClassNotFoundException | */SQLException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             ex.printStackTrace();
         }
     }
