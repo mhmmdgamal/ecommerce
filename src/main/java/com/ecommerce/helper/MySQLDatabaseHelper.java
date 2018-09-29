@@ -1,11 +1,6 @@
 //<editor-fold >
 package com.ecommerce.helper;
 
-import com.ecommerce.bean.Bean;
-import com.ecommerce.bean.Category;
-import com.ecommerce.bean.Comment;
-import com.ecommerce.bean.Item;
-import com.ecommerce.bean.User;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
