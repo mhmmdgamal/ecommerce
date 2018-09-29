@@ -1,5 +1,6 @@
 package com.ecommerce.filter;
 
+import com.ecommerce.helper.CookieHelper;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -16,15 +17,25 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @WebFilter(urlPatterns = {
-    "/admin/users",
-    "/admin/categories",
+    //filter User 
+    "/admin/manage-users",
+    "/admin/add-user",
+    "/admin/edit-user",
+    "/admin/active-user",
+    "/admin/delete-user",
+    //filter categories 
+    "/admin/manage-categories",
+    "/admin/add-category",
+    "/admin/edit-category",
+    "/admin/delete-category",
+    //filter items 
     "/admin/items",
     "/admin/comments",
     "/admin/dashboard"})
 public class AdminLoginFilter implements Filter {
 
     private static final boolean debug = true;
-    
+
     private FilterConfig filterConfig = null;
 
     public AdminLoginFilter() {
@@ -38,22 +49,21 @@ public class AdminLoginFilter implements Filter {
         if (debug) {
             log("LoginFilter:doFilter()");
         }
-        
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession();
-        
-        // check if the username session is exists
-        if (session.getAttribute("username") == null) {
+
+        // check if the user session is exists or cookies
+        if ((session.getAttribute("user") == null) && (!CookieHelper.isCookie("user", req, res))) {
             // redirect to login page
             res.sendRedirect("login");
+
         } else {
             chain.doFilter(req, res);
         }
     }
 
-    //<editor-fold >
-
+//<editor-fold >
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {

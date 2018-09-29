@@ -15,6 +15,8 @@
            placeholder="Password" 
            autocomplete="new-password" 
            value="1234"/>
+    <input id="save" type="checkbox" name="remember" value="y">
+    <label for="save" >Remember me</label>
     <input class="btn btn-primary btn-block" 
            type="submit" 
            value="Login" />

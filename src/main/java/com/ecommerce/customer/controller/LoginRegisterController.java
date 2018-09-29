@@ -40,9 +40,8 @@ public class LoginRegisterController extends HttpServlet {
         HttpSession session = request.getSession();
 
         if ((session.getAttribute("user") != null) || (CookieHelper.isCookie("user", request, response))) {
-            //<improve>redirect to home if session exists
+            // go to home 
             response.sendRedirect("");
-//            Helper.forwardRequest(request, response, customerJspPath + "home.jsp", "Home");
 
         } else {
             String previous = request.getParameter("previous");
@@ -80,7 +79,7 @@ public class LoginRegisterController extends HttpServlet {
             // get logging user
             User user = new UserDaoImpl(servletContext).getLoginUser(username, passwordHashed, false);
 
-            if (user != null) {// check if user existed in DB 
+            if (user != null) {//if user existed in DB 
                 if (remember != null && remember.equalsIgnoreCase("y")) {
                     // set user data to cookies 
                     CookieHelper.addCookie("user", username, response);

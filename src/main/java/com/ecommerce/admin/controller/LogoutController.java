@@ -1,5 +1,7 @@
 package com.ecommerce.admin.controller;
 
+import com.ecommerce.helper.CookieHelper;
+import com.ecommerce.helper.Helper;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,9 +25,15 @@ public class LogoutController extends HttpServlet {
             // invaldate the session to logout
             session.invalidate();
         }
+        //destroy cookies 
+        CookieHelper.deleteCookies(request, response);
+
+//        String customerJspPath = getServletContext().getInitParameter("customerJspPath");
 
         // redirect to login page to new login
-        response.sendRedirect("home");
+        response.sendRedirect("login");
+//        Helper.forwardRequest(request, response, customerJspPath + "home.jsp", "Login");
+
     }// </editor-fold>
 
 }

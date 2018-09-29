@@ -3,6 +3,7 @@ package com.ecommerce.admin.controller;
 
 import com.ecommerce.bean.User;
 import com.ecommerce.dao.UserDaoImpl;
+import com.ecommerce.helper.CookieHelper;
 import com.ecommerce.helper.HashHelper;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
@@ -47,32 +48,44 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //get Session 
+        HttpSession session = request.getSession();
         // get form params from the request
-        String userName = request.getParameter("user");
+        String username = request.getParameter("user");
         String password = request.getParameter("pass");
         String passwordHashed = HashHelper.stringHash(password);
+        String remember = request.getParameter("remember");
 
         // get logging user
-        User user = new UserDaoImpl(servletContext).getLoginUser(userName, passwordHashed, true);
+        User user = new UserDaoImpl(servletContext).getLoginUser(username, passwordHashed, true);
 
         // check if user exists
         if (user != null) {
+            if (remember != null && remember.equalsIgnoreCase("y")) {
+                // set user data to cookies 
+                CookieHelper.addCookie("user", username, response);
+                CookieHelper.addCookie("userId", "" + user.getId(), response);
+                CookieHelper.addCookie("fullName", (user.getFullName().split(" ")[0]), response);
 
-            // get session and set user data to it
-            HttpSession session = request.getSession();
-            session.setAttribute("username", userName);
-            session.setAttribute("id", user.getId());
-
-            // set the first name of user to the session
-            session.setAttribute("fullName", (user.getFullName().split(" ")[0]));
-
+            } else {
+                // set session for User 
+                SetUserSession(user, session);
+            }
             Helper.setTitle(request, "Dashboard");
             response.sendRedirect("dashboard");
-        } else {
 
+        } else {
             // redirect to login page if user not exits
             response.sendRedirect("login");
         }
     }// </editor-fold>
+
+    public void SetUserSession(User user, HttpSession session) {
+
+        //set session for user if remember me not checked 
+        session.setAttribute("user", user.getName());
+        session.setAttribute("userId", user.getId());
+        session.setAttribute("fullName", (user.getFullName().split(" ")[0]));
+    }
 
 }

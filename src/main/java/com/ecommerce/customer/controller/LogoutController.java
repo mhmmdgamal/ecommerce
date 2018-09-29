@@ -27,7 +27,7 @@ public class LogoutController extends HttpServlet {
             // invaldate the session to logout
             session.invalidate();
         }
-        
+        //destroy cookies 
         CookieHelper.deleteCookies(request, response);
 
         // redirect to login page to new login
