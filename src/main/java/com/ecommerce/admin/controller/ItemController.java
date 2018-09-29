@@ -47,7 +47,7 @@ public class ItemController extends HttpServlet {
         List<User> users = new UserDaoImpl(servletContext).getAllUsers(false);
 
         // get all categories with assending order
-        List<Category> categories = new CategoryDaoImpl(servletContext).getAllCategories("ASC");
+        List<Category> categories = new CategoryDaoImpl(servletContext).getAllSupCategories("ASC");
 
         // get all comments with assending order
         List<Comment> comments = new CommentDaoImpl(servletContext).getAllComments("ASC");
@@ -149,7 +149,7 @@ public class ItemController extends HttpServlet {
         List<User> users = new UserDaoImpl(servletContext).getAllUsers(false);
 
         // get all categories with assending order
-        List<Category> categories = new CategoryDaoImpl(servletContext).getAllCategories("ASC");
+        List<Category> categories = new CategoryDaoImpl(servletContext).getAllSupCategories("ASC");
 
         // get all comments with assending order
         List<Comment> comments = new CommentDaoImpl(servletContext).getAllComments("ASC");

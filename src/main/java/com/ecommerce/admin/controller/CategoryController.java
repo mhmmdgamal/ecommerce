@@ -36,14 +36,14 @@ public class CategoryController extends HttpServlet {
         String action = request.getParameter("action") != null ? request.getParameter("action") : "Manage";
         if (action.equals("Manage")) {
             // get all categories with assending order
-            List<Category> categories = new CategoryDaoImpl(servletContext).getAllCategories("ASC");
+            List<Category> categories = new CategoryDaoImpl(servletContext).getAllSupCategories("ASC");
 
             // get sort param from the request
             String sort = request.getParameter("sort");
 
             if (sort != null) {
                 // get all categories with order depending on param sort 
-                categories = new CategoryDaoImpl(servletContext).getAllCategories(sort);
+                categories = new CategoryDaoImpl(servletContext).getAllSupCategories(sort);
             }
 
             // set categories to request

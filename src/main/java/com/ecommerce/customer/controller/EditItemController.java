@@ -59,7 +59,7 @@ public class EditItemController extends HttpServlet {
             request.setAttribute("item", item);
 
             // get all categories from database with assending order
-            categories = new CategoryDaoImpl(servletContext).getAllCategories("ASC");
+            categories = new CategoryDaoImpl(servletContext).getAllSupCategories("ASC");
 
             // set categories to the request 
             request.setAttribute("categories", categories);

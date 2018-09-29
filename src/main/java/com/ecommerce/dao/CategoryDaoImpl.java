@@ -41,6 +41,7 @@ public class CategoryDaoImpl implements CategoryDao {
                     .data("comment", category.getName())
                     .data("description", category.getDescription())
                     .data("ordering", category.getOrdering())
+                    .data("parent", category.getParent())
                     .data("visibility", category.getVisibility())
                     .data("allow_comments", category.getAllowComments())
                     .data("allow_ads", category.getAllowAds())
@@ -67,6 +68,7 @@ public class CategoryDaoImpl implements CategoryDao {
                     .data("comment", category.getName())
                     .data("description", category.getDescription())
                     .data("ordering", category.getOrdering())
+                    .data("parent", category.getParent())
                     .data("visibility", category.getVisibility())
                     .data("allow_comments", category.getAllowComments())
                     .data("allow_ads", category.getAllowAds())
@@ -100,17 +102,18 @@ public class CategoryDaoImpl implements CategoryDao {
     }
 
     /**
-     * get all categories data table database
+     * get all super categories data table database
      *
      * @param sort
      * @return found categories
      */
     @Override
-    public List<Category> getAllCategories(String sort) {
+    public List<Category> getAllSupCategories(String sort) {
         List<Category> categories = new ArrayList();
 
         try (ResultSet rs = db.select()
                 .table(table)
+                .where("`parent`=0")
                 .orderBy("ordering")
                 .sort(sort)
                 .fetchData()) {
@@ -121,6 +124,45 @@ public class CategoryDaoImpl implements CategoryDao {
                         .name(rs.getString("name"))
                         .description(rs.getString("description"))
                         .ordering(rs.getInt("ordering"))
+                        .parent(rs.getInt("parent"))
+                        .visibility(rs.getInt("visibility"))
+                        .allowComments(rs.getInt("allow_comments"))
+                        .allowAds(rs.getInt("allow_ads"))
+                        .build();
+                categories.add(category);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+
+        return categories;
+    }
+
+    /**
+     * get all sub categories data table database
+     *
+     * @param sort
+     * @return found categories
+     */
+    @Override
+    public List<Category> getAllSubCategories(String sort) {
+        List<Category> categories = new ArrayList();
+
+        try (ResultSet rs = db.select()
+                .table(table)
+                .where("`parent`!=0")
+                .orderBy("ordering")
+                .sort(sort)
+                .fetchData()) {
+
+            while (rs.next()) {
+                Category category = Category.builder()
+                        .id(rs.getLong("id"))
+                        .name(rs.getString("name"))
+                        .description(rs.getString("description"))
+                        .ordering(rs.getInt("ordering"))
+                        .parent(rs.getInt("parent"))
                         .visibility(rs.getInt("visibility"))
                         .allowComments(rs.getInt("allow_comments"))
                         .allowAds(rs.getInt("allow_ads"))
@@ -204,6 +246,7 @@ public class CategoryDaoImpl implements CategoryDao {
                         .name(rs.getString("name"))
                         .description(rs.getString("description"))
                         .ordering(rs.getInt("ordering"))
+                        .parent(rs.getInt("parent"))
                         .visibility(rs.getInt("visibility"))
                         .allowComments(rs.getInt("allow_comments"))
                         .allowAds(rs.getInt("allow_ads"))
@@ -261,6 +304,7 @@ public class CategoryDaoImpl implements CategoryDao {
                         .name(rs.getString("name"))
                         .description(rs.getString("description"))
                         .ordering(rs.getInt("ordering"))
+                        .parent(rs.getInt("parent"))
                         .visibility(rs.getInt("visibility"))
                         .allowComments(rs.getInt("allow_comments"))
                         .allowAds(rs.getInt("allow_ads"))

@@ -34,7 +34,7 @@ public class EcommerceContextListener implements ServletContextListener {
         // set database to request
         sc.setAttribute("db", db);
         
-        List<Category> categories = new CategoryDaoImpl(sc).getAllCategories("ASC");
+        List<Category> categories = new CategoryDaoImpl(sc).getAllSupCategories("ASC");
         
         sc.setAttribute("navCategories", categories);
     }
