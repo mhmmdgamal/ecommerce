@@ -2,12 +2,12 @@
 <c:import url="includes/templates/header.jsp"/>
 <c:import url="includes/templates/navbar.jsp"/>
 
-<h1 class="text-center">Add New Member</h1>
-<c:import url="includes/templates/check_one_error.jsp"/>
+<h1 class="text-center">Add New Category</h1>
+<c:import url="includes/templates/check_one_error_sm10.jsp"/>
 
 <div class="container">
 
-    <form action="${initParam['adminPath']}categories?action=Add" class="form-horizontal" method="POST">
+    <form action="${initParam['adminPath']}add-category" class="form-horizontal" method="POST">
         <!-- Start Name Field -->
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Name</label>
@@ -33,20 +33,19 @@
         </div>
         <!-- End Ordering Field -->
         <!-- Start Category Type -->
-        <!--<div class="form-group form-group-lg">-->
-        <!--<label class="col-sm-2 control-label">Parent?</label>-->
-        <!--<div class="col-sm-10 col-md-6">-->
-        <!--<select name="parent">-->
-        <!--<option value="0">None</option>-->
-        <!--<?php--> 
-        <!--$allCats = getAllFrom("*", "categories", "where parent = 0", "", "ID", "ASC");-->
-        <!--foreach($allCats as $cat) {-->
-        <!--echo "<option value='" . $cat['ID'] . "'>" . $cat['Name'] . "</option>";-->
-        <!--}-->
-        <!--?>-->
-        <!--</select>-->
-        <!--</div>-->
-        <!--</div>-->
+        <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">Parent?</label>
+            <div class="col-sm-10 col-md-6">
+                <select name="parent">
+                    <option value="0">None</option>
+                    <c:forEach items="${requestScope['AllCategories']}" var="category">
+                        <option value='${category['id']}'>
+                            ${category['name']}
+                        </option>
+                    </c:forEach>
+                </select>
+            </div>
+        </div>
         <!-- End Category Type -->
         <!-- Start Visibility Field -->
         <div class="form-group form-group-lg">

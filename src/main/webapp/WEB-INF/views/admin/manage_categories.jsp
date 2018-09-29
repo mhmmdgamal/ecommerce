@@ -23,25 +23,25 @@
                 </div>
                 <div class="panel-body">
 
-                    <c:forEach items="${requestScope['supCategories']}" var="category">
+                    <c:forEach items="${requestScope['supCategories']}" var="supCategory">
                         <div class='cat'>
                             <div class='hidden-buttons'>
-                                <a href='${initParam['adminPath']}categories?action=Edit&categoryid=${category['id']}' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Edit</a>
-                                <a href='${initParam['adminPath']}categories?action=Delete&categoryid=${category['id']}' class='confirm btn btn-xs btn-danger'><i class='fa fa-close'></i> Delete</a>
+                                <a href='${initParam['adminPath']}edit-category?categoryid=${supCategory['id']}' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Edit</a>
+                                <a href='${initParam['adminPath']}delete-category?categoryid=${supCategory['id']}' class='confirm btn btn-xs btn-danger'><i class='fa fa-close'></i> Delete</a>
                             </div>
-                            <h3>${category['name']}</h3>
+                            <h3>${supCategory['name']}</h3>
                             <div class='full-view'>
-                                <p>${(category['description'].equals("")) ? "This category has no description" : category['description']}</p>
+                                <p>${(supCategory['description'].equals("")) ? "This category has no description" : supCategory['description']}</p>
 
-                                <c:if test="${category['visibility'] eq 1}">
+                                <c:if test="${supCategory['visibility'] eq 1}">
                                     <span class="visibility cat-span"><i class="fa fa-eye"></i> Hidden</span> 
                                 </c:if>
 
-                                <c:if test="${category['allowComments'] eq 1}">
+                                <c:if test="${supCategory['allowComments'] eq 1}">
                                     <span class="commenting cat-span"><i class="fa fa-close"></i> Comment Disabled</span> 
                                 </c:if>
 
-                                <c:if test="${category['allowAds'] eq 1}">     
+                                <c:if test="${supCategory['allowAds'] eq 1}">     
                                     <span class="advertises cat-span"><i class="fa fa-close"></i> Ads Disabled</span> 
                                 </c:if>
 
@@ -49,14 +49,14 @@
                             <!--start add sub Category -->
                             <c:if test="${requestScope['subCategories'].size() gt 0}">
                                 <c:forEach items="${requestScope['subCategories']}" var="subCategory">
-                                    <c:if test="${category.id eq subCategory.parent }">
+                                    <c:if test="${supCategory.id eq subCategory.parent }">
 
                                         <h4 class='child-head'>Child Categories</h4>
                                         <ul class='list-unstyled child-cats'>
                                             <li class='child-link'>
-                                                <a href='${initParam['adminPath']}categories?action=Edit&categoryid=${subCategory['id']}'>${subCategory.name}</a>
-                                                <a href='${initParam['adminPath']}categories?action=Edit&categoryid=${subCategory['id']}' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Edit</a>
-                                                <a href='${initParam['adminPath']}categories?action=Delete&categoryid=${subCategory['id']}' class='confirm btn btn-xs btn-danger'><i class='fa fa-close'></i> Delete</a>
+                                                <a href='${initParam['adminPath']}edit-category?categoryid=${subCategory['id']}'>${subCategory.name}</a>
+                                                <a href='${initParam['adminPath']}edit-category?categoryid=${subCategory['id']}' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Edit</a>
+                                                <a href='${initParam['adminPath']}delete-category?categoryid=${subCategory['id']}' class='confirm btn btn-xs btn-danger'><i class='fa fa-close'></i> Delete</a>
                                             </li><br>
                                         </c:if>
                                     </c:forEach>
@@ -70,7 +70,7 @@
             </div>
         </div>
 
-        <a class="add-category btn btn-primary" href="${initParam['adminPath']}categories?action=Add"><i class="fa fa-plus"></i> Add New Category</a>
+        <a class="add-category btn btn-primary" href="${initParam['adminPath']}add-category"><i class="fa fa-plus"></i> Add New Category</a>
     </div>
 </c:when>
 <c:otherwise>

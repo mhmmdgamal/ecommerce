@@ -8,7 +8,7 @@
 <c:import url="includes/templates/check_one_error_sm10.jsp"/>
 
 <div class="container">
-    <form action="${initParam['adminPath']}categories?action=Edit" class="form-horizontal" method="POST">
+    <form action="${initParam['adminPath']}edit-category" class="form-horizontal" method="POST">
 
         <input type="hidden" name="categoryid" value="${category['id']}" />
         <!-- Start Name Field -->
