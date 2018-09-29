@@ -36,18 +36,21 @@ public class CategoryController extends HttpServlet {
         String action = request.getParameter("action") != null ? request.getParameter("action") : "Manage";
         if (action.equals("Manage")) {
             // get all categories with assending order
-            List<Category> categories = new CategoryDaoImpl(servletContext).getAllSupCategories("ASC");
+            List<Category> supCategories = new CategoryDaoImpl(servletContext).getAllSupCategories("ASC");
+            List<Category> subCategories = new CategoryDaoImpl(servletContext).getAllSubCategories("ASC");
 
             // get sort param from the request
             String sort = request.getParameter("sort");
 
             if (sort != null) {
                 // get all categories with order depending on param sort 
-                categories = new CategoryDaoImpl(servletContext).getAllSupCategories(sort);
+                supCategories = new CategoryDaoImpl(servletContext).getAllSupCategories(sort);
             }
 
-            // set categories to request
-            request.setAttribute("categories", categories);
+            // set all super categories to request
+            request.setAttribute("supCategories", supCategories);
+            // set all sub categories to request
+            request.setAttribute("subCategories", subCategories);
 
             // set the sort to request to ordering categories depending on it
             request.setAttribute("sort", sort);
@@ -184,16 +187,6 @@ public class CategoryController extends HttpServlet {
             // forword request to the edit page
             Helper.forwardRequest(request, response, adminJspPath + "edit_category.jsp");
         }
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
     }// </editor-fold>
 
 }

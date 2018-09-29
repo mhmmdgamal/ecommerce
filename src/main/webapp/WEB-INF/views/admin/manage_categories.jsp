@@ -6,7 +6,7 @@
 <c:import url="includes/templates/check_one_error.jsp"/>
 
 <c:choose>
-    <c:when test="${requestScope['categories'].size() gt 0}">
+    <c:when test="${requestScope['supCategories'].size() gt 0}">
 
         <div class="container categories">
             <div class="panel panel-default">
@@ -23,7 +23,7 @@
                 </div>
                 <div class="panel-body">
 
-                    <c:forEach items="${requestScope['categories']}" var="category">
+                    <c:forEach items="${requestScope['supCategories']}" var="category">
                         <div class='cat'>
                             <div class='hidden-buttons'>
                                 <a href='${initParam['adminPath']}categories?action=Edit&categoryid=${category['id']}' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Edit</a>
@@ -46,6 +46,23 @@
                                 </c:if>
 
                             </div>
+
+                            <c:if test="${requestScope['subCategories'].size() gt 0}">
+                                <h4 class='child-head'>Child Categories</h4>
+                                <ul class='list-unstyled child-cats'>
+                                    <c:forEach items="${requestScope['subCategories']}" var="category">
+                                        <li class='child-link'>
+                                            <a href='${initParam['adminPath']}categories?action=Edit&categoryid=${category['id']}'>${category.name}</a>
+                                            <a href='${initParam['adminPath']}categories?action=Edit&categoryid=${category['id']}' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Edit</a>
+                                            <a href='${initParam['adminPath']}categories?action=Delete&categoryid=${category['id']}' class='confirm btn btn-xs btn-danger'><i class='fa fa-close'></i> Delete</a>
+                                        </li><br>
+                                        
+                                    </c:forEach>
+                                </ul>
+
+
+                            </c:if>
+
 
                             <!--            // Get Child Categories
                                         $childCats = getAllFrom("*", "categories", "where parent = {$cat['ID']}", "", "ID", "ASC");
