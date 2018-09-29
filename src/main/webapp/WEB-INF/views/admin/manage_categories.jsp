@@ -46,38 +46,23 @@
                                 </c:if>
 
                             </div>
-
+                            <!--start add sub Category -->
                             <c:if test="${requestScope['subCategories'].size() gt 0}">
-                                <h4 class='child-head'>Child Categories</h4>
-                                <ul class='list-unstyled child-cats'>
-                                    <c:forEach items="${requestScope['subCategories']}" var="category">
-                                        <li class='child-link'>
-                                            <a href='${initParam['adminPath']}categories?action=Edit&categoryid=${category['id']}'>${category.name}</a>
-                                            <a href='${initParam['adminPath']}categories?action=Edit&categoryid=${category['id']}' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Edit</a>
-                                            <a href='${initParam['adminPath']}categories?action=Delete&categoryid=${category['id']}' class='confirm btn btn-xs btn-danger'><i class='fa fa-close'></i> Delete</a>
-                                        </li><br>
-                                        
+                                <c:forEach items="${requestScope['subCategories']}" var="subCategory">
+                                    <c:if test="${category.id eq subCategory.parent }">
+
+                                        <h4 class='child-head'>Child Categories</h4>
+                                        <ul class='list-unstyled child-cats'>
+                                            <li class='child-link'>
+                                                <a href='${initParam['adminPath']}categories?action=Edit&categoryid=${subCategory['id']}'>${subCategory.name}</a>
+                                                <a href='${initParam['adminPath']}categories?action=Edit&categoryid=${subCategory['id']}' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Edit</a>
+                                                <a href='${initParam['adminPath']}categories?action=Delete&categoryid=${subCategory['id']}' class='confirm btn btn-xs btn-danger'><i class='fa fa-close'></i> Delete</a>
+                                            </li><br>
+                                        </c:if>
                                     </c:forEach>
                                 </ul>
-
-
                             </c:if>
-
-
-                            <!--            // Get Child Categories
-                                        $childCats = getAllFrom("*", "categories", "where parent = {$cat['ID']}", "", "ID", "ASC");
-                                        if (! empty($childCats)) {
-                                        echo "<h4 class='child-head'>Child Categories</h4>";
-                                        echo "<ul class='list-unstyled child-cats'>";
-                                        foreach ($childCats as $c) {
-                                        echo "<li class='child-link'>
-                                        <a href='categories.php?do=Edit&catid=" . $c['ID'] . "'>" . $c['Name'] . "</a>
-                                        <a href='categories.php?do=Delete&catid=" . $c['ID'] . "' class='show-delete confirm'> Delete</a>
-                                        </li>";
-                                        }
-                                        echo "</ul>";
-                                        }-->
-
+                            <!-- end add sub Category -->
                         </div>
                         <hr
                     </div>
