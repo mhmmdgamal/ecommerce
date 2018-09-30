@@ -7,7 +7,7 @@
 
 <div class="container">
 
-    <form action="${initParam['adminPath']}items?action=Add" class="form-horizontal" method="POST">
+    <form action="${initParam['adminPath']}add-item" class="form-horizontal" method="POST">
         <!-- action will go to the ItemController --> 
         <!-- Start Name Field -->
         <div class="form-group form-group-lg">
@@ -77,7 +77,7 @@
         <!-- End Status Field -->
         <!-- Start Members Field -->
         <div class="form-group form-group-lg">
-            <label class="col-sm-2 control-label">Member</label>
+            <label class="col-sm-2 control-label">User</label>
             <div class="col-sm-10 col-md-6">
                 <select name="user">
                     <option value="0">...</option>

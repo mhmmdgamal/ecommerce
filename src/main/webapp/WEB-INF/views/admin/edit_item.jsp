@@ -7,7 +7,7 @@
 
 <div class="container">
 
-    <form action="${initParam['adminPath']}items?action=Edit" class="form-horizontal" method="POST">
+    <form action="${initParam['adminPath']}edit-item" class="form-horizontal" method="POST">
 
         <input type="hidden" name="itemid" value="${item.id}" />
         <!-- Start Name Field -->
@@ -160,11 +160,11 @@
                     <td>${comment['user']['name']}</td>
                     <td>${comment['addDate']}</td>
                     <td>
-                        <a href='${initParam['adminPath']}comments?action=Edit&commentid=${comment['id']}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
-                        <a href='${initParam['adminPath']}comments?action=Delete&commentid=${comment['id']}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete </a>
+                        <a href='${initParam['adminPath']}edit-comment?commentid=${comment['id']}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
+                        <a href='${initParam['adminPath']}delete-comment?commentid=${comment['id']}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete </a>
                         <c:if test="${comment['status'] eq 0}">
 
-                            <a href='${initParam['adminPath']}comments?action=Approve&commentid=${comment['id']}' class='btn btn-info activate'><i class='fa fa-check'></i> Approve</a>
+                            <a href='${initParam['adminPath']}approve-comment?commentid=${comment['id']}' class='btn btn-info activate'><i class='fa fa-check'></i> Approve</a>
                         </c:if>
                     </td>
                 </tr>

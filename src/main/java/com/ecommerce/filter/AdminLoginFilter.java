@@ -28,9 +28,17 @@ import javax.servlet.http.HttpSession;
     "/admin/add-category",
     "/admin/edit-category",
     "/admin/delete-category",
-    //filter items 
-    "/admin/items",
-    "/admin/comments",
+    //filter Items 
+    "/admin/manage-items",
+    "/admin/edit-item",
+    "/admin/approve-item",
+    "/admin/delete-item",
+    //filter Comments
+    "/admin/manage-comments",
+    "/admin/edit-comment",
+    "/admin/delete-comment",
+    "/admin/approve-comment",
+    //filter Dashboard
     "/admin/dashboard"})
 public class AdminLoginFilter implements Filter {
 

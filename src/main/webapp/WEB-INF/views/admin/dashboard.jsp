@@ -25,7 +25,7 @@
                     <div class="info">
                         Pending Users
                         <span>
-                            <a href="${initParam['adminPath']}users?action=Manage&page=Pending">
+                            <a href="${initParam['adminPath']}manage-user?page=Pending">
                                 ${numPendingUsers}
                             </a>
                         </span>
@@ -38,7 +38,7 @@
                     <div class="info">
                         Total Items
                         <span>
-                            <a href="${initParam['adminPath']}items">${numItems}</a>
+                            <a href="${initParam['adminPath']}manage-items">${numItems}</a>
                         </span>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                     <div class="info">
                         Total Comments
                         <span>
-                            <a href="${initParam['adminPath']}comments">${numComments}</a>
+                            <a href="${initParam['adminPath']}manage-comments">${numComments}</a>
                         </span>
                     </div>
                 </div>
@@ -124,19 +124,19 @@
                                         <li>
                                             ${item['name']}
 
-                                            <a href='${initParam['adminPath']}items?action=Edit&itemid=${item['id']}'>
+                                            <a href='${initParam['adminPath']}edit-item?itemid=${item['id']}'>
                                                 <span class='btn btn-success pull-right'>
                                                     <i class="fa fa-edit"></i> Edit
                                                 </span>
                                             </a>
 
-                                            <a href='${initParam['adminPath']}items?action=Delete&itemid=${item['id']}'>
+                                            <a href='${initParam['adminPath']}delete-item?itemid=${item['id']}'>
                                                 <span class='btn btn-danger pull-right confirm'>
                                                     <i class="fa fa-edit"></i> Delete
                                                 </span>
                                             </a>
                                             <c:if test="${item['approve'] eq 0}">
-                                                <a href='${initParam['adminPath']}items?action=Approve&itemid=${item['id']}'>
+                                                <a href='${initParam['adminPath']}approve-item?itemid=${item['id']}'>
                                                     <span class='btn btn-info pull-right'>
                                                         <i class='fa fa-check'></i> Activate
                                                     </span>
@@ -171,7 +171,7 @@
                                 <c:forEach items="${latestComments}" var="comment">
                                     <div class="comment-box">
                                         <span class="member-n">
-                                            <a href="${initParam['adminPath']}users?action=Edit&userid=${comment['user']['id']}">
+                                            <a href="${initParam['adminPath']}edit-user?userid=${comment['user']['id']}">
                                                 ${comment['user']['name']}
                                             </a>
                                         </span>

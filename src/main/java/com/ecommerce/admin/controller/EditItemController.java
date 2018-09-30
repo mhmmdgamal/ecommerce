@@ -1,6 +1,7 @@
 package com.ecommerce.admin.controller;
 
 import com.ecommerce.bean.Category;
+import com.ecommerce.bean.Comment;
 import com.ecommerce.bean.Item;
 import com.ecommerce.bean.User;
 import com.ecommerce.dao.CategoryDaoImpl;
@@ -17,8 +18,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "AddItemController", urlPatterns = {"/admin/add-item"})
-public class AddItemController extends HttpServlet {
+@WebServlet(name = "EditItemControlller", urlPatterns = {"/admin/edit-item"})
+public class EditItemController extends HttpServlet {
 
     String adminJspPath = null;
     ServletContext servletContext = null;
@@ -35,8 +36,8 @@ public class AddItemController extends HttpServlet {
             throws ServletException, IOException {
 
         // set page title
-        Helper.setTitle(request, "Add Item");
-        
+        Helper.setTitle(request, "Edit Item");
+
         // get all users with out pendings users
         List<User> users = new UserDaoImpl(servletContext).getAllUsers(false);
         // get all categories with assending order
@@ -47,9 +48,30 @@ public class AddItemController extends HttpServlet {
         // set categories to request
         request.setAttribute("categories", categories);
 
-        // forword request to add page
-        Helper.forwardRequest(request, response, adminJspPath + "add_item.jsp");
+        // get itemId param from the request
+        String itemId = request.getParameter("itemid");
 
+        // return the itemId if number or return 0
+        long id = itemId != null && Helper.isNumber(itemId) ? Long.parseLong(itemId) : 0;
+
+        // get itemComments with assending order
+        List<Comment> itemComments = new ItemDaoImpl(servletContext).getItemComments(id, "ASC");
+
+        // set the itemComments to request
+        request.setAttribute("itemComments", itemComments);
+
+        // get item depending on commentId
+        Item itemFounded = new ItemDaoImpl(servletContext).getItemById(id);
+        if (itemFounded != null) {
+            // set the found item to request
+            request.setAttribute("item", itemFounded);
+
+            // forword request to edit page
+            Helper.forwardRequest(request, response, adminJspPath + "edit_item.jsp");
+        } else {
+            // redirect to the previous page with error message
+            Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
+        }
     }
 
     @Override
@@ -57,7 +79,16 @@ public class AddItemController extends HttpServlet {
             throws ServletException, IOException {
 
         // set page title
-        Helper.setTitle(request, "Add Item");
+        Helper.setTitle(request, "Edit Item");
+
+        // get itemid param from the request
+        int id = Integer.parseInt(request.getParameter("itemid"));
+
+        // get itemComments depending on id with assending order
+        List<Comment> itemComments = new ItemDaoImpl(servletContext).getItemComments(id, "ASC");
+
+        // set itemComments to requset
+        request.setAttribute("itemComments", itemComments);
 
         // get form params from the request
         String name = request.getParameter("name");
@@ -71,15 +102,15 @@ public class AddItemController extends HttpServlet {
 
         // make empty list to errors
         List<String> formErrors
-                //vildate parameter of FORM 
-                = vildateFormParams(name, description, price, countryMade, status, userId, categoryId);
+                //vildate Parameter of FORM 
+                = vildateFormParams(name, description, price, countryMade,
+                        status, userId, categoryId);
+
         // set errors to the request
         request.setAttribute("errors", formErrors);
 
-        // check if no errors
         if (formErrors.size() > 0) {
-            // forword to add page
-            Helper.forwardRequest(request, response, adminJspPath + "add_item.jsp");
+            Helper.forwardRequest(request, response, adminJspPath + "edit_item.jsp");
         } else {
             // make new user and set info to it
             User user = User.builder()
@@ -93,6 +124,7 @@ public class AddItemController extends HttpServlet {
 
             // make new item and set info to it 
             Item item = Item.builder()
+                    .id(id)
                     .name(name)
                     .description(description)
                     .price(price)
@@ -103,19 +135,24 @@ public class AddItemController extends HttpServlet {
                     .tags(tags)
                     .build();
 
-            // add item 
-            boolean itemAdded = new ItemDaoImpl(servletContext).addItem(item);
+            // update item
+            boolean itemUpdated = new ItemDaoImpl(servletContext).updateItem(item);
 
-            if (!itemAdded) {
-                // add new error to errors if item not added
-                formErrors.add("Sorry This Item Is Exist");
+            if (!itemUpdated) {
+                // add new error to errors if item not updated
+                formErrors.add("error in update");
             } else {
-                // set success message if item added
-                request.setAttribute("success", "item added");
+                // set success message if item updated
+                request.setAttribute("success", "item updated");
             }
-            // forword to add page
-            Helper.forwardRequest(request, response, adminJspPath + "add_item.jsp");
+
+            // set item to request
+            request.setAttribute("item", item);
+
+            // forword to edit page
+            Helper.forwardRequest(request, response, adminJspPath + "edit_item.jsp");
         }
+
     }// </editor-fold>
 
     public List<String> vildateFormParams(String name, String description, String price,
@@ -154,4 +191,5 @@ public class AddItemController extends HttpServlet {
         }
         return formErrors;
     }
+
 }

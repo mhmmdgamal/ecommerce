@@ -11,9 +11,9 @@
         <div class="collapse navbar-collapse" id="app-nav">
             <ul class="nav navbar-nav">
                 <li><a href="${initParam['adminPath']}manage-categories">Categories</a></li>
-                <li><a href="${initParam['adminPath']}items">Items</a></li>
+                <li><a href="${initParam['adminPath']}manage-items">Items</a></li>
                 <li><a href="${initParam['adminPath']}manage-users">Users</a></li>
-                <li><a href="${initParam['adminPath']}comments">Comments</a></li>
+                <li><a href="${initParam['adminPath']}manage-comments">Comments</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
