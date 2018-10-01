@@ -8,13 +8,19 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-you have to study jsp and servelt Before download the first 5 versions nearly
+you have to study : 
 
-but if you need to see the project more readable .. no error.. you have to go JSTL Version
+1- jsp and servelt Before download the first 5 versions nearly
+
+2- if you need to see the project more readable .. no error.. you have to go JSTL Version
+
+3- if you need to understand the project you have to study tow patterns 
+    i- DAO ( Data Access Object)
+    ii- design pattern (and  focused on bulider)
 ....................................................
-after we using JSTL .. we using bulider Concept 
-and after bulider Concept .. we using maven 
-and The project is being developed
+after you finish 2 patterns you need to know about Maven ..
+
+>> The project is being developed ...
 
 ### Installing
 
