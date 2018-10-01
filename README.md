@@ -13,6 +13,7 @@ you have to study :
 2- if you need to see the project more readable .. no error.. you have to go JSTL Version
 
 3- if you need to understand the project you have to study some design patterns 
+   
     i- DAO ( Data Access Object)
 
     ii- Bulider
