@@ -1,6 +1,4 @@
-# Project Title
-
-Ecommerce by JSTL (JAVA 2EE) (bulider) (maven)
+# Ecommerce by JSTL (J2EE) (bulider) (maven)
 
 ## Getting Started
 
