@@ -33,7 +33,7 @@ public class AddUserConroller extends HttpServlet {
         // set page title
         Helper.setTitle(request, "Add User");
         // forword to add page
-        Helper.forwardRequest(request, response, adminJspPath + "add_user.jsp");
+        Helper.forwardRequest(request, response, adminJspPath + "user_views/add_user.jsp");
     }
 
     @Override
@@ -69,7 +69,7 @@ public class AddUserConroller extends HttpServlet {
         // check if no errors
         if (formErrors.size() > 0) {
             // forword to add page
-            Helper.forwardRequest(request, response, adminJspPath + "add_user.jsp");
+            Helper.forwardRequest(request, response, adminJspPath + "user_views/add_user.jsp");
         } else {
             // make new user and set info to it
             User user = User.builder()
@@ -89,7 +89,7 @@ public class AddUserConroller extends HttpServlet {
                 request.setAttribute("success", "user added successfully");
             }
             // forword to add page
-            Helper.forwardRequest(request, response, adminJspPath + "add_user.jsp");
+            Helper.forwardRequest(request, response, adminJspPath + "user_views/add_user.jsp");
 
 //			<improve>  $avatar = rand(0, 10000000000) . '_' . $avatarName;
 //

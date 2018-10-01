@@ -48,7 +48,7 @@ public class AddItemController extends HttpServlet {
         request.setAttribute("categories", categories);
 
         // forword request to add page
-        Helper.forwardRequest(request, response, adminJspPath + "add_item.jsp");
+        Helper.forwardRequest(request, response, adminJspPath + "item_views/add_item.jsp");
 
     }
 
@@ -79,7 +79,7 @@ public class AddItemController extends HttpServlet {
         // check if no errors
         if (formErrors.size() > 0) {
             // forword to add page
-            Helper.forwardRequest(request, response, adminJspPath + "add_item.jsp");
+            Helper.forwardRequest(request, response, adminJspPath + "item_views/add_item.jsp");
         } else {
             // make new user and set info to it
             User user = User.builder()
@@ -114,7 +114,7 @@ public class AddItemController extends HttpServlet {
                 request.setAttribute("success", "item added");
             }
             // forword to add page
-            Helper.forwardRequest(request, response, adminJspPath + "add_item.jsp");
+            Helper.forwardRequest(request, response, adminJspPath + "item_views/add_item.jsp");
         }
     }// </editor-fold>
 

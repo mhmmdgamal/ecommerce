@@ -67,7 +67,7 @@ public class EditItemController extends HttpServlet {
             request.setAttribute("item", itemFounded);
 
             // forword request to edit page
-            Helper.forwardRequest(request, response, adminJspPath + "edit_item.jsp");
+            Helper.forwardRequest(request, response, adminJspPath + "item_views/edit_item.jsp");
         } else {
             // redirect to the previous page with error message
             Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
@@ -110,7 +110,7 @@ public class EditItemController extends HttpServlet {
         request.setAttribute("errors", formErrors);
 
         if (formErrors.size() > 0) {
-            Helper.forwardRequest(request, response, adminJspPath + "edit_item.jsp");
+            Helper.forwardRequest(request, response, adminJspPath + "item_views/edit_item.jsp");
         } else {
             // make new user and set info to it
             User user = User.builder()
@@ -150,7 +150,7 @@ public class EditItemController extends HttpServlet {
             request.setAttribute("item", item);
 
             // forword to edit page
-            Helper.forwardRequest(request, response, adminJspPath + "edit_item.jsp");
+            Helper.forwardRequest(request, response, adminJspPath + "item_views/edit_item.jsp");
         }
 
     }// </editor-fold>

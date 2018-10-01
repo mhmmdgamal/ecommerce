@@ -52,6 +52,6 @@ public class ManageItemController extends HttpServlet {
         request.setAttribute("comments", comments);
 
         // forword request to manage page
-        Helper.forwardRequest(request, response, adminJspPath + "manage_items.jsp");
+        Helper.forwardRequest(request, response, adminJspPath + "item_views/manage_items.jsp");
     }
 }

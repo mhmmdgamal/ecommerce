@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class Helper {
 
@@ -50,16 +51,20 @@ public class Helper {
      * @throws IOException
      */
     public static void redriectToPrevPage(HttpServletRequest request, HttpServletResponse response, String message, boolean error) throws ServletException, IOException {
+        HttpSession session = request.getSession();
         if (!error) {
-            request.getSession().setAttribute("success", message);
+            session.setAttribute("success", message);
         } else {
-            request.getSession().setAttribute("error", message);
+            session.setAttribute("error", message);
         }
 
         String link = request.getHeader("referer");
         if (link == null) {
-            setTitle(request, "Home");
-            response.sendRedirect("");
+            if ((session.getAttribute("groupId") != null) || (CookieHelper.isCookie("groupId", request, response))) {
+                response.sendRedirect("/ecommerce/admin/dashboard");
+            } else {
+                response.sendRedirect("/ecommerce/home");
+            }
         } else {
             setTitle(request, getTitleFromLink(link));
             response.sendRedirect(link);

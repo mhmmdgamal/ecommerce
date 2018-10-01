@@ -4,7 +4,6 @@ import com.ecommerce.bean.User;
 import com.ecommerce.dao.UserDaoImpl;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -47,7 +46,7 @@ public class EditUserController extends HttpServlet {
             request.setAttribute("user", userFounded);
 
             // forword to edit page
-            Helper.forwardRequest(request, response, adminJspPath + "edit_user.jsp");
+            Helper.forwardRequest(request, response, adminJspPath + "user_views/edit_user.jsp");
         } else {
             // redirect to the previous page with error message
             Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
@@ -83,7 +82,7 @@ public class EditUserController extends HttpServlet {
         // check if no errors
         if (formErrors.size() > 0) {
             // forword to edit page
-            Helper.forwardRequest(request, response, adminJspPath + "edit_user.jsp");
+            Helper.forwardRequest(request, response, adminJspPath + "user_views/edit_user.jsp");
         } else {
             // make new user and set info to it
             User user = User.builder()
@@ -108,7 +107,7 @@ public class EditUserController extends HttpServlet {
                 request.setAttribute("success", "user updated");
             }
             // forword to edit page
-            Helper.forwardRequest(request, response, adminJspPath + "edit_user.jsp");
+            Helper.forwardRequest(request, response, adminJspPath + "user_views/edit_user.jsp");
         }
     }// </editor-fold>
 

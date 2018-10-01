@@ -47,7 +47,7 @@ public class ManageUserController extends HttpServlet {
         request.setAttribute("users", users);
 
         // forword to manage page
-        Helper.forwardRequest(request, response, adminJspPath + "manage_users.jsp");
+        Helper.forwardRequest(request, response, adminJspPath + "user_views/manage_users.jsp");
     }
 
 }

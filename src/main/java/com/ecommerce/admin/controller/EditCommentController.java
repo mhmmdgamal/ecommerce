@@ -44,7 +44,7 @@ public class EditCommentController extends HttpServlet {
             request.setAttribute("comment", commentFounded);
 
             // forword request to edit page
-            Helper.forwardRequest(request, response, adminJspPath + "edit_comment.jsp");
+            Helper.forwardRequest(request, response, adminJspPath + "comment_views/edit_comment.jsp");
         } else {
             // redirect to the previous page with error message
             Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
@@ -85,7 +85,7 @@ public class EditCommentController extends HttpServlet {
         request.setAttribute("comment", comment);
 
         // forword request to the edit page
-        Helper.forwardRequest(request, response, adminJspPath + "edit_comment.jsp");
+        Helper.forwardRequest(request, response, adminJspPath + "comment_views/edit_comment.jsp");
 
     }// </editor-fold>
 

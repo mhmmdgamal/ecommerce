@@ -52,6 +52,6 @@ public class ManageCommentController extends HttpServlet {
         request.setAttribute("comments", comments);
 
         // forword request to manage page
-        Helper.forwardRequest(request, response, adminJspPath + "manage_comments.jsp");
+        Helper.forwardRequest(request, response, adminJspPath + "comment_views/manage_comments.jsp");
     }
 }

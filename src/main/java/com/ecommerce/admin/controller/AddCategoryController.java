@@ -31,13 +31,13 @@ public class AddCategoryController extends HttpServlet {
         // set page title
         Helper.setTitle(request, "Add Category");
 
-        List<Category> allCategories = new CategoryDaoImpl(servletContext).getAllSupCategories("ASC");
+        List<Category> supCategories = new CategoryDaoImpl(servletContext).getAllSupCategories("ASC");
 
         // set all categories to request
-        request.setAttribute("AllCategories", allCategories);
+        request.setAttribute("supCategories", supCategories);
 
         // forword request to add page
-        Helper.forwardRequest(request, response, adminJspPath + "add_category.jsp");
+        Helper.forwardRequest(request, response, adminJspPath + "category_views/add_category.jsp");
 
     }
 
@@ -80,7 +80,7 @@ public class AddCategoryController extends HttpServlet {
         }
 
         // forword request to the add page
-        Helper.forwardRequest(request, response, adminJspPath + "add_category.jsp");
+        Helper.forwardRequest(request, response, adminJspPath + "category_views/add_category.jsp");
 
     }
 

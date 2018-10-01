@@ -17,12 +17,12 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">${sessionScope['fullName']} <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">${sessionScope['fullName']}${cookie['fullName']['value']} <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="${pageContext['request']['contextPath']}/">Visit Shop</a></li>
-                        <li><a href="${initParam['adminPath']}users?action=Edit&userid=${sessionScope['adminId']}">Edit Profile</a></li>
+                        <li><a href="${initParam['adminPath']}edit-user?userid=${sessionScope['userId']}${cookie['userId']['value']}">Edit Profile</a></li>
                         <li><a href="${initParam['adminPath']}settings">Settings</a></li>
-                        <li><a href="${initParam['adminPath']}logout">Logout</a></li>
+                        <li><a href="${initParam['publicPath']}logout">Logout</a></li>
                     </ul>
                 </li>
             </ul>

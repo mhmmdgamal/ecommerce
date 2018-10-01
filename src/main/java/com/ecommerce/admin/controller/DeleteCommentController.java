@@ -13,13 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "DeleteCommentController", urlPatterns = {"/admin/delete-comment"})
 public class DeleteCommentController extends HttpServlet {
 
-    String adminJspPath = null;
     ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        adminJspPath = servletContext.getInitParameter("adminJspPath");
     }
 
     // <editor-fold >

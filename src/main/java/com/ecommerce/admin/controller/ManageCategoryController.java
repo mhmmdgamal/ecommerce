@@ -52,7 +52,7 @@ public class ManageCategoryController extends HttpServlet {
         request.setAttribute("sort", sort);
 
         // forword request to manage page
-        Helper.forwardRequest(request, response, adminJspPath + "manage_categories.jsp");
+        Helper.forwardRequest(request, response, adminJspPath + "category_views/manage_categories.jsp");
     }
 
 }

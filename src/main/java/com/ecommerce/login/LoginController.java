@@ -1,5 +1,5 @@
 //<editor-fold >
-package com.ecommerce.customer.controller;
+package com.ecommerce.login;
 
 import com.ecommerce.bean.User;
 import com.ecommerce.dao.UserDaoImpl;
@@ -21,6 +21,7 @@ import javax.servlet.annotation.WebServlet;
 public class LoginController extends HttpServlet {
 
     String customerJspPath = null;
+    String publicJspPath = null;
     private ServletContext servletContext = null;
 
     @Override
@@ -28,6 +29,7 @@ public class LoginController extends HttpServlet {
         super.init(); //To change body of generated methods, choose Tools | Templates.
         servletContext = getServletContext();
         customerJspPath = servletContext.getInitParameter("customerJspPath");
+        publicJspPath = servletContext.getInitParameter("publicJspPath");
 
     }//</editor-fold >
 
@@ -38,9 +40,13 @@ public class LoginController extends HttpServlet {
         HttpSession session = request.getSession();
 
         if ((session.getAttribute("user") != null) || (CookieHelper.isCookie("user", request, response))) {
-            // go to home 
-            response.sendRedirect("");
-
+            if ((session.getAttribute("groupId") != null) || (CookieHelper.isCookie("groupId", request, response))) {
+                // go to dashboard
+                response.sendRedirect("admin/dashboard");
+            } else {
+                // go to home 
+                response.sendRedirect("");
+            }
         } else {
             String previous = request.getParameter("previous");
 
@@ -51,7 +57,7 @@ public class LoginController extends HttpServlet {
             }
 
             // forword the requset to the login page
-            Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp" + previous, "Login");
+            Helper.forwardRequest(request, response, publicJspPath + "login_register.jsp" + previous, "Login");
         }
     }
 
@@ -73,24 +79,41 @@ public class LoginController extends HttpServlet {
 
         //////////////////////Start if user existed in DB//////////////////////////
         if (user != null) {
+
+            int groupId = user.getGroupId();
+
             if (remember != null && remember.equalsIgnoreCase("y")) {
                 //<set Cookies>if user doing Remember Me 
                 CookieHelper.addCookie("user", username, response);
                 CookieHelper.addCookie("userId", "" + user.getId(), response);
                 CookieHelper.addCookie("fullName", (user.getFullName().split(" ")[0]), response);
 
+                // set group id to cookie if admin
+                if (groupId == 1) {
+                    CookieHelper.addCookie("groupId", "" + groupId, response);
+                }
             } else {
                 //get session
                 HttpSession session = request.getSession();
+
                 //<set Session>if user ignore remember Me 
                 SetUserSession(user, session);
+
+                // set group id to session if admin
+                if (groupId == 1) {
+                    session.setAttribute("groupId", groupId);
+                }
             }
             //check on parameter previous from url
             if (previous != null) {//previousPage == null <improve>
                 response.sendRedirect(previous);
             } else {
-                Helper.setTitle(request, "Home");
-                response.sendRedirect("home");
+
+                if (groupId == 1) {
+                    response.sendRedirect("admin/dashboard");
+                } else {
+                    response.sendRedirect("home");
+                }
             }
             //////////////////////End user existed in DB//////////////////////////
             //////////////////////Start if user Not existed in DB//////////////////////////
@@ -102,9 +125,9 @@ public class LoginController extends HttpServlet {
             // redirect to login page 
             Helper.setTitle(request, "Login");
             if (previous != null) {
-                Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp?previous=" + previous);
+                Helper.forwardRequest(request, response, publicJspPath + "login_register.jsp?previous=" + previous);
             } else {
-                Helper.forwardRequest(request, response, customerJspPath + "login_register.jsp");
+                Helper.forwardRequest(request, response, publicJspPath + "login_register.jsp");
             }
         }
         //////////////////////End if user Not existed in DB//////////////////////////

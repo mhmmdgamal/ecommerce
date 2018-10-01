@@ -4,6 +4,7 @@ import com.ecommerce.bean.Category;
 import com.ecommerce.dao.CategoryDaoImpl;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,9 +43,15 @@ public class EditCategoryController extends HttpServlet {
         if (categoryFounded != null) {
             // set the found category to the request
             request.setAttribute("category", categoryFounded);
+            
+            //get all super categories
+            List<Category> supCategories = new CategoryDaoImpl(servletContext).getAllSupCategories("ASC");
+
+            // set all categories to request
+            request.setAttribute("supCategories", supCategories);
 
             // forword request to edit page
-            Helper.forwardRequest(request, response, adminJspPath + "edit_category.jsp");
+            Helper.forwardRequest(request, response, adminJspPath + "category_views/edit_category.jsp");
         } else {
             // redirect to the previous page with error message
             Helper.redriectToPrevPage(request, response, "There`s No Such ID", true);
@@ -63,6 +70,7 @@ public class EditCategoryController extends HttpServlet {
         long id = Long.parseLong(request.getParameter("categoryid"));
         String name = request.getParameter("name");
         String description = request.getParameter("description");
+        int parent = Integer.parseInt(request.getParameter("parent"));
         int ordering = Integer.parseInt(request.getParameter("ordering"));
         int visibility = Integer.parseInt(request.getParameter("visibility"));
         int commenting = Integer.parseInt(request.getParameter("commenting"));
@@ -73,6 +81,7 @@ public class EditCategoryController extends HttpServlet {
                 .id(id)
                 .name(name)
                 .description(description)
+                .parent(parent)
                 .ordering(ordering)
                 .visibility(visibility)
                 .allowComments(commenting)
@@ -95,7 +104,7 @@ public class EditCategoryController extends HttpServlet {
         request.setAttribute("category", category);
 
         // forword request to the edit page
-        Helper.forwardRequest(request, response, adminJspPath + "edit_category.jsp");
+        Helper.forwardRequest(request, response, adminJspPath + "category_views/edit_category.jsp");
 
     }// </editor-fold>
 
