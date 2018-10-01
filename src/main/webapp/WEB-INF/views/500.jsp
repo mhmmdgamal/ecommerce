@@ -6,7 +6,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>This page not found</h1>
-        <a href="${initParam['customerPath']}">Home Page</a>
+        <h1>Server is currently under high load - please hit 'reload' on your browser in a minute to try again</h1>
     </body>
 </html>
