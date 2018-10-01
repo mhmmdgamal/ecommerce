@@ -10,9 +10,9 @@ These instructions will get you a copy of the project up and running on your loc
 
 you have to study jsp and servelt Before download the first 5 versions nearly
 
-but if you need to see the project more readable no error you have to go JSTL Version
-
-and after we using JSTL .. we using bulider Concept 
+but if you need to see the project more readable .. no error.. you have to go JSTL Version
+....................................................
+after we using JSTL .. we using bulider Concept 
 and after bulider Concept .. we using maven 
 and The project is being developed
 
