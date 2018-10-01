@@ -88,7 +88,7 @@ public class AddItemController extends HttpServlet {
 
             // make new category and set info to it
             Category category = Category.builder()
-                    .id(userId)
+                    .id(categoryId)
                     .build();
 
             // make new item and set info to it 
