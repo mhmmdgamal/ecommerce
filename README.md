@@ -21,6 +21,7 @@ and The project is being developed
 you have to set up : 
 1- IDE (Netbeans or and ide as you like )with JDK
 2- XAMP (php my admin to handle database MYSQL )
+3- get file shop.sql and do import to xamp
 
 ## Versioning
 1-using jsp and servelt 
