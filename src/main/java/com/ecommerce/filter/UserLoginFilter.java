@@ -39,7 +39,7 @@ public class UserLoginFilter implements Filter {
         HttpSession session = req.getSession();
 
         // check if the username session is exists
-        if ((session.getAttribute("user") == null) && (!CookieHelper.isCookie("user", req, res))) {
+        if ((session.getAttribute("username") == null) && (!CookieHelper.isCookie("username", req, res))) {
             String prevUrl = req.getRequestURL().toString();
             
             if (req.getQueryString() != null) {

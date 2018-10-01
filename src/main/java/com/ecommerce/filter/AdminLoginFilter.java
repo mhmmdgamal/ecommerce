@@ -62,7 +62,7 @@ public class AdminLoginFilter implements Filter {
         HttpSession session = req.getSession();
 
         // check if the user session is exists or cookies
-        if ((session.getAttribute("user") == null) && (!CookieHelper.isCookie("user", req, res))) {
+        if ((session.getAttribute("admin") == null) && (!CookieHelper.isCookie("admin", req, res))) {
             // redirect to login page
             res.sendRedirect("login");
 

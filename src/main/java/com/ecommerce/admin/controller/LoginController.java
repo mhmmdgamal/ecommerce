@@ -36,7 +36,7 @@ public class LoginController extends HttpServlet {
 
         HttpSession session = request.getSession();
 
-        if (session.getAttribute("username") != null) {
+        if (session.getAttribute("admin") != null) {
             // redirect to dashboard if session exists
             response.sendRedirect("dashboard");
         } else {
@@ -63,8 +63,8 @@ public class LoginController extends HttpServlet {
         if (user != null) {
             if (remember != null && remember.equalsIgnoreCase("y")) {
                 // set user data to cookies 
-                CookieHelper.addCookie("user", username, response);
-                CookieHelper.addCookie("userId", "" + user.getId(), response);
+                CookieHelper.addCookie("admin", username, response);
+                CookieHelper.addCookie("adminId", "" + user.getId(), response);
                 CookieHelper.addCookie("fullName", (user.getFullName().split(" ")[0]), response);
 
             } else {
@@ -83,8 +83,8 @@ public class LoginController extends HttpServlet {
     public void SetUserSession(User user, HttpSession session) {
 
         //set session for user if remember me not checked 
-        session.setAttribute("user", user.getName());
-        session.setAttribute("userId", user.getId());
+        session.setAttribute("admin", user.getName());
+        session.setAttribute("adminId", user.getId());
         session.setAttribute("fullName", (user.getFullName().split(" ")[0]));
     }
 
