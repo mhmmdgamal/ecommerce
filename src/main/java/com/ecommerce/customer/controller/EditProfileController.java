@@ -49,7 +49,7 @@ public class EditProfileController extends HttpServlet {
             request.setAttribute("user", user);
 
             // forward to edit profile page
-            Helper.forwardRequest(request, response, customerJspPath + "edit_profile.jsp");
+            Helper.forwardRequest(request, response, customerJspPath + "user_views/edit_profile.jsp");
         } else {
             Helper.redriectToPrevPage(request, response, "This user is not found", true);
         }
@@ -75,7 +75,7 @@ public class EditProfileController extends HttpServlet {
 
             // forword to login page
             Helper.setTitle(request, "Profile");
-            Helper.forwardRequest(request, response, customerJspPath + "edit_profile.jsp");
+            Helper.forwardRequest(request, response, customerJspPath + "user_views/edit_profile.jsp");
 
         } else {//if there is no errors
 
@@ -109,7 +109,7 @@ public class EditProfileController extends HttpServlet {
             request.setAttribute("user", user);
 
             // forword to add page
-            Helper.forwardRequest(request, response, customerJspPath + "edit_profile.jsp");
+            Helper.forwardRequest(request, response, customerJspPath + "user_views/edit_profile.jsp");
 
         }
     }

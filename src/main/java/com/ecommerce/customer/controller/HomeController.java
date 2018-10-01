@@ -17,13 +17,11 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet(urlPatterns = {"/home", ""})
 public class HomeController extends HttpServlet {
 
-    String customerJspPath = null;
     ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        customerJspPath = servletContext.getInitParameter("customerJspPath");
     }
 
     @Override
@@ -37,6 +35,6 @@ public class HomeController extends HttpServlet {
         // set items to request
         request.setAttribute("allItems", items);
         // forword request to manage page
-        Helper.forwardRequest(request, response, customerJspPath + "home.jsp");
+        Helper.forwardRequest(request, response, servletContext.getInitParameter("customerJspPath") + "home.jsp");
     }
 }

@@ -75,7 +75,7 @@ public class ShowItemController extends HttpServlet {
             request.setAttribute("itemComments", itemComments);
 
             // forword request to manage page
-            Helper.forwardRequest(request, response, customerJspPath + "show_item.jsp");
+            Helper.forwardRequest(request, response, customerJspPath + "item_views/show_item.jsp");
         } else {
             // redirect to the previous page with error message
             Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
@@ -125,7 +125,7 @@ public class ShowItemController extends HttpServlet {
             formErrors.add("You Must Add Comment");
 
             // forward to show items page
-            Helper.forwardRequest(request, response, customerJspPath + "show_item.jsp");
+            Helper.forwardRequest(request, response, customerJspPath + "item_views/show_item.jsp");
 
         } else {// if no errors in textfield Comment
             //get user id
@@ -158,7 +158,7 @@ public class ShowItemController extends HttpServlet {
             }
 
             // forword request to manage page
-            Helper.forwardRequest(request, response, customerJspPath + "show_item.jsp");
+            Helper.forwardRequest(request, response, customerJspPath + "item_views/show_item.jsp");
         }
     }
 

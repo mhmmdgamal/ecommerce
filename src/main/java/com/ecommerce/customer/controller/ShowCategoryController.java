@@ -40,7 +40,7 @@ public class ShowCategoryController extends HttpServlet {
             request.setAttribute("categoryItems", categoryItems);
 
             // forword request to show category items page
-            Helper.forwardRequest(request, response, servletContext.getInitParameter("customerJspPath") + "show_category.jsp");
+            Helper.forwardRequest(request, response, servletContext.getInitParameter("customerJspPath") + "item_views/show_category.jsp");
         } else {
             Helper.redriectToPrevPage(request, response, "You Must Add Page ID", true);
         }

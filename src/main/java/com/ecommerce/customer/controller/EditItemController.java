@@ -64,7 +64,7 @@ public class EditItemController extends HttpServlet {
             // set categories to the request 
             request.setAttribute("categories", categories);
 
-            Helper.forwardRequest(request, response, customerJspPath + "edit_item.jsp");
+            Helper.forwardRequest(request, response, customerJspPath + "item_views/edit_item.jsp");
 
         } else {
             // redirect to the previous page with error message
@@ -108,7 +108,7 @@ public class EditItemController extends HttpServlet {
         // check errors
         if (formErrors.size() > 0) {//if founded error in params
             // forword to edit_item page again
-            Helper.forwardRequest(request, response, customerJspPath + "edit_item.jsp");
+            Helper.forwardRequest(request, response, customerJspPath + "item_views/edit_item.jsp");
 
         } else {//if no errors in params 
 
@@ -156,7 +156,7 @@ public class EditItemController extends HttpServlet {
             request.setAttribute("item", item);
 
             // forword to add page
-            Helper.forwardRequest(request, response, customerJspPath + "edit_item.jsp");
+            Helper.forwardRequest(request, response, customerJspPath + "item_views/edit_item.jsp");
         }
     }
 

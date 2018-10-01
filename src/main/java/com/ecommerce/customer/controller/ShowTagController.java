@@ -18,13 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 public class ShowTagController extends HttpServlet {
 
     ServletContext servletContext = null;
-    String customerJspPath = null;
 
     @Override
     public void init() throws ServletException {
         super.init(); //To change body of generated methods, choose Tools | Templates.
         servletContext = getServletContext();
-        customerJspPath = servletContext.getInitParameter("customerJspPath");
     }
 
     @Override
@@ -46,7 +44,7 @@ public class ShowTagController extends HttpServlet {
             request.setAttribute("error", error);
         } else {
             // get tag items from database depending on tag name
-            List<Item> tagItems = new ItemDaoImpl(servletContext).getTagItems(tag, "ASC");
+            List<Item> tagItems = new ItemDaoImpl(getServletContext()).getTagItems(tag, "ASC");
 
             if (tagItems.size() > 0) {
                 // set tag items to request
@@ -63,7 +61,6 @@ public class ShowTagController extends HttpServlet {
             }
         }
 
-        Helper.forwardRequest(request, response, customerJspPath
-                + "show_items_of_tag.jsp");
+        Helper.forwardRequest(request, response, servletContext.getInitParameter("customerJspPath") + "item_views/show_tag.jsp");
     }
 }

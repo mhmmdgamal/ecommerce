@@ -20,13 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 public class ShowProfileController extends HttpServlet {
 
     ServletContext servletContext = null;
-    String customerJspPath = null;
 
     @Override
     public void init() throws ServletException {
         super.init(); //To change body of generated methods, choose Tools | Templates.
         servletContext = getServletContext();
-        customerJspPath = servletContext.getInitParameter("customerJspPath");
     }
 
     // </editor-fold>
@@ -66,7 +64,7 @@ public class ShowProfileController extends HttpServlet {
         request.setAttribute("userComments", userComments);
 
         // forward to profile page
-        Helper.forwardRequest(request, response, customerJspPath + "show_profile.jsp");
+        Helper.forwardRequest(request, response, servletContext.getInitParameter("customerJspPath") + "user_views/show_profile.jsp");
     }
 
     @Override

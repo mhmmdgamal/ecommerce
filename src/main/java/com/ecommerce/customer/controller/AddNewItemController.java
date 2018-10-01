@@ -46,7 +46,7 @@ public class AddNewItemController extends HttpServlet {
         request.setAttribute("categories", categories);
 
         // forward to new item page
-        Helper.forwardRequest(request, response, customerJspPath + "add_new_item.jsp");
+        Helper.forwardRequest(request, response, customerJspPath + "item_views/add_new_item.jsp");
     }
 
     @Override
@@ -81,7 +81,7 @@ public class AddNewItemController extends HttpServlet {
         // check if no errors
         if (formErrors.size() > 0) {
             // forword to add page (to show error for user)
-            Helper.forwardRequest(request, response, customerJspPath + "add_new_item.jsp");
+            Helper.forwardRequest(request, response, customerJspPath + "item_views/add_new_item.jsp");
 
         } else {
             //get id of current user 
@@ -123,7 +123,7 @@ public class AddNewItemController extends HttpServlet {
             }
 
             // forword to add page
-            Helper.forwardRequest(request, response, customerJspPath + "add_new_item.jsp");
+            Helper.forwardRequest(request, response, customerJspPath + "item_views/add_new_item.jsp");
         }
     }
 
