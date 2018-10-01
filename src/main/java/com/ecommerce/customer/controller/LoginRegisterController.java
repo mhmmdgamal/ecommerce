@@ -39,7 +39,7 @@ public class LoginRegisterController extends HttpServlet {
 
         HttpSession session = request.getSession();
 
-        if ((session.getAttribute("username") != null) || (CookieHelper.isCookie("username", request, response))) {
+        if ((session.getAttribute("user") != null) || (CookieHelper.isCookie("user", request, response))) {
             // go to home 
             response.sendRedirect("");
 
@@ -82,7 +82,7 @@ public class LoginRegisterController extends HttpServlet {
             if (user != null) {//if user existed in DB 
                 if (remember != null && remember.equalsIgnoreCase("y")) {
                     // set user data to cookies 
-                    CookieHelper.addCookie("username", username, response);
+                    CookieHelper.addCookie("user", username, response);
                     CookieHelper.addCookie("userId", "" + user.getId(), response);
                     CookieHelper.addCookie("fullName", (user.getFullName().split(" ")[0]), response);
 
@@ -164,7 +164,7 @@ public class LoginRegisterController extends HttpServlet {
                     // if user doing remember Me 
                     if (remember != null && remember.equalsIgnoreCase("y")) {
                         // set user data to cookies 
-                        CookieHelper.addCookie("username", username, response);
+                        CookieHelper.addCookie("user", username, response);
                         CookieHelper.addCookie("userId", "" + user.getId(), response);
                         CookieHelper.addCookie("fullName", (user.getFullName().split(" ")[0]), response);
 
@@ -199,7 +199,7 @@ public class LoginRegisterController extends HttpServlet {
     public void SetUserSession(User user, HttpSession session) {
 
         //set session for user if remember me not checked 
-        session.setAttribute("username", user.getName());
+        session.setAttribute("user", user.getName());
         session.setAttribute("userId", user.getId());
         session.setAttribute("fullName", (user.getFullName().split(" ")[0]));
     }

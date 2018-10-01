@@ -14,7 +14,7 @@
         <div class="upper-bar">
             <div class="container">
                 <c:choose>
-                    <c:when test="${(sessionScope['username'] ne null) || (cookie['username']['value'] ne null)}">
+                    <c:when test="${(sessionScope['user'] ne null) || (cookie['user']['value'] ne null)}">
                         <img class="my-image img-thumbnail img-circle" src="${initParam['customerImgPath']}img.png" alt="No Image" />
                         <div class="btn-group my-info">
                             <span class="btn btn-default dropdown-toggle" data-toggle="dropdown">
