@@ -1,10 +1,10 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="${initParam['publicIncludePath']}header.jsp"/>
 
-<div class="container" style="margin-top: 50px">
+<div class="container">
+    <h1 class="text-center">Show Category Items</h1>
     <div class="row">
-        <c:forEach items="${requestScope['allItems']}" var="item"> 
-            <!-- request.getAttribute("allItems")== $ {requestScope['allItems']} == $ { allItems }-->
+        <c:forEach items="${categoryItems}" var="item">
             <div class="col-sm-6 col-md-3">
                 <div class="thumbnail item-box">
                     <span class="price-tag">${item['price']}</span>
@@ -13,10 +13,10 @@
                         <h3><a href="${initParam['customerPath']}items?itemid=${item['id']}">${item['name']}</a></h3>
                         <p>${item['description']}</p>
                         <div class="date">${item['addDate']}</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </c:forEach >
+        </c:forEach>
     </div>
 </div>
 
