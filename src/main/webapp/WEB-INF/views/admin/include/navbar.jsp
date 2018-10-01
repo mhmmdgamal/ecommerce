@@ -29,3 +29,4 @@
         </div>
     </div>
 </nav>
+<c:import url="${initParam['publicIncludePath']}success_error.jsp" />

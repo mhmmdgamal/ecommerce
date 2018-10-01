@@ -1,10 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:import url="includes/templates/header.jsp" />
-
+<c:import url="${initParam['publicIncludePath']}header.jsp" />
 
 <h1 class="text-center">Edit Information of Profile</h1>
-<c:import url="includes/templates/check_errors.jsp" />
-<c:import url="includes/templates/check_one_error.jsp" />
 <div class="information block">
     <div class="container">
         <div class="panel panel-primary">
@@ -85,4 +82,4 @@
         </div>
     </div>
 </div>
-<c:import url="includes/templates/footer.jsp" />
+<c:import url="${initParam['publicIncludePath']}footer.jsp" />

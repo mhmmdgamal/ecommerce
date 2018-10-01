@@ -4,18 +4,18 @@
     <head>
         <meta charset="UTF-8" />
         <title>${title}</title>
-        <link rel="stylesheet" href="${initParam['customerLayoutPath']}css/bootstrap.min.css" />
-        <link rel="stylesheet" href="${initParam['customerLayoutPath']}css/font-awesome.min.css" />
-        <link rel="stylesheet" href="${initParam['customerLayoutPath']}css/jquery-ui.css" />
-        <link rel="stylesheet" href="${initParam['customerLayoutPath']}css/jquery.selectBoxIt.css" />
-        <link rel="stylesheet" href="${initParam['customerLayoutPath']}css/front.css" />
+        <link rel="stylesheet" href="${initParam['publicLayoutPath']}css/bootstrap.min.css" />
+        <link rel="stylesheet" href="${initParam['publicLayoutPath']}css/font-awesome.min.css" />
+        <link rel="stylesheet" href="${initParam['publicLayoutPath']}css/jquery-ui.css" />
+        <link rel="stylesheet" href="${initParam['publicLayoutPath']}css/jquery.selectBoxIt.css" />
+        <link rel="stylesheet" href="${initParam['publicLayoutPath']}css/public.css" />
     </head>
     <body>
         <div class="upper-bar">
             <div class="container">
                 <c:choose>
                     <c:when test="${(sessionScope['user'] ne null) || (cookie['user']['value'] ne null)}">
-                        <img class="my-image img-thumbnail img-circle" src="${initParam['customerImgPath']}img.png" alt="No Image" />
+                        <img class="my-image img-thumbnail img-circle" src="${initParam['publicImgPath']}img.png" alt="No Image" />
                         <div class="btn-group my-info">
                             <span class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                 ${sessionScope['fullName']}
@@ -63,7 +63,8 @@
                 </div>
             </div>
         </nav> 
-
+        <c:import url="${initParam['publicIncludePath']}success_error.jsp" />
+        
         <%--
         <error> i can't get value by Servelt Context in controller 
                 <c:set var="url" value="${header.referer}"

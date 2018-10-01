@@ -1,9 +1,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:import url="includes/templates/header.jsp"/>
-<c:import url="includes/templates/navbar.jsp"/>
+<c:import url="${initParam['adminIncludePath']}header.jsp"/>
+<c:import url="${initParam['adminIncludePath']}navbar.jsp"/>
 
 <h1 class="text-center">Manage Users </h1>
-<c:import url="includes/templates/check_one_error.jsp"/>
 
 <c:choose>
     <c:when test="${requestScope['users'].size() gt 0}">
@@ -64,4 +63,4 @@
         </div>
     </c:otherwise>
 </c:choose>
-<c:import url="includes/templates/footer.jsp"/>
+<c:import url="${initParam['adminIncludePath']}footer.jsp"/>

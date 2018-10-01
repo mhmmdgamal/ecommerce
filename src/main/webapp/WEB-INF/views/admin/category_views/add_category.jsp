@@ -1,9 +1,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:import url="includes/templates/header.jsp"/>
-<c:import url="includes/templates/navbar.jsp"/>
+<c:import url="${initParam['adminIncludePath']}header.jsp"/>
+<c:import url="${initParam['adminIncludePath']}navbar.jsp"/>
 
 <h1 class="text-center">Add New Category</h1>
-<c:import url="includes/templates/check_one_error_sm10.jsp"/>
 
 <div class="container">
 
@@ -34,13 +33,13 @@
         <!-- End Ordering Field -->
         <!-- Start Category Type -->
         <div class="form-group form-group-lg">
-            <label class="col-sm-2 control-label">Parent?</label>
+            <label class="col-sm-2 control-label">Parent</label>
             <div class="col-sm-10 col-md-6">
                 <select name="parent">
                     <option value="0">None</option>
-                    <c:forEach items="${requestScope['AllCategories']}" var="category">
-                        <option value='${category['id']}'>
-                            ${category['name']}
+                    <c:forEach items="${requestScope['supCategories']}" var="supCategory">
+                        <option value='${supCategory['id']}'>
+                            ${supCategory['name']}
                         </option>
                     </c:forEach>
                 </select>
@@ -102,4 +101,4 @@
 
     </form>
 </div>
-<c:import url="includes/templates/footer.jsp"/>
+<c:import url="${initParam['adminIncludePath']}footer.jsp"/>

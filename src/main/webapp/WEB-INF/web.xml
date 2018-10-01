@@ -17,6 +17,28 @@
         <param-name>dbPassword</param-name>
         <param-value/>
     </context-param>
+    
+    <context-param>
+        <param-name>publicPath</param-name>
+        <param-value>/ecommerce/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>publicJspPath</param-name>
+        <param-value>/WEB-INF/views/public/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>publicLayoutPath</param-name>
+        <param-value>/ecommerce/resources/public/layout/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>publicIncludePath</param-name>
+        <param-value>/WEB-INF/views/public/include/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>publicImgPath</param-name>
+        <param-value>/ecommerce/resources/public/img/</param-value>
+    </context-param>
+    
     <context-param>
         <param-name>adminPath</param-name>
         <param-value>/ecommerce/admin/</param-value>
@@ -30,6 +52,11 @@
         <param-value>/ecommerce/resources/admin/layout/</param-value>
     </context-param>
     <context-param>
+        <param-name>adminIncludePath</param-name>
+        <param-value>/WEB-INF/views/admin/include/</param-value>
+    </context-param>
+    
+    <context-param>
         <param-name>customerPath</param-name>
         <param-value>/ecommerce/</param-value>
     </context-param>
@@ -37,14 +64,7 @@
         <param-name>customerJspPath</param-name>
         <param-value>/WEB-INF/views/customer/</param-value>
     </context-param>
-    <context-param>
-        <param-name>customerLayoutPath</param-name>
-        <param-value>/ecommerce/resources/customer/layout/</param-value>
-    </context-param>
-    <context-param>
-        <param-name>customerImgPath</param-name>
-        <param-value>/ecommerce/resources/customer/img/</param-value>
-    </context-param>
+    
     <error-page>
         <error-code>404</error-code>
         <location>/WEB-INF/views/404.jsp</location>

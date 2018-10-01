@@ -1,10 +1,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:import url="includes/templates/header.jsp"/>
-<c:import url="includes/templates/navbar.jsp"/>
+<c:import url="${initParam['adminIncludePath']}header.jsp"/>
+<c:import url="${initParam['adminIncludePath']}navbar.jsp"/>
 
 <div class="home-stats">
     <h1 class="text-center">Dashboard</h1>
-    <c:import url="includes/templates/check_one_error.jsp"/>
 
     <div class="container text-center">
         <div class="row">
@@ -190,4 +189,4 @@
         <!-- End Latest Comments -->
     </div>
 </div>
-<c:import url="includes/templates/footer.jsp"/>
+<c:import url="${initParam['adminIncludePath']}footer.jsp"/>

@@ -1,7 +1,6 @@
 <%@page import="com.ecommerce.helper.Helper"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:import url="includes/templates/header.jsp" />
-<c:import url="includes/templates/check_one_error.jsp" />
+<c:import url="${initParam['publicIncludePath']}header.jsp" />
 
 <c:choose>
     <c:when test="${item ne null}">
@@ -10,7 +9,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
-                    <img class="img-responsive img-thumbnail center-block" src="${initParam['customerImgPath']}img.png" alt="No Image" />
+                    <img class="img-responsive img-thumbnail center-block" src="${initParam['publicImgPath']}img.png" alt="No Image" />
                 </div>
 
                 <div class="col-md-9 item-info">
@@ -89,7 +88,7 @@
                 <div class="comment-box">
                     <div class="row">
                         <div class="col-sm-2 text-center">
-                            <img class="img-responsive img-thumbnail img-circle center-block" src="${initParam['customerImgPath']}img.png" alt="No Image" />
+                            <img class="img-responsive img-thumbnail img-circle center-block" src="${initParam['publicImgPath']}img.png" alt="No Image" />
                             ${comment['user']['name']}
                         </div>
                         <div class="col-sm-10">
@@ -110,4 +109,4 @@
         </c:otherwise>
     </c:choose>
 </div>
-<c:import url="includes/templates/footer.jsp" />
+<c:import url="${initParam['publicIncludePath']}footer.jsp" />

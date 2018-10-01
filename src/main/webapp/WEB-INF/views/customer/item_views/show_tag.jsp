@@ -1,5 +1,5 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:import url="includes/templates/header.jsp" />
+<c:import url="${initParam['publicIncludePath']}header.jsp" />
 
 <div class="container">
     <div class="row">
@@ -9,7 +9,7 @@
             <div class="col-sm-6 col-md-3">
                 <div class="thumbnail item-box">
                     <span class="price-tag">${item['price']}</span>
-                    <img class="img-responsive" src="${initParam['customerImgPath']}img.png" alt="No Image" />
+                    <img class="img-responsive" src="${initParam['publicImgPath']}img.png" alt="No Image" />
                     <div class="caption">
                         <h3><a href="${initParam['customerPath']}items?itemid=${item['id']}">${item['name']}</a></h3>
                         <p>${item['description']}</p>
@@ -21,4 +21,4 @@
     </div>
 </div>
 
-<c:import url="includes/templates/footer.jsp" />
+<c:import url="${initParam['publicIncludePath']}footer.jsp" />

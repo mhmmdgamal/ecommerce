@@ -57,11 +57,11 @@
         </div>
     </div>
 </div>
-<script src="${initParam['customerLayoutPath']}js/jquery-1.12.1.min.js"></script>
-<script src="${initParam['customerLayoutPath']}js/jquery-ui.min.js"></script>
-<script src="${initParam['customerLayoutPath']}js/bootstrap.min.js"></script>
-<script src='${initParam['customerLayoutPath']}js/nicescroll.min.js'></script>
-<script src="${initParam['customerLayoutPath']}js/jquery.selectBoxIt.min.js"></script>
-<script src="${initParam['customerLayoutPath']}js/front.js"></script>
+<script src="${initParam['publicLayoutPath']}js/jquery-1.12.1.min.js"></script>
+<script src="${initParam['publicLayoutPath']}js/jquery-ui.min.js"></script>
+<script src="${initParam['publicLayoutPath']}js/bootstrap.min.js"></script>
+<script src='${initParam['publicLayoutPath']}js/nicescroll.min.js'></script>
+<script src="${initParam['publicLayoutPath']}js/jquery.selectBoxIt.min.js"></script>
+<script src="${initParam['publicLayoutPath']}js/public.js"></script>
 </body>
 </html>

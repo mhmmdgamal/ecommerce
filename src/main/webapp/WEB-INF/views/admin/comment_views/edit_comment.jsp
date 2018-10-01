@@ -1,9 +1,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:import url="includes/templates/header.jsp"/>
-<c:import url="includes/templates/navbar.jsp"/>
+<c:import url="${initParam['adminIncludePath']}header.jsp"/>
+<c:import url="${initParam['adminIncludePath']}navbar.jsp"/>
 
 <h1 class="text-center">Edit Comment</h1>
-<c:import url="includes/templates/check_one_error_sm10.jsp"/>
 
 <div class="container">
 
@@ -28,4 +27,4 @@
     </form>
 </div>
 
-<c:import url="includes/templates/footer.jsp"/>
+<c:import url="${initParam['adminIncludePath']}footer.jsp"/>

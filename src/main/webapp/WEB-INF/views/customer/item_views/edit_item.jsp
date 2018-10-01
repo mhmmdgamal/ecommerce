@@ -1,9 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:import url="includes/templates/header.jsp" />
-<c:import url="includes/templates/check_one_error.jsp" />
+<c:import url="${initParam['publicIncludePath']}header.jsp" />
 
 <h1 class="text-center">Edit Your Item</h1>
-<c:import url="includes/templates/check_errors.jsp" />
 <div class="create-ad block">
     <div class="container">
         <div class="panel panel-primary">
@@ -132,7 +130,7 @@
                             <span class="price-tag">
                                 $<span class="live-price">${item['price']}</span>
                             </span>
-                            <img class="img-responsive" src="${initParam['customerImgPath']}img.png" alt="No Image" />
+                            <img class="img-responsive" src="${initParam['publicImgPath']}img.png" alt="No Image" />
                             <div class="caption">
                                 <h3 class="live-title" >Title: ${item['name']}</h3>
                                 <p class="live-desc">Description: ${item['description']}</p>
@@ -145,4 +143,4 @@
     </div>
 </div>
 
-<c:import url="includes/templates/footer.jsp" />
+<c:import url="${initParam['publicIncludePath']}footer.jsp" />
