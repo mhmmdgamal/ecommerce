@@ -58,6 +58,7 @@
                     </ul>
                     <c:if test="${(item['user']['id'] eq sessionScope['userId']) || (item.user.id eq cookie['userId']['value'])}">
                         <a href="${initParam['customerPath']}edit-item?itemid=${item['id']}" class="btn btn-default">Edit Item</a>
+                        <a href="${initParam['customerPath']}delete-item?itemid=${item['id']}" class="btn btn-default">Delete Item</a>
                     </c:if>
                 </div>
             </div>

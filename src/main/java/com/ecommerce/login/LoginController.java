@@ -21,7 +21,7 @@ import javax.servlet.annotation.WebServlet;
 public class LoginController extends HttpServlet {
 
     String customerJspPath = null;
-    String publicJspPath = null;
+    String loginJspPath = null;
     private ServletContext servletContext = null;
 
     @Override
@@ -29,7 +29,7 @@ public class LoginController extends HttpServlet {
         super.init(); //To change body of generated methods, choose Tools | Templates.
         servletContext = getServletContext();
         customerJspPath = servletContext.getInitParameter("customerJspPath");
-        publicJspPath = servletContext.getInitParameter("publicJspPath");
+        loginJspPath = servletContext.getInitParameter("loginJspPath");
 
     }//</editor-fold >
 
@@ -57,7 +57,7 @@ public class LoginController extends HttpServlet {
             }
 
             // forword the requset to the login page
-            Helper.forwardRequest(request, response, publicJspPath + "login_register.jsp" + previous, "Login");
+            Helper.forwardRequest(request, response, loginJspPath + "login_register.jsp" + previous, "Login");
         }
     }
 
@@ -75,9 +75,9 @@ public class LoginController extends HttpServlet {
         String previous = request.getParameter("previous");
 
         // get USER logging from DB
-        User user = new UserDaoImpl(servletContext).getLoginUser(username, passwordHashed, false);
-
-        //////////////////////Start if user existed in DB//////////////////////////
+        User user = new UserDaoImpl(servletContext).getLoginUser(username, passwordHashed);
+        ////////////////////////////////////////////////////////////////////////
+        //////////////////////Start if user existed in DB///////////////////////
         if (user != null) {
 
             int groupId = user.getGroupId();
@@ -90,7 +90,7 @@ public class LoginController extends HttpServlet {
 
                 // set group id to cookie if admin
                 if (groupId == 1) {
-                    CookieHelper.addCookie("groupId", "" + groupId, response);
+                    CookieHelper.addCookie("groupId", groupId + "", response);
                 }
             } else {
                 //get session
@@ -105,7 +105,7 @@ public class LoginController extends HttpServlet {
                 }
             }
             //check on parameter previous from url
-            if (previous != null) {//previousPage == null <improve>
+            if (previous != null && !previous.equals("")) {//previousPage == null <improve>
                 response.sendRedirect(previous);
             } else {
 
@@ -125,9 +125,9 @@ public class LoginController extends HttpServlet {
             // redirect to login page 
             Helper.setTitle(request, "Login");
             if (previous != null) {
-                Helper.forwardRequest(request, response, publicJspPath + "login_register.jsp?previous=" + previous);
+                Helper.forwardRequest(request, response, loginJspPath + "login_register.jsp?previous=" + previous);
             } else {
-                Helper.forwardRequest(request, response, publicJspPath + "login_register.jsp");
+                Helper.forwardRequest(request, response, loginJspPath + "login_register.jsp");
             }
         }
         //////////////////////End if user Not existed in DB//////////////////////////

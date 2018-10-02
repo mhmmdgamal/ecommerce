@@ -23,6 +23,10 @@
         <param-value>/ecommerce/</param-value>
     </context-param>
     <context-param>
+        <param-name>loginJspPath</param-name>
+        <param-value>/WEB-INF/views/public/login/</param-value>
+    </context-param>
+    <context-param>
         <param-name>publicJspPath</param-name>
         <param-value>/WEB-INF/views/public/</param-value>
     </context-param>
@@ -67,10 +71,10 @@
     
     <error-page>
         <error-code>404</error-code>
-        <location>/WEB-INF/views/404.jsp</location>
+        <location>/WEB-INF/views/public/error_pages/404.jsp</location>
     </error-page>
-    <error-page>
+<!--    <error-page>
         <error-code>500</error-code>
-        <location>/WEB-INF/views/500.jsp</location>
-    </error-page>
+        <location>/WEB-INF/views/public/error_pages/500.jsp</location>
+    </error-page>-->
 </web-app>

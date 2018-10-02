@@ -1,6 +1,6 @@
 <!-- Start Login Form -->
 <form class="login" action="${initParam['customerPath']}login" method="POST">
-    <!-- action will go to the LoginRegisterController -->
+    <!-- action will go to the Login Controller -->
     <input type="text" hidden name="previous" value="${param['previous']}">
 
     <div class="input-container">

@@ -74,7 +74,7 @@ public class EditProfileController extends HttpServlet {
         if (formErrors.size() > 0) {// if there is errors
 
             // forword to login page
-            Helper.setTitle(request, "Profile");
+            Helper.setTitle(request, "Edit Profile");
             Helper.forwardRequest(request, response, customerJspPath + "user_views/edit_profile.jsp");
 
         } else {//if there is no errors

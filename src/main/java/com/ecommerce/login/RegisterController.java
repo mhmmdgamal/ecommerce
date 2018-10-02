@@ -1,5 +1,5 @@
 //<editor-fold >
-package com.ecommerce.customer.controller;
+package com.ecommerce.login;
 
 import com.ecommerce.bean.User;
 import com.ecommerce.dao.UserDaoImpl;
@@ -17,26 +17,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "RegisterController", urlPatterns = {"/register‎"})
+@WebServlet(name = "RegisterController", urlPatterns = {"/register"})
 public class RegisterController extends HttpServlet {
 
-    String publicJspPath = null;
+    String loginJspPath = null;
     private ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         super.init(); //To change body of generated methods, choose Tools | Templates.
         servletContext = getServletContext();
-        publicJspPath = servletContext.getInitParameter("publicJspPath");
+        loginJspPath = servletContext.getInitParameter("loginJspPath");
 
     }//</editor-fold >
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        //get Session
         HttpSession session = request.getSession();
-
+        //if existed session or cookies  
         if ((session.getAttribute("user") != null) || (CookieHelper.isCookie("user", request, response))) {
             if ((session.getAttribute("groupId") != null) || (CookieHelper.isCookie("groupId", request, response))) {
                 // go to dashboard
@@ -46,17 +46,16 @@ public class RegisterController extends HttpServlet {
                 response.sendRedirect("");
             }
 
-        } else {
+        } else {//if Not existed session or cookies 
+            //set param previous in url again 
             String previous = request.getParameter("previous");
-
             if (previous != null) {
                 previous = "?previous=" + previous;
             } else {
                 previous = "";
             }
-
-            // forword the requset to the login page
-            Helper.forwardRequest(request, response, publicJspPath + "login_register.jsp" + previous, "Login");
+            // forword the requset to the login page 
+            Helper.forwardRequest(request, response, loginJspPath + "login_register.jsp" + previous, "Login");
         }
     }
 
@@ -83,17 +82,15 @@ public class RegisterController extends HttpServlet {
 
         ///////////////Start if there's errors /////////////////////////////////
         if (formErrors.size() > 0) {
-            // forword to login page
-            Helper.setTitle(request, "Login");
             //if user come to login from other page 
             if (previous != null) {
                 //set parameter <previous> in url again 
-                Helper.forwardRequest(request, response, publicJspPath + "login_register.jsp?previous=" + previous);
+                Helper.forwardRequest(request, response, loginJspPath + "login_register.jsp?previous=" + previous);
             } else {
-                Helper.forwardRequest(request, response, publicJspPath + "login_register.jsp");
+                Helper.forwardRequest(request, response, loginJspPath + "login_register.jsp");
             }
-            ///////////////End if there's errors /////////////////////////////////
-            ///////////////Start if there's NO errors /////////////////////////////////
+            ///////////////End if there's errors ///////////////////////////////
+            ///////////////Start if there's NO errors //////////////////////////
         } else {
             // hash password
             String passwordHashed = HashHelper.stringHash(password);
@@ -141,9 +138,9 @@ public class RegisterController extends HttpServlet {
                 //forword to login again 
                 Helper.setTitle(request, "Login");
                 if (previous != null) {
-                    Helper.forwardRequest(request, response, publicJspPath + "login_register.jsp?previous=" + previous);
+                    Helper.forwardRequest(request, response, loginJspPath + "login_register.jsp?previous=" + previous);
                 } else {
-                    Helper.forwardRequest(request, response, publicJspPath + "login_register.jsp");
+                    Helper.forwardRequest(request, response, loginJspPath + "login_register.jsp");
                 }
             }
         }

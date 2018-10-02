@@ -31,14 +31,12 @@ public class UserDaoImpl implements UserDao {
      * @return found user
      */
     @Override
-    public User getLoginUser(String userName, String password, boolean admin) {
+    public User getLoginUser(String userName, String password) {
 
         String where = "`name` = ? AND `password` = ?";
-        if (admin) {
-            where += " AND `group_id` = 1 LIMIT 1";
-        }
+       
         User user = null;
-        try (ResultSet rs = db.select("id", "name", "password", "full_name")
+        try (ResultSet rs = db.select("id", "name", "password", "full_name", "group_id")
                 .table(table)
                 .where(where, userName, password)
                 .fetchData()) {
@@ -49,6 +47,7 @@ public class UserDaoImpl implements UserDao {
                         .name(rs.getString("name"))
                         .password(rs.getString("password"))
                         .fullName(rs.getString("full_name"))
+                        .groupId(rs.getInt("group_id"))
                         .build();
             }
         } catch (SQLException ex) {

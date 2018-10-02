@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ecommerce.dao;
 
 import com.ecommerce.bean.Comment;
@@ -28,7 +23,7 @@ public interface UserDao {
     
     public User getUserById(long id);
 
-    public User getLoginUser(String userName, String password, boolean admin);
+    public User getLoginUser(String userName, String password);
 
     public int getNumUsers();
 
