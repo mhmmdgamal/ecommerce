@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 // </editor-fold>
 
-@WebServlet("/items")
+@WebServlet("/show-item")
 public class ShowItemController extends HttpServlet {
 
     String customerJspPath = null;

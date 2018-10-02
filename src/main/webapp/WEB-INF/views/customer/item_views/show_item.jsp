@@ -70,7 +70,7 @@
                         <div class="col-md-offset-3">
                             <div class="add-comment">
                                 <h3>Add Your Comment</h3>
-                                <form action="${initParam['customerPath']}items?itemid=${item['id']}" method="POST">
+                                <form action="${initParam['customerPath']}show-item?itemid=${item['id']}" method="POST">
                                     <textarea name="comment" required></textarea>
                                     <input class="btn btn-primary" type="submit" value="Add Comment">
                                 </form>

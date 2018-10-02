@@ -46,7 +46,7 @@
                                         <span class="price-tag">${item['price']}</span>
                                         <img class="img-responsive" src="${initParam['publicImgPath']}img.png" alt="No Image" />
                                         <div class="caption">
-                                            <h3><a href="${initParam['customerPath']}items?itemid=${item['id']}">${item['name']}</a></h3>
+                                            <h3><a href="${initParam['customerPath']}show-item?itemid=${item['id']}">${item['name']}</a></h3>
                                             <p>${item['description']}</p>
                                             <div class="date">${item['addDate']}</div>
                                         </div>
@@ -66,13 +66,35 @@
 <div class="my-comments block">
     <div class="container">
         <div class="panel panel-primary">
-            <div class="panel-heading">Latest Comments</div>
+            <div class="panel-heading">Your Latest Activities</div>
             <div class="panel-body">
                 <c:choose>
-                    <c:when test="${userComments.size() > 0}">
-                        <c:forEach items="${userComments}" var="comment">
-                            <div class="well">${comment.comment}</div>
-                        </c:forEach>
+                    <c:when test="${requestScope['userComments'].size() gt 0}">
+                        <div class="container"><div class="table-responsive">
+                                <table class="main-table text-center table table-bordered">
+                                    <tr>
+                                        <td>Comment</td>
+                                        <td>Item Name</td>
+                                        <td>Adding Date</td>
+                                        <td>Control</td>
+                                    </tr>
+                                    <c:forEach items="${requestScope['userComments']}" var="comment">
+                                        <tr>
+                                            <td>${comment['comment']}</td>
+                                            <td>
+                                                <a href='${initParam['customerPath']}show-item?itemid=${comment['item']['id']}'>
+                                                    <i>${comment['item']['name']}</i></a>
+                                            </td>
+                                            <td>${comment['addDate']}</td>
+                                            <td>
+                                                <a href='${initParam['adminPath']}edit-comment?commentid=${comment['id']}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
+                                                <a href='${initParam['adminPath']}delete-comment?commentid=${comment['id']}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </table>
+                            </div>
+                        </div>
                     </c:when>
                     <c:otherwise>
                         <div class="well">There's No Comments to Show</div>

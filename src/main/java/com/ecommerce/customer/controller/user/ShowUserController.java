@@ -18,14 +18,15 @@ import javax.servlet.http.HttpServletResponse;
 public class ShowUserController extends HttpServlet {
 
     ServletContext servletContext = null;
+    String customerJspPath = null;
 
     @Override
     public void init() throws ServletException {
         super.init(); //To change body of generated methods, choose Tools | Templates.
         servletContext = getServletContext();
+        customerJspPath = servletContext.getInitParameter("customerJspPath");
     }
 
-    //<editor-fold >
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -56,17 +57,6 @@ public class ShowUserController extends HttpServlet {
         request.setAttribute("userComments", userComments);
 
         // forward to profile page
-        Helper.forwardRequest(request, response, servletContext.getInitParameter("customerJspPath") + "user_views/show_user.jsp");
+        Helper.forwardRequest(request, response, customerJspPath + "user_views/show_user.jsp");
     }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

@@ -6,7 +6,10 @@
 
 <c:choose>
     <c:when test="${requestScope['comments'].size() gt 0}">
-        <div class="container"><div class="table-responsive"><table class="main-table text-center table table-bordered"><tr><td>#ID</td>
+        <div class="container"><div class="table-responsive">
+                <table class="main-table text-center table table-bordered">
+                    <tr>
+                        <td>#ID</td>
                         <td>Comment</td>
                         <td>Item Name</td>
                         <td>User Name</td>
@@ -31,6 +34,7 @@
                     </c:forEach>
                 </table>
             </div>
+            <!--<improve> go to page and show all categories and items -->
             <a href="${initParam['adminPath']}add-comment" class="btn btn-sm btn-primary">
                 <i class="fa fa-plus"></i> New Comment
             </a>

@@ -11,7 +11,7 @@
                     <span class="price-tag">${item['price']}</span>
                     <img class="img-responsive" src="${initParam['publicImgPath']}img.png" alt="No Image" />
                     <div class="caption">
-                        <h3><a href="${initParam['customerPath']}items?itemid=${item['id']}">${item['name']}</a></h3>
+                        <h3><a href="${initParam['customerPath']}show-item?itemid=${item['id']}">${item['name']}</a></h3>
                         <p>${item['description']}</p>
                         <div class="date">${item['addDate']}</div>
                     </div>
