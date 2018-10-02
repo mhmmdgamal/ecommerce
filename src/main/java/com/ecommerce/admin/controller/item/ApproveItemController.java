@@ -1,4 +1,4 @@
-package com.ecommerce.admin.controller;
+package com.ecommerce.admin.controller.item;
 
 import com.ecommerce.dao.ItemDaoImpl;
 import com.ecommerce.helper.Helper;

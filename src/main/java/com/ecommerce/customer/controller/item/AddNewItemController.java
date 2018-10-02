@@ -1,5 +1,5 @@
 // <editor-fold>
-package com.ecommerce.customer.controller;
+package com.ecommerce.customer.controller.item;
 
 import com.ecommerce.bean.Category;
 import com.ecommerce.bean.Item;
@@ -40,7 +40,7 @@ public class AddNewItemController extends HttpServlet {
         Helper.setTitle(request, "New Item");
 
         // get all categories from database with assending order
-        List<Category> categories = new CategoryDaoImpl(servletContext).getAllSupCategories("ASC");
+        List<Category> categories = new CategoryDaoImpl(servletContext).getAllCategories("ASC");
 
         // set categories to the request
         request.setAttribute("categories", categories);
@@ -57,7 +57,7 @@ public class AddNewItemController extends HttpServlet {
         Helper.setTitle(request, "New Item");
 
         // get all categories from database with assending order
-        List<Category> categories = new CategoryDaoImpl(servletContext).getAllSupCategories("ASC");
+        List<Category> categories = new CategoryDaoImpl(servletContext).getAllCategories("ASC");
 
         // set categories to the request
         request.setAttribute("categories", categories);

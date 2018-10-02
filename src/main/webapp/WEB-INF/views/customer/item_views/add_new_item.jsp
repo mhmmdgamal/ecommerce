@@ -90,7 +90,7 @@
                                     <select name="category" required>
                                         <option value="0">...</option>
                                         <c:forEach items="${categories}" var="category">
-                                            <option value='${categor['id']}'>${category['name']}</option>
+                                            <option value='${category['id']}'>${category['name']}</option>
                                         </c:forEach>
                                     </select>
                                 </div>

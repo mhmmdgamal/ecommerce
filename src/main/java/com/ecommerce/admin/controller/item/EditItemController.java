@@ -1,4 +1,4 @@
-package com.ecommerce.admin.controller;
+package com.ecommerce.admin.controller.item;
 
 import com.ecommerce.bean.Category;
 import com.ecommerce.bean.Comment;

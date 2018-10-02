@@ -1,4 +1,4 @@
-package com.ecommerce.customer.controller;
+package com.ecommerce.customer.controller.item;
 
 import com.ecommerce.dao.ItemDaoImpl;
 import com.ecommerce.helper.Helper;
@@ -37,7 +37,7 @@ public class DeleteItemController extends HttpServlet {
 
         if (itemDeleted) {
             // set success message if User added
-            request.setAttribute("success", "User Has Been Deleted");
+            request.setAttribute("success", "Item Has Been Deleted");
             // forword request to manage page
             Helper.forwardRequest(request, response, customerJspPath + "user_views/show_profile.jsp");
 

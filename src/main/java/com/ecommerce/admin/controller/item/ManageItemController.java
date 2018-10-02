@@ -1,11 +1,12 @@
-package com.ecommerce.admin.controller;
+// <editor-fold>
+package com.ecommerce.admin.controller.item;
 
-import com.ecommerce.bean.Comment;
 import com.ecommerce.bean.Item;
-import com.ecommerce.bean.User;
+import com.ecommerce.bean.Category;
+import com.ecommerce.bean.Comment;
+import com.ecommerce.dao.CategoryDaoImpl;
 import com.ecommerce.dao.CommentDaoImpl;
 import com.ecommerce.dao.ItemDaoImpl;
-import com.ecommerce.dao.UserDaoImpl;
 import com.ecommerce.helper.Helper;
 import java.io.IOException;
 import java.util.List;
@@ -15,9 +16,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.annotation.WebServlet;
+// </editor-fold>
 
-@WebServlet("/admin/manage-comments")
-public class ManageCommentController extends HttpServlet {
+@WebServlet("/admin/manage-items")
+public class ManageItemController extends HttpServlet {
 
     String adminJspPath = null;
     ServletContext servletContext = null;
@@ -33,25 +35,23 @@ public class ManageCommentController extends HttpServlet {
             throws ServletException, IOException {
 
         // set page title
-        Helper.setTitle(request, "Manage Comments");
+        Helper.setTitle(request, "Manage Items");
 
-        // get all users with out pendings users
-        List<User> users = new UserDaoImpl(servletContext).getAllUsers(false);
-//        System.out.println(users);
+        // get all categories with assending order
+        List<Category> categories = new CategoryDaoImpl(servletContext).getAllSupCategories("ASC");
+        // get all comments with assending order
+        List<Comment> comments = new CommentDaoImpl(servletContext).getAllComments("ASC");
         // get all items with assending order
         List<Item> items = new ItemDaoImpl(servletContext).getAllItems("ASC");
 
-        // get all comments with assending order
-        List<Comment> comments = new CommentDaoImpl(servletContext).getAllComments("ASC");
-
-        // set users to request
-        request.setAttribute("users", users);
         // set items to request
         request.setAttribute("items", items);
+        // set categories to request
+        request.setAttribute("categories", categories);
         // set comments to request
         request.setAttribute("comments", comments);
 
         // forword request to manage page
-        Helper.forwardRequest(request, response, adminJspPath + "comment_views/manage_comments.jsp");
+        Helper.forwardRequest(request, response, adminJspPath + "item_views/manage_items.jsp");
     }
 }

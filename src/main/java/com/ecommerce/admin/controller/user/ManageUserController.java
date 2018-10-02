@@ -1,5 +1,5 @@
 //<editor-fold>
-package com.ecommerce.admin.controller;
+package com.ecommerce.admin.controller.user;
 
 import com.ecommerce.bean.User;
 import com.ecommerce.dao.UserDaoImpl;

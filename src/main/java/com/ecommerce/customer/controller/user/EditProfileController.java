@@ -1,4 +1,4 @@
-package com.ecommerce.customer.controller;
+package com.ecommerce.customer.controller.user;
 
 import com.ecommerce.bean.User;
 import com.ecommerce.dao.UserDaoImpl;

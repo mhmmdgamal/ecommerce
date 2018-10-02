@@ -1,5 +1,5 @@
 // <editor-fold>
-package com.ecommerce.customer.controller;
+package com.ecommerce.customer.controller.user;
 
 import com.ecommerce.bean.Comment;
 import com.ecommerce.bean.Item;

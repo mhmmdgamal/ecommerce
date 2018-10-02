@@ -1,4 +1,4 @@
-package com.ecommerce.admin.controller;
+package com.ecommerce.admin.controller.comment;
 
 import com.ecommerce.bean.Comment;
 import com.ecommerce.dao.CommentDaoImpl;
