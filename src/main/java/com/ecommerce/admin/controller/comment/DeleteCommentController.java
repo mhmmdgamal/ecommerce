@@ -13,14 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "DeleteCommentController", urlPatterns = {"/admin/delete-comment"})
 public class DeleteCommentController extends HttpServlet {
 
-    ServletContext servletContext = null;
-
-    @Override
-    public void init() throws ServletException {
-        servletContext = getServletContext();
-    }
-
-    // <editor-fold >
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -33,7 +25,7 @@ public class DeleteCommentController extends HttpServlet {
             long id = commentId != null && Helper.isNumber(commentId) ? Long.parseLong(commentId) : 0;
 
             // delete comment depending on the commentId
-            boolean commentDeleted = new CommentDaoImpl(servletContext).deleteComment(id);
+            boolean commentDeleted = new CommentDaoImpl(getServletContext()).deleteComment(id);
             if (commentDeleted) {
                 // redirect to the previous page with deleted message
                 Helper.redriectToPrevPage(request, response, "comment deleted", false);
@@ -43,14 +35,5 @@ public class DeleteCommentController extends HttpServlet {
             }
         
     }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        // set page title
-        Helper.setTitle(request, "Users");
-
-    }// </editor-fold>
 
 }

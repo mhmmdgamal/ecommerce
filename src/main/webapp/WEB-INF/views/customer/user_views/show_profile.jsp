@@ -87,8 +87,11 @@
                                             </td>
                                             <td>${comment['addDate']}</td>
                                             <td>
-                                                <a href='${initParam['adminPath']}edit-comment?commentid=${comment['id']}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
-                                                <a href='${initParam['adminPath']}delete-comment?commentid=${comment['id']}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>
+                                                <a href='${initParam['customerPath']}edit-comment?commentid=${comment['id']}' 
+                                                   class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
+
+                                                <a href='${initParam['customerPath']}delete-comment?commentid=${comment['id']}' 
+                                                   class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>
                                             </td>
                                         </tr>
                                     </c:forEach>

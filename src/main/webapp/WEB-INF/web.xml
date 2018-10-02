@@ -68,7 +68,7 @@
         <param-name>customerJspPath</param-name>
         <param-value>/WEB-INF/views/customer/</param-value>
     </context-param>
-    
+
     <error-page>
         <error-code>404</error-code>
         <location>/WEB-INF/views/public/error_pages/404.jsp</location>
