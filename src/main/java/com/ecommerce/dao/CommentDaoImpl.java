@@ -116,7 +116,32 @@ public class CommentDaoImpl implements CommentDao {
      */
     @Override
     public List<Comment> getAllComments(String sort) {
-        return this.getItemComments(0, sort);
+        List<Comment> comments = new ArrayList();
+
+        try (ResultSet rs = db.select()
+                .table(table)
+                .orderBy("id")
+                .sort(sort)
+                .fetchData()) {
+
+            while (rs.next()) {
+                Comment comment = Comment.builder()
+                        .id(rs.getLong("id"))
+                        .comment(rs.getString("comment"))
+                        .addDate(rs.getDate("add_date"))
+                        .status(rs.getByte("status"))
+                        .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
+                        .item(new ItemDaoImpl(sc).getItemById(rs.getLong("item_id")))
+                        .build();
+                comments.add(comment);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+
+        return comments;
     }
 
     /**

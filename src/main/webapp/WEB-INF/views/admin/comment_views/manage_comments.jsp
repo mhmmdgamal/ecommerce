@@ -17,8 +17,8 @@
                         <tr>
                             <td>${comment['id']}</td>
                             <td>${comment['comment']}</td>
-                            <td>${comment['item.name']}</td>
-                            <td>${comment['user.name']}</td>
+                            <td>${comment['item']['name']}</td>
+                            <td>${comment['user']['name']}</td>
                             <td>${comment['addDate']}</td>
                             <td>
                                 <a href='${initParam['adminPath']}edit-comment?commentid=${comment['id']}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>

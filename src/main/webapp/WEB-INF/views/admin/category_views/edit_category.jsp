@@ -5,6 +5,7 @@
 <div class="container">
     <form action="${initParam['adminPath']}edit-category" class="form-horizontal" method="POST">
 
+        <br><br>
         <input type="hidden" name="categoryid" value="${category['id']}" />
         <!-- Start Name Field -->
         <div class="form-group form-group-lg">

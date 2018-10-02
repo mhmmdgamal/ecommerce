@@ -14,7 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 //</editor-fold >
 
-
 public final class MySQLDatabaseHelper {
 
     /**
@@ -151,7 +150,7 @@ public final class MySQLDatabaseHelper {
             ex.printStackTrace();
         }
     }
-    
+
     /**
      * Get Database Connection Object PDO Object
      *
