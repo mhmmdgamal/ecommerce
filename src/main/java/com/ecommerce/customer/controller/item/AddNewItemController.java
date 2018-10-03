@@ -19,7 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 // </editor-fold>
 
-@WebServlet("/new-item")
+@WebServlet(name = "AddItemControllerForCustomer", urlPatterns = {"/new-item"})
+
 public class AddNewItemController extends HttpServlet {
 
     ServletContext servletContext = null;

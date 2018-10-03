@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "UserController", urlPatterns = {"/users"})
+@WebServlet(name = "ShowUserControllerForCustomer", urlPatterns = {"/users"})
 public class ShowUserController extends HttpServlet {
 
     ServletContext servletContext = null;

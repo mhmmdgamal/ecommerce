@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "EditItemController", urlPatterns = {"/edit-item"})
+@WebServlet(name = "EditItemControllerForCustomer", urlPatterns = {"/edit-item"})
 public class EditItemController extends HttpServlet {
 
     ServletContext servletContext = null;

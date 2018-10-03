@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "AddCommentController", urlPatterns = {"/add-comment"})
+@WebServlet(name = "AddCommentControllerForCustomer", urlPatterns = {"/add-comment"})
 public class AddCommentController extends HttpServlet {
 
     String customerJspPath = null;
@@ -28,7 +28,37 @@ public class AddCommentController extends HttpServlet {
         servletContext = getServletContext();
         customerJspPath = servletContext.getInitParameter("customerJspPath");
     }
+@Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+    
+    
 
+        // set page title
+        Helper.setTitle(request, "Edit Comment");
+        String servletPath = request.getServletPath();
+
+        // get commentId param from the request
+//        String commentId = request.getParameter("commentid");
+
+        // return the commentId if number or return 0
+//        long id = commentId != null && Helper.isNumber(commentId) ? Long.parseLong(commentId) : 0;
+
+        // get comment depending on commentId
+        Comment commentFounded = new CommentDaoImpl(servletContext).getCommentById(2);
+        
+        if (commentFounded != null) {
+            // set the found comment to the request
+            request.setAttribute("comment", commentFounded);
+
+            // forword request to edit page
+//            Helper.forwardRequest(request, response, customerJspPath + "comment/edit_comment.jsp");
+            Helper.forwardRequest(request, response, customerJspPath + "item_views/show_item.jsp");
+
+        } else {
+            // redirect to the previous page with error message
+            Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
+        }}
     /**
      * doPost method created to receive Comment for item :
      * <1> receive id and comment of this item

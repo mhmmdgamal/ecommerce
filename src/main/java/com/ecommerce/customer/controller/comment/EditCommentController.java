@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "EditCommentController", urlPatterns = {"/edit-comment"})
+@WebServlet(name = "EditCommentControlllerForCustomer", urlPatterns = {"/edit-comment"})
 public class EditCommentController extends HttpServlet {
 
     String customerJspPath = null;
@@ -33,19 +33,18 @@ public class EditCommentController extends HttpServlet {
 
         // get commentId param from the request
         String commentId = request.getParameter("commentid");
-
         // return the commentId if number or return 0
         long id = commentId != null && Helper.isNumber(commentId) ? Long.parseLong(commentId) : 0;
-
         // get comment depending on commentId
         Comment commentFounded = new CommentDaoImpl(servletContext).getCommentById(id);
-        
+
         if (commentFounded != null) {
             // set the found comment to the request
             request.setAttribute("comment", commentFounded);
 
             // forword request to edit page
             Helper.forwardRequest(request, response, customerJspPath + "comment/edit_comment.jsp");
+//            Helper.forwardRequest(request, response, customerJspPath + "item_views/show_item.jsp");
 
         } else {
             // redirect to the previous page with error message
@@ -87,7 +86,5 @@ public class EditCommentController extends HttpServlet {
 
         // forword request to the edit page
         Helper.forwardRequest(request, response, customerJspPath + "comment/edit_comment.jsp");
-
-    }// </editor-fold>
-
+    }
 }

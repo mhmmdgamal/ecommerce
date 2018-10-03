@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.annotation.WebServlet;
 
-@WebServlet("/categories")
+@WebServlet(name = "CategoryItemControllerForCustomer", urlPatterns = {"/categories"})
+
 // </editor-fold >
 public class ShowCategoryController extends HttpServlet {
     // <editor-fold >

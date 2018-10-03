@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "DeleteItemControlller", urlPatterns = {"/delete-item"})
+@WebServlet(name = "DeleteItemControlllerForCustomer", urlPatterns = {"/delete-item"})
 public class DeleteItemController extends HttpServlet {
 
     ServletContext servletContext = null;

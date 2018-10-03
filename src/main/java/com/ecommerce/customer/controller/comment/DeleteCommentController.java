@@ -9,12 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "DeleteCommentController", urlPatterns = {"delete-comment"})
+@WebServlet(name = "DeleteCommentControllerForCustomer", urlPatterns = {"/delete-comment"})
 public class DeleteCommentController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
 
         // get commentId param from the request
         String commentId = request.getParameter("commentid");
@@ -31,5 +32,12 @@ public class DeleteCommentController extends HttpServlet {
             // redirect to the previous page with error message
             Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
         }
+    
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+    }
+
 }
