@@ -1,12 +1,16 @@
 package com.ecommerce.bean;
 
+import java.io.FileInputStream;
 import java.sql.Date;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-@Data @Builder @AllArgsConstructor @NoArgsConstructor
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements Bean {
 
     private long id;
@@ -18,4 +22,6 @@ public class User implements Bean {
     private int trustStatus;
     private int regStatus;
     private Date date;
+    private FileInputStream avatarInput;
+    private FileInputStream avatarOutput;
 }

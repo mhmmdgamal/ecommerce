@@ -33,4 +33,6 @@
         </div>
     </div>
 </nav>
+
+<a href="${initParam['customerPath']}">Home Page</a>
 <c:import url="${initParam['publicIncludePath']}success_error.jsp" />
