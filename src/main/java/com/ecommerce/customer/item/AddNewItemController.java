@@ -5,9 +5,12 @@ import com.ecommerce.general.category.Category;
 import com.ecommerce.general.item.Item;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.category.CategoryDaoImpl;
+import com.ecommerce.general.enumiration.ViewParent;
+import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.helper.CookieHelper;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.helper.PathsHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +27,13 @@ import javax.servlet.http.HttpServletResponse;
 public class AddNewItemController extends HttpServlet {
 
     ServletContext servletContext = null;
-    String customerJspPath = null;
+    
 
     @Override
     public void init() throws ServletException {
         super.init(); //To change body of generated methods, choose Tools | Templates.
         servletContext = getServletContext();
-        customerJspPath = servletContext.getInitParameter("customerJspPath");
+        
     }
 
     @Override
@@ -47,7 +50,7 @@ public class AddNewItemController extends HttpServlet {
         request.setAttribute("categories", categories);
 
         // forward to new item page
-        Helper.forwardRequest(request, response, customerJspPath + "item_views/add_new_item.jsp");
+        Helper.forwardRequest(request, response, PathsHelper.getCustomerItem("add_new_item"));
     }
 
     @Override
@@ -82,7 +85,7 @@ public class AddNewItemController extends HttpServlet {
         // check if no errors
         if (formErrors.size() > 0) {
             // forword to add page (to show error for user)
-            Helper.forwardRequest(request, response, customerJspPath + "item_views/add_new_item.jsp");
+            Helper.forwardRequest(request, response, PathsHelper.getCustomerItem("add_new_item"));
 
         } else {
             //get id of current user 
@@ -124,7 +127,7 @@ public class AddNewItemController extends HttpServlet {
             }
 
             // forword to add page
-            Helper.forwardRequest(request, response, customerJspPath + "item_views/add_new_item.jsp");
+            Helper.forwardRequest(request, response, PathsHelper.getCustomerItem("add_new_item"));
         }
     }
 

@@ -1,5 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:import url="${initParam['publicIncludePath']}header.jsp" />
+<%@page import="com.ecommerce.general.helper.PathesHelper" %>
+
+<c:import url='${PathesHelper.getPublicInclude("header")}' />
 
 <h1 class="text-center">Edit Comment</h1>
 
@@ -33,4 +35,4 @@
     </form>
 </div>
 
-<c:import url="${initParam['publicIncludePath']}footer.jsp" />
+<c:import url='${PathesHelper.getPublicInclude("footer")}' />

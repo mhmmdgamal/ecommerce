@@ -1,6 +1,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:import url="${initParam['adminIncludePath']}header.jsp"/>
-<c:import url="${initParam['adminIncludePath']}navbar.jsp"/>
+<%@page import="com.ecommerce.general.helper.PathesHelper" %>
+
+<c:import url='${PathesHelper.getAdminInclude("header")}' />
+<c:import url='${PathesHelper.getAdminInclude("navbar")}' />
 
 <h1 class="text-center">Manage Comments</h1>
 
@@ -50,4 +52,4 @@
         </div>
     </c:otherwise>
 </c:choose>
-<c:import url="${initParam['adminIncludePath']}footer.jsp"/>
+<c:import url='${PathesHelper.getAdminInclude("footer")}' />

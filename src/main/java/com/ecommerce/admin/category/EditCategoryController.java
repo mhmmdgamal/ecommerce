@@ -2,7 +2,10 @@ package com.ecommerce.admin.category;
 
 import com.ecommerce.general.category.Category;
 import com.ecommerce.general.category.CategoryDaoImpl;
+import com.ecommerce.general.enumiration.ViewParent;
+import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.helper.PathsHelper;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -15,13 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "EditCategoryController", urlPatterns = {"/admin/edit-category"})
 public class EditCategoryController extends HttpServlet {
 
-    String adminJspPath = null;
     ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        adminJspPath = servletContext.getInitParameter("adminJspPath");
     }
 
     // <editor-fold >
@@ -51,7 +52,7 @@ public class EditCategoryController extends HttpServlet {
             request.setAttribute("supCategories", supCategories);
 
             // forword request to edit page
-            Helper.forwardRequest(request, response, adminJspPath + "category_views/edit_category.jsp");
+            Helper.forwardRequest(request, response, PathsHelper.getAdminCategory("edit_category"));
         } else {
             // redirect to the previous page with error message
             Helper.redriectToPrevPage(request, response, "There`s No Such ID", true);
@@ -104,7 +105,7 @@ public class EditCategoryController extends HttpServlet {
         request.setAttribute("category", category);
 
         // forword request to the edit page
-        Helper.forwardRequest(request, response, adminJspPath + "category_views/edit_category.jsp");
+        Helper.forwardRequest(request, response, PathsHelper.getAdminCategory("edit_category"));
 
     }// </editor-fold>
 

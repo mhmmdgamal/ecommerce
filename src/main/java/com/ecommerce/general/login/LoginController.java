@@ -1,11 +1,14 @@
 //<editor-fold >
 package com.ecommerce.general.login;
 
+import com.ecommerce.general.enumiration.ViewParent;
+import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.CookieHelper;
 import com.ecommerce.general.helper.HashHelper;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.helper.PathsHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,17 +23,14 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet(urlPatterns = {"/login"})
 public class LoginController extends HttpServlet {
 
-    String customerJspPath = null;
-    String loginJspPath = null;
+    
     private ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         super.init(); //To change body of generated methods, choose Tools | Templates.
         servletContext = getServletContext();
-        customerJspPath = servletContext.getInitParameter("customerJspPath");
-        loginJspPath = servletContext.getInitParameter("loginJspPath");
-
+        
     }//</editor-fold >
 
     @Override
@@ -57,7 +57,7 @@ public class LoginController extends HttpServlet {
             }
 
             // forword the requset to the login page
-            Helper.forwardRequest(request, response, loginJspPath + "login_register.jsp" + previous, "Login");
+            Helper.forwardRequest(request, response, PathsHelper.getPublicLogin("login_register") + previous, "Login");
         }
     }
 
@@ -125,9 +125,9 @@ public class LoginController extends HttpServlet {
             // redirect to login page 
             Helper.setTitle(request, "Login");
             if (previous != null) {
-                Helper.forwardRequest(request, response, loginJspPath + "login_register.jsp?previous=" + previous);
+                Helper.forwardRequest(request, response, PathsHelper.getPublicLogin("login_register") + "?previous=" + previous);
             } else {
-                Helper.forwardRequest(request, response, loginJspPath + "login_register.jsp");
+                Helper.forwardRequest(request, response, PathsHelper.getPublicLogin("login_register"));
             }
         }
         //////////////////////End if user Not existed in DB//////////////////////////

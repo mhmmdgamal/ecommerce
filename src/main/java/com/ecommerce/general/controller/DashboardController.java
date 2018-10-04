@@ -1,9 +1,12 @@
-package com.ecommerce.publicc;
+package com.ecommerce.general.controller;
 
 import com.ecommerce.general.comment.CommentDaoImpl;
+import com.ecommerce.general.enumiration.ViewParent;
+import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.helper.PathsHelper;
 import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -15,13 +18,13 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet("/admin/dashboard")
 public class DashboardController extends HttpServlet {
 
-    String adminJspPath = null;
+    
     ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        adminJspPath = servletContext.getInitParameter("adminJspPath");
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -71,7 +74,7 @@ public class DashboardController extends HttpServlet {
         request.setAttribute("latestComments", commentDao.getLatestComments(5));
 
         // forword the requset to the dashboard page
-        Helper.forwardRequest(request, response, adminJspPath + "dashboard.jsp");
+        Helper.forwardRequest(request, response, PathsHelper.getAdminDashboard("dashboard"));
     }
 
     /**

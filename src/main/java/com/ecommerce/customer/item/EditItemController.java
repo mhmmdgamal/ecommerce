@@ -5,9 +5,12 @@ import com.ecommerce.general.category.Category;
 import com.ecommerce.general.item.Item;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.category.CategoryDaoImpl;
+import com.ecommerce.general.enumiration.ViewParent;
+import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.helper.CookieHelper;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.helper.PathsHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +25,14 @@ import javax.servlet.http.HttpServletResponse;
 public class EditItemController extends HttpServlet {
 
     ServletContext servletContext = null;
-    String customerJspPath = null;
+    
     Item item = null;
     List<Category> categories = null;
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        customerJspPath = servletContext.getInitParameter("customerJspPath");
+        
     }//</editor-fold >
 
     /**
@@ -64,7 +67,7 @@ public class EditItemController extends HttpServlet {
             // set categories to the request 
             request.setAttribute("categories", categories);
 
-            Helper.forwardRequest(request, response, customerJspPath + "item_views/edit_item.jsp");
+            Helper.forwardRequest(request, response, PathsHelper.getCustomerItem("edit_item"));
 
         } else {
             // redirect to the previous page with error message
@@ -108,7 +111,7 @@ public class EditItemController extends HttpServlet {
         // check errors
         if (formErrors.size() > 0) {//if founded error in params
             // forword to edit_item page again
-            Helper.forwardRequest(request, response, customerJspPath + "item_views/edit_item.jsp");
+            Helper.forwardRequest(request, response, PathsHelper.getCustomerItem("edit_item"));
 
         } else {//if no errors in params 
 
@@ -156,7 +159,7 @@ public class EditItemController extends HttpServlet {
             request.setAttribute("item", item);
 
             // forword to add page
-            Helper.forwardRequest(request, response, customerJspPath + "item_views/edit_item.jsp");
+            Helper.forwardRequest(request, response, PathsHelper.getCustomerItem("edit_item"));
         }
     }
 

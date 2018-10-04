@@ -2,7 +2,10 @@ package com.ecommerce.customer.comment;
 
 import com.ecommerce.general.comment.Comment;
 import com.ecommerce.general.comment.CommentDaoImpl;
+import com.ecommerce.general.enumiration.ViewParent;
+import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.helper.PathsHelper;
 import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -14,13 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "EditCommentControlllerForCustomer", urlPatterns = {"/edit-comment"})
 public class EditCommentController extends HttpServlet {
 
-    String customerJspPath = null;
+    
     ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        customerJspPath = servletContext.getInitParameter("customerJspPath");
+        
     }
 
     // <editor-fold >
@@ -43,7 +46,7 @@ public class EditCommentController extends HttpServlet {
             request.setAttribute("comment", commentFounded);
 
             // forword request to edit page
-            Helper.forwardRequest(request, response, customerJspPath + "comment/edit_comment.jsp");
+            Helper.forwardRequest(request, response, PathsHelper.getCustomerComment("edit_comment"));
 //            Helper.forwardRequest(request, response, customerJspPath + "item_views/show_item.jsp");
 
         } else {
@@ -85,6 +88,6 @@ public class EditCommentController extends HttpServlet {
         request.setAttribute("comment", comment);
 
         // forword request to the edit page
-        Helper.forwardRequest(request, response, customerJspPath + "comment/edit_comment.jsp");
+        Helper.forwardRequest(request, response, PathsHelper.getCustomerComment("edit_comment"));
     }
 }

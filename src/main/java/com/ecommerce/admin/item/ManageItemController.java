@@ -6,8 +6,11 @@ import com.ecommerce.general.category.Category;
 import com.ecommerce.general.comment.Comment;
 import com.ecommerce.general.category.CategoryDaoImpl;
 import com.ecommerce.general.comment.CommentDaoImpl;
+import com.ecommerce.general.enumiration.ViewParent;
+import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.helper.PathsHelper;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -21,13 +24,13 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet("/admin/manage-items")
 public class ManageItemController extends HttpServlet {
 
-    String adminJspPath = null;
+    
     ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        adminJspPath = servletContext.getInitParameter("adminJspPath");
+        
     }
 
     @Override
@@ -52,6 +55,6 @@ public class ManageItemController extends HttpServlet {
         request.setAttribute("comments", comments);
 
         // forword request to manage page
-        Helper.forwardRequest(request, response, adminJspPath + "item_views/manage_items.jsp");
+        Helper.forwardRequest(request, response, PathsHelper.getAdminItem("manage_items"));
     }
 }

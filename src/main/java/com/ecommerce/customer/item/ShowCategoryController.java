@@ -3,7 +3,10 @@ package com.ecommerce.customer.item;
 
 import com.ecommerce.general.item.Item;
 import com.ecommerce.general.category.CategoryDaoImpl;
+import com.ecommerce.general.enumiration.ViewParent;
+import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.helper.PathsHelper;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -41,7 +44,7 @@ public class ShowCategoryController extends HttpServlet {
             request.setAttribute("categoryItems", categoryItems);
 
             // forword request to show category items page
-            Helper.forwardRequest(request, response, servletContext.getInitParameter("customerJspPath") + "item_views/show_category.jsp");
+            Helper.forwardRequest(request, response, PathsHelper.getCustomerItem("show_category"));
         } else {
             Helper.redriectToPrevPage(request, response, "You Must Add Page ID", true);
         }

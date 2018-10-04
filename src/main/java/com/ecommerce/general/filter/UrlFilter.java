@@ -1,5 +1,5 @@
 //<editor-fold >
-package com.ecommerce.publicc;
+package com.ecommerce.general.filter;
 
 import java.io.IOException;
 import javax.servlet.Filter;

@@ -1,3 +1,5 @@
+<%@page import="com.ecommerce.general.helper.PathesHelper" %>
+
 <nav class="navbar navbar-inverse">
     <div class="container">
         <div class="navbar-header">
@@ -35,4 +37,4 @@
 </nav>
 
 <a href="${initParam['customerPath']}">Home Page</a>
-<c:import url="${initParam['publicIncludePath']}success_error.jsp" />
+<c:import url='${PathesHelper.getPublicInclude("success_error")}' />

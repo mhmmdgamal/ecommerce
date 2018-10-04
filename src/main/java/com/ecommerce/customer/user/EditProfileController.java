@@ -1,11 +1,13 @@
 package com.ecommerce.customer.user;
 
+import com.ecommerce.general.enumiration.ViewParent;
+import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.CookieHelper;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.helper.PathsHelper;
 import java.io.IOException;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -19,13 +21,13 @@ import javax.servlet.http.HttpServletResponse;
 public class EditProfileController extends HttpServlet {
 
     ServletContext servletContext = null;
-    String customerJspPath = null;
+    
 
     @Override
     public void init() throws ServletException {
         super.init(); //To change body of generated methods, choose Tools | Templates.
         servletContext = getServletContext();
-        customerJspPath = servletContext.getInitParameter("customerJspPath");
+        
     }
 
     // <editor-fold >
@@ -49,7 +51,7 @@ public class EditProfileController extends HttpServlet {
             request.setAttribute("user", user);
 
             // forward to edit profile page
-            Helper.forwardRequest(request, response, customerJspPath + "user_views/edit_profile.jsp");
+            Helper.forwardRequest(request, response, PathsHelper.getCustomerUser("edit_profile"));
         } else {
             Helper.redriectToPrevPage(request, response, "This user is not found", true);
         }
@@ -75,7 +77,7 @@ public class EditProfileController extends HttpServlet {
 
             // forword to login page
             Helper.setTitle(request, "Edit Profile");
-            Helper.forwardRequest(request, response, customerJspPath + "user_views/edit_profile.jsp");
+            Helper.forwardRequest(request, response, PathsHelper.getCustomerUser("edit_profile"));
 
         } else {//if there is no errors
 
@@ -109,7 +111,7 @@ public class EditProfileController extends HttpServlet {
             request.setAttribute("user", user);
 
             // forword to add page
-            Helper.forwardRequest(request, response, customerJspPath + "user_views/edit_profile.jsp");
+            Helper.forwardRequest(request, response, PathsHelper.getCustomerUser("edit_profile"));
 
         }
     }

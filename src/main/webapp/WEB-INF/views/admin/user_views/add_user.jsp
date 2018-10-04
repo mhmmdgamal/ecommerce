@@ -1,6 +1,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:import url="${initParam['adminIncludePath']}header.jsp"/>
-<c:import url="${initParam['adminIncludePath']}navbar.jsp"/>
+<%@page import="com.ecommerce.general.helper.PathesHelper" %>
+
+<c:import url='${PathesHelper.getAdminInclude("header")}' />
+<c:import url='${PathesHelper.getAdminInclude("navbar")}' />
 
 <h1 class="text-center">Add New User</h1>
 
@@ -58,4 +60,4 @@
 
     </form>
 </div>
-<c:import url="${initParam['adminIncludePath']}footer.jsp"/>
+<c:import url='${PathesHelper.getAdminInclude("footer")}' />

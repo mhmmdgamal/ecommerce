@@ -1,8 +1,11 @@
 package com.ecommerce.admin.user;
 
+import com.ecommerce.general.enumiration.ViewParent;
+import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.helper.PathsHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +19,13 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "EditUserController", urlPatterns = {"/admin/edit-user"})
 public class EditUserController extends HttpServlet {
 
-    String adminJspPath = null;
+    
     ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        adminJspPath = servletContext.getInitParameter("adminJspPath");
+        
     }
 
     // <editor-fold >
@@ -46,7 +49,7 @@ public class EditUserController extends HttpServlet {
             request.setAttribute("user", userFounded);
 
             // forword to edit page
-            Helper.forwardRequest(request, response, adminJspPath + "user_views/edit_user.jsp");
+            Helper.forwardRequest(request, response, PathsHelper.getAdminUser("edit_user"));
         } else {
             // redirect to the previous page with error message
             Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
@@ -82,7 +85,7 @@ public class EditUserController extends HttpServlet {
         // check if no errors
         if (formErrors.size() > 0) {
             // forword to edit page
-            Helper.forwardRequest(request, response, adminJspPath + "user_views/edit_user.jsp");
+            Helper.forwardRequest(request, response, PathsHelper.getAdminUser("edit_user"));
         } else {
             // make new user and set info to it
             User user = User.builder()
@@ -107,7 +110,7 @@ public class EditUserController extends HttpServlet {
                 request.setAttribute("success", "user updated");
             }
             // forword to edit page
-            Helper.forwardRequest(request, response, adminJspPath + "user_views/edit_user.jsp");
+            Helper.forwardRequest(request, response, PathsHelper.getAdminUser("edit_user"));
         }
     }// </editor-fold>
 

@@ -1,6 +1,6 @@
 package com.ecommerce.general.user;
 
-import com.ecommerce.publicc.Bean;
+import com.ecommerce.general.bean.Bean;
 import java.io.FileInputStream;
 import java.sql.Date;
 import lombok.AllArgsConstructor;

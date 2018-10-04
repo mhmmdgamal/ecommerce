@@ -2,7 +2,10 @@ package com.ecommerce.admin.category;
 
 import com.ecommerce.general.category.Category;
 import com.ecommerce.general.category.CategoryDaoImpl;
+import com.ecommerce.general.enumiration.ViewParent;
+import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.helper.PathsHelper;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -15,13 +18,11 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet(name = "ManageCategoryController", urlPatterns = {"/admin/manage-categories"})
 
 public class ManageCategoryController extends HttpServlet {
-    String adminJspPath = null;
     ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        adminJspPath = servletContext.getInitParameter("adminJspPath");
     }
 
     @Override
@@ -52,7 +53,7 @@ public class ManageCategoryController extends HttpServlet {
         request.setAttribute("sort", sort);
 
         // forword request to manage page
-        Helper.forwardRequest(request, response, adminJspPath + "category_views/manage_categories.jsp");
+        Helper.forwardRequest(request, response, PathsHelper.getAdminCategory("manage_categories"));
     }
 
 }

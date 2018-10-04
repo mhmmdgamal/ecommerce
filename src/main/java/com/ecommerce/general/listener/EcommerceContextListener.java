@@ -1,4 +1,4 @@
-package com.ecommerce.publicc;
+package com.ecommerce.general.listener;
 
 import com.ecommerce.general.category.Category;
 import com.ecommerce.general.category.CategoryDaoImpl;

@@ -1,7 +1,10 @@
 package com.ecommerce.customer.item;
 
+import com.ecommerce.general.enumiration.ViewParent;
+import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.helper.PathsHelper;
 import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -14,12 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 public class DeleteItemController extends HttpServlet {
 
     ServletContext servletContext = null;
-    String customerJspPath = null;
+    
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        customerJspPath = servletContext.getInitParameter("customerJspPath");
+        
     }
 
     @Override
@@ -39,7 +42,7 @@ public class DeleteItemController extends HttpServlet {
             // set success message if User added
             request.setAttribute("success", "Item Has Been Deleted");
             // forword request to manage page
-            Helper.forwardRequest(request, response, customerJspPath + "user_views/show_profile.jsp");
+            Helper.forwardRequest(request, response, PathsHelper.getCustomerUser("show_profile"));
 
         } else {
             // redirect to the previous page with error message

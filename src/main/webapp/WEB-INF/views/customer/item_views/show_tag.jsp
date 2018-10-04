@@ -1,5 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:import url="${initParam['publicIncludePath']}header.jsp" />
+<%@page import="com.ecommerce.general.helper.PathesHelper" %>
+
+<c:import url='${PathesHelper.getPublicInclude("header")}' />
 
 <div class="container">
     <div class="row">
@@ -9,7 +11,7 @@
             <div class="col-sm-6 col-md-3">
                 <div class="thumbnail item-box">
                     <span class="price-tag">${item['price']}</span>
-                    <img class="img-responsive" src="${initParam['publicImgPath']}img.png" alt="No Image" />
+                    <img class="img-responsive" src="${PathesHelper.getPublicImg('img.png')}" alt="No Image" />
                     <div class="caption">
                         <h3><a href="${initParam['customerPath']}show-item?itemid=${item['id']}">${item['name']}</a></h3>
                         <p>${item['description']}</p>
@@ -21,4 +23,4 @@
     </div>
 </div>
 
-<c:import url="${initParam['publicIncludePath']}footer.jsp" />
+<c:import url='${PathesHelper.getPublicInclude("footer")}' />

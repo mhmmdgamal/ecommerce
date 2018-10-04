@@ -2,7 +2,7 @@ package com.ecommerce.general.item;
 
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.category.Category;
-import com.ecommerce.publicc.Bean;
+import com.ecommerce.general.bean.Bean;
 import java.sql.Date;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

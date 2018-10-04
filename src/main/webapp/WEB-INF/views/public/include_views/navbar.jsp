@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="com.ecommerce.general.helper.PathesHelper" %>
 
 <nav class="navbar navbar-inverse">
         <!--Start Show Full Name-->
@@ -6,7 +7,7 @@
         <div class="container">
             <c:choose>
                 <c:when test="${(sessionScope['user'] ne null) || (cookie['user']['value'] ne null)}">
-                    <img class="my-image img-thumbnail img-circle" src="${initParam['publicImgPath']}img.png" alt="No Image" />
+                    <img class="my-image img-thumbnail img-circle" src="${PathesHelper.getPublicImg("img.png")}" alt="No Image" />
                     <div class="btn-group my-info">
                         <button class="btn btn-primary dropdown-toggle"
                                 type="button" data-toggle="dropdown">

@@ -1,6 +1,8 @@
-<%@page import="com.ecommerce.helper.Helper"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:import url="${initParam['publicIncludePath']}header.jsp" />
+<%@page import="com.ecommerce.general.helper.Helper"%>
+<%@page import="com.ecommerce.general.helper.PathesHelper" %>
+
+<c:import url='${PathesHelper.getPublicInclude("header")}' />
 
 <c:choose>
     <c:when test="${item ne null}">
@@ -9,7 +11,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
-                    <img class="img-responsive img-thumbnail center-block" src="${initParam['publicImgPath']}img.png" alt="No Image" />
+                    <img class="img-responsive img-thumbnail center-block" src="${PathesHelper.getPublicImg('img.png')}" alt="No Image" />
                 </div>
 
                 <div class="col-md-9 item-info">
@@ -89,7 +91,7 @@
                 <div class="comment-box">
                     <div class="row">
                         <div class="col-sm-2 text-center">
-                            <img class="img-responsive img-thumbnail img-circle center-block" src="${initParam['publicImgPath']}img.png" alt="No Image" />
+                            <img class="img-responsive img-thumbnail img-circle center-block" src="${PathesHelper.getPublicImg('img.png')}" alt="No Image" />
                             ${comment['user']['name']}
                         </div>
                         <div class="col-sm-10">
@@ -110,4 +112,4 @@
         </c:otherwise>
     </c:choose>
 </div>
-<c:import url="${initParam['publicIncludePath']}footer.jsp" />
+<c:import url='${PathesHelper.getPublicInclude("footer")}' />

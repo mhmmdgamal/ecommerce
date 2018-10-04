@@ -1,9 +1,12 @@
 //<editor-fold>
 package com.ecommerce.admin.user;
 
+import com.ecommerce.general.enumiration.ViewParent;
+import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.helper.PathsHelper;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -17,13 +20,13 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet("/admin/manage-users")
 public class ManageUserController extends HttpServlet {
 
-    String adminJspPath = null;
+    
     ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        adminJspPath = servletContext.getInitParameter("adminJspPath");
+        
     }
 
     @Override
@@ -47,7 +50,7 @@ public class ManageUserController extends HttpServlet {
         request.setAttribute("users", users);
 
         // forword to manage page
-        Helper.forwardRequest(request, response, adminJspPath + "user_views/manage_users.jsp");
+        Helper.forwardRequest(request, response, PathsHelper.getAdminUser("manage_users"));
     }
 
 }

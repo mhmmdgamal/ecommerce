@@ -2,7 +2,10 @@ package com.ecommerce.admin.category;
 
 import com.ecommerce.general.category.Category;
 import com.ecommerce.general.category.CategoryDaoImpl;
+import com.ecommerce.general.enumiration.ViewParent;
+import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.helper.PathsHelper;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -15,13 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "AddCategoryController", urlPatterns = {"/admin/add-category"})
 public class AddCategoryController extends HttpServlet {
 
-    String adminJspPath = null;
     ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        adminJspPath = servletContext.getInitParameter("adminJspPath");
     }
 
     @Override
@@ -37,7 +38,7 @@ public class AddCategoryController extends HttpServlet {
         request.setAttribute("supCategories", supCategories);
 
         // forword request to add page
-        Helper.forwardRequest(request, response, adminJspPath + "category_views/add_category.jsp");
+        Helper.forwardRequest(request, response, PathsHelper.getAdminCategory("add_category"));
 
     }
 
@@ -80,7 +81,7 @@ public class AddCategoryController extends HttpServlet {
         }
 
         // forword request to the add page
-        Helper.forwardRequest(request, response, adminJspPath + "category_views/add_category.jsp");
+        Helper.forwardRequest(request, response, PathsHelper.getAdminCategory("add_category"));
 
     }
 

@@ -1,6 +1,6 @@
 package com.ecommerce.general.category;
 
-import com.ecommerce.publicc.Bean;
+import com.ecommerce.general.bean.Bean;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Builder;

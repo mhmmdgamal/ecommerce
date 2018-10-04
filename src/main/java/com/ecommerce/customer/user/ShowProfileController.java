@@ -2,11 +2,14 @@
 package com.ecommerce.customer.user;
 
 import com.ecommerce.general.comment.Comment;
+import com.ecommerce.general.enumiration.ViewParent;
+import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.item.Item;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.CookieHelper;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.helper.PathsHelper;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -64,7 +67,7 @@ public class ShowProfileController extends HttpServlet {
         request.setAttribute("userComments", userComments);
 
         // forward to profile page
-        Helper.forwardRequest(request, response, servletContext.getInitParameter("customerJspPath") + "user_views/show_profile.jsp");
+        Helper.forwardRequest(request, response, PathsHelper.getCustomerUser("show_profile"));
     }
 
     @Override
