@@ -1,7 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@page import="com.ecommerce.general.helper.PathesHelper" %>
+<%@page import="com.ecommerce.general.helper.PathsHelper" %>
 
-<c:import url='${PathesHelper.getPublicInclude("header")}' />
+<c:import url='${PathsHelper.getPublicInclude("header")}' />
 
 <h1 class="text-center">${user.fullName}</h1>
 <div class="information block">
@@ -46,7 +46,7 @@
                                         <c:choose>
                                             <c:when test="${item['approve'] eq 1}">
                                                 <span class="price-tag">${item['price']}</span>
-                                                <img class="img-responsive" src="${PathesHelper.getPublicImg('img.png')}" alt="No Image" />
+                                                <img class="img-responsive" src="${PathsHelper.getPublicImg('img.png')}" alt="No Image" />
                                                 <div class="caption">
                                                     <h3><a href="${initParam['customerPath']}show-item?itemid=${item['id']}">${item['name']}</a></h3>
                                                     <p>${item['description']}</p>
@@ -54,7 +54,7 @@
                                                 </div>
                                             </c:when>
                                             <c:otherwise>
-                                                <img class="img-responsive" src="${PathesHelper.getPublicImg('2.png')}" alt="No Image" />
+                                                <img class="img-responsive" src="${PathsHelper.getPublicImg('2.png')}" alt="No Image" />
                                                 <div class="caption">
                                                     <h3>there is a new item from ( ${user['name']} ) will be displayed later ..
                                                         <br>follow ( ${user['name']} ) to receive notification</h3>
@@ -94,4 +94,4 @@
     </div>
 </div>
 
-<c:import url='${PathesHelper.getPublicInclude("footer")}' />
+<c:import url='${PathsHelper.getPublicInclude("footer")}' />

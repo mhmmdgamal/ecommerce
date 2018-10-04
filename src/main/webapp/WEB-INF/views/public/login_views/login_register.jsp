@@ -1,7 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@page import="com.ecommerce.general.helper.PathesHelper" %>
+<%@page import="com.ecommerce.general.helper.PathsHelper" %>
 
-<c:import url='${PathesHelper.getPublicInclude("header")}' />
+<c:import url='${PathsHelper.getPublicInclude("header")}' />
 
 <div class="container login-page">
     <h1 class="text-center">
@@ -13,4 +13,4 @@
     <c:import url="register_form.jsp" />
 
 </div>
-<c:import url='${PathesHelper.getPublicInclude("footer")}' />
+<c:import url='${PathsHelper.getPublicInclude("footer")}' />

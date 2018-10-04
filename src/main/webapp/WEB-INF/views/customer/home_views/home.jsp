@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="com.ecommerce.general.helper.PathesHelper" %>
+<%@page import="com.ecommerce.general.helper.PathsHelper" %>
 
-<c:import url='${PathesHelper.getPublicInclude("header")}' />
+<c:import url='${PathsHelper.getPublicInclude("header")}' />
 
 <div class="container" style="margin-top: 50px">
     <div class="row">
@@ -10,7 +10,7 @@
             <div class="col-sm-6 col-md-3">
                 <div class="thumbnail item-box">
                     <span class="price-tag">${item['price']}</span>
-                    <img class="img-responsive" src="${PathesHelper.getPublicImg('img.png')}" alt="" />
+                    <img class="img-responsive" src="${PathsHelper.getPublicImg('img.png')}" alt="" />
                     <div class="caption">
                         <h3><a href="${initParam['customerPath']}show-item?itemid=${item['id']}">${item['name']}</a></h3>
                         <p>${item['description']}</p>
@@ -22,4 +22,4 @@
     </div>
 </div>
 
-<c:import url='${PathesHelper.getPublicInclude("footer")}' />
+<c:import url='${PathsHelper.getPublicInclude("footer")}' />

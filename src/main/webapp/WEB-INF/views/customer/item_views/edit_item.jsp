@@ -1,7 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@page import="com.ecommerce.general.helper.PathesHelper" %>
+<%@page import="com.ecommerce.general.helper.PathsHelper" %>
 
-<c:import url='${PathesHelper.getPublicInclude("header")}' />
+<c:import url='${PathsHelper.getPublicInclude("header")}' />
 
 <h1 class="text-center">Edit Your Item</h1>
 <div class="create-ad block">
@@ -132,7 +132,7 @@
                             <span class="price-tag">
                                 $<span class="live-price">${item['price']}</span>
                             </span>
-                            <img class="img-responsive" src="${PathesHelper.getPublicImg('img.png')}" alt="No Image" />
+                            <img class="img-responsive" src="${PathsHelper.getPublicImg('img.png')}" alt="No Image" />
                             <div class="caption">
                                 <h3 class="live-title" >Title: ${item['name']}</h3>
                                 <p class="live-desc">Description: ${item['description']}</p>
@@ -145,4 +145,4 @@
     </div>
 </div>
 
-<c:import url='${PathesHelper.getPublicInclude("footer")}' />
+<c:import url='${PathsHelper.getPublicInclude("footer")}' />

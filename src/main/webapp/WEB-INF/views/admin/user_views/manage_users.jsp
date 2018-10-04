@@ -1,8 +1,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@page import="com.ecommerce.general.helper.PathesHelper" %>
+<%@page import="com.ecommerce.general.helper.PathsHelper" %>
 
-<c:import url='${PathesHelper.getAdminInclude("header")}' />
-<c:import url='${PathesHelper.getAdminInclude("navbar")}' />
+<c:import url='${PathsHelper.getAdminInclude("header")}' />
+<c:import url='${PathsHelper.getAdminInclude("navbar")}' />
 
 <h1 class="text-center">Manage Users </h1>
 
@@ -65,4 +65,4 @@
         </div>
     </c:otherwise>
 </c:choose>
-<c:import url='${PathesHelper.getAdminInclude("footer")}' />
+<c:import url='${PathsHelper.getAdminInclude("footer")}' />
