@@ -1,5 +1,5 @@
 package com.ecommerce.general.path;
 
-public interface ViewPath extends AdminViewsPath, CustomerViews, GeneralViewsPath {
+public class ViewPath implements ViewAdminPath, ViewCustomerPath, ViewGeneralPath {
 
 }

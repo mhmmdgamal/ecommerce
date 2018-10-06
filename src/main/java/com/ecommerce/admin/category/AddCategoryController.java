@@ -23,6 +23,7 @@ public class AddCategoryController extends HttpServlet {
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
+        
     }
 
     @Override

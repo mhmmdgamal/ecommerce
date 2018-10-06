@@ -2,10 +2,12 @@ package com.ecommerce.general.path;
 
 public interface ResourcePath {
 
-    final String adminLayoutPath = "/ecommerce/resources/admin/layout/";
+    String rootPath = "/ecommerce/resources/";
 
-    final String generalImgPath = "/ecommerce/resources/general/img/";
-    final String generalLayoutPath = "/ecommerce/resources/general/layout/";
+    final String adminLayoutPath = rootPath + "admin/layout/";
 
+    final String generalImgPath = rootPath + "general/img/";
     
+    final String generalLayoutPath = rootPath + "general/layout/";
+
 }

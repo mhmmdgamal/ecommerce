@@ -1,6 +1,6 @@
 package com.ecommerce.general.path;
 
-interface AdminViewsPath {
+interface ViewAdminPath {
         
 
 

@@ -1,6 +1,6 @@
 package com.ecommerce.general.path;
 
-interface CustomerViews {
+interface ViewCustomerPath {
 
     final String rootViews = "/WEB-INF/views/";
     final String customerJspPath = rootViews + "customer/";
