@@ -2,10 +2,8 @@ package com.ecommerce.customer.comment;
 
 import com.ecommerce.general.comment.Comment;
 import com.ecommerce.general.comment.CommentDaoImpl;
-import com.ecommerce.general.enumiration.ViewParent;
-import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.helper.Helper;
-import com.ecommerce.general.helper.PathsHelper;
+import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -46,8 +44,7 @@ public class EditCommentController extends HttpServlet {
             request.setAttribute("comment", commentFounded);
 
             // forword request to edit page
-            Helper.forwardRequest(request, response, PathsHelper.getCustomerComment("edit_comment"));
-//            Helper.forwardRequest(request, response, customerJspPath + "item_views/show_item.jsp");
+            Helper.forwardRequest(request, response, ViewPath.edit_comment);
 
         } else {
             // redirect to the previous page with error message
@@ -88,6 +85,6 @@ public class EditCommentController extends HttpServlet {
         request.setAttribute("comment", comment);
 
         // forword request to the edit page
-        Helper.forwardRequest(request, response, PathsHelper.getCustomerComment("edit_comment"));
+        Helper.forwardRequest(request, response, ViewPath.edit_comment);
     }
 }

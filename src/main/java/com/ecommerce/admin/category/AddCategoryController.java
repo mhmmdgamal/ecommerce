@@ -2,10 +2,9 @@ package com.ecommerce.admin.category;
 
 import com.ecommerce.general.category.Category;
 import com.ecommerce.general.category.CategoryDaoImpl;
-import com.ecommerce.general.enumiration.ViewParent;
-import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.helper.Helper;
 import com.ecommerce.general.helper.PathsHelper;
+import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -23,7 +22,7 @@ public class AddCategoryController extends HttpServlet {
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        
+
     }
 
     @Override
@@ -39,7 +38,7 @@ public class AddCategoryController extends HttpServlet {
         request.setAttribute("supCategories", supCategories);
 
         // forword request to add page
-        Helper.forwardRequest(request, response, PathsHelper.getAdminCategory("add_category"));
+        Helper.forwardRequest(request, response, ViewPath.add_category_admin);
 
     }
 
@@ -82,7 +81,7 @@ public class AddCategoryController extends HttpServlet {
         }
 
         // forword request to the add page
-        Helper.forwardRequest(request, response, PathsHelper.getAdminCategory("add_category"));
+        Helper.forwardRequest(request, response, ViewPath.add_category_admin);
 
     }
 

@@ -32,12 +32,5 @@ public class DeleteCommentController extends HttpServlet {
             // redirect to the previous page with error message
             Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
         }
-    
     }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    }
-
 }

@@ -30,7 +30,6 @@ public class DeleteUserController extends HttpServlet {
         if (userDeleted) {
             // redirect to the previous page with deleted message
             Helper.redriectToPrevPage(request, response, "user deleted", false);
-            //<error> not found Helper.forwardRequest(request, response, PathsHelper.getAdminCategory("add_category")  "manage_user.jsp");
 
         } else {
             // redirect to the previous page with error message

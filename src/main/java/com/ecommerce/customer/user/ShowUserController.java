@@ -1,13 +1,11 @@
 package com.ecommerce.customer.user;
 
 import com.ecommerce.general.comment.Comment;
-import com.ecommerce.general.enumiration.ViewParent;
-import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.item.Item;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.Helper;
-import com.ecommerce.general.helper.PathsHelper;
+import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -21,13 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 public class ShowUserController extends HttpServlet {
 
     ServletContext servletContext = null;
-    
 
     @Override
     public void init() throws ServletException {
         super.init(); //To change body of generated methods, choose Tools | Templates.
         servletContext = getServletContext();
-        
     }
 
     @Override
@@ -60,6 +56,6 @@ public class ShowUserController extends HttpServlet {
         request.setAttribute("userComments", userComments);
 
         // forward to profile page
-        Helper.forwardRequest(request, response, PathsHelper.getCustomerUser("show_user"));
+        Helper.forwardRequest(request, response, ViewPath.show_user);
     }
 }

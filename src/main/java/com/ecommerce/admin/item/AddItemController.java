@@ -4,12 +4,11 @@ import com.ecommerce.general.category.Category;
 import com.ecommerce.general.item.Item;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.category.CategoryDaoImpl;
-import com.ecommerce.general.enumiration.ViewParent;
-import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.Helper;
 import com.ecommerce.general.helper.PathsHelper;
+import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +22,12 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "AddItemController", urlPatterns = {"/admin/add-item"})
 public class AddItemController extends HttpServlet {
 
-    
     ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        
+
     }
 
     // <editor-fold >
@@ -39,7 +37,7 @@ public class AddItemController extends HttpServlet {
 
         // set page title
         Helper.setTitle(request, "Add Item");
-        
+
         // get all users with out pendings users
         List<User> users = new UserDaoImpl(servletContext).getAllUsers(false);
         // get all categories with assending order
@@ -51,7 +49,7 @@ public class AddItemController extends HttpServlet {
         request.setAttribute("categories", categories);
 
         // forword request to add page
-        Helper.forwardRequest(request, response, PathsHelper.getAdminItem("add_item"));
+        Helper.forwardRequest(request, response, ViewPath.add_item_admin);
 
     }
 
@@ -82,7 +80,7 @@ public class AddItemController extends HttpServlet {
         // check if no errors
         if (formErrors.size() > 0) {
             // forword to add page
-            Helper.forwardRequest(request, response, PathsHelper.getAdminItem("add_item"));
+            Helper.forwardRequest(request, response, ViewPath.add_item_admin);
         } else {
             // make new user and set info to it
             User user = User.builder()
@@ -117,7 +115,7 @@ public class AddItemController extends HttpServlet {
                 request.setAttribute("success", "item added");
             }
             // forword to add page
-            Helper.forwardRequest(request, response, PathsHelper.getAdminItem("add_item"));
+            Helper.forwardRequest(request, response, ViewPath.add_item_admin);
         }
     }// </editor-fold>
 

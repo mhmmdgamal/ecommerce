@@ -1,12 +1,11 @@
+// <editor-fold >
 package com.ecommerce.customer.user;
 
-import com.ecommerce.general.enumiration.ViewParent;
-import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.CookieHelper;
 import com.ecommerce.general.helper.Helper;
-import com.ecommerce.general.helper.PathsHelper;
+import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +20,14 @@ import javax.servlet.http.HttpServletResponse;
 public class EditProfileController extends HttpServlet {
 
     ServletContext servletContext = null;
-    
 
     @Override
     public void init() throws ServletException {
         super.init(); //To change body of generated methods, choose Tools | Templates.
         servletContext = getServletContext();
-        
-    }
-
+    }// </editor-fold >
     // <editor-fold >
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -51,7 +48,7 @@ public class EditProfileController extends HttpServlet {
             request.setAttribute("user", user);
 
             // forward to edit profile page
-            Helper.forwardRequest(request, response, PathsHelper.getCustomerUser("edit_profile"));
+            Helper.forwardRequest(request, response, ViewPath.edit_profile);
         } else {
             Helper.redriectToPrevPage(request, response, "This user is not found", true);
         }
@@ -62,8 +59,7 @@ public class EditProfileController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-//        <error> not able to cast string to long
-//        Long userId = Long.parseLong(request.getParameter("userId"));
+        //get FORM Patameter
         String name = request.getParameter("name");
         String pass = request.getParameter("pass");
         String email = request.getParameter("email");
@@ -77,7 +73,7 @@ public class EditProfileController extends HttpServlet {
 
             // forword to login page
             Helper.setTitle(request, "Edit Profile");
-            Helper.forwardRequest(request, response, PathsHelper.getCustomerUser("edit_profile"));
+            Helper.forwardRequest(request, response, ViewPath.edit_profile);
 
         } else {//if there is no errors
 
@@ -111,10 +107,10 @@ public class EditProfileController extends HttpServlet {
             request.setAttribute("user", user);
 
             // forword to add page
-            Helper.forwardRequest(request, response, PathsHelper.getCustomerUser("edit_profile"));
+            Helper.forwardRequest(request, response, ViewPath.edit_profile);
 
         }
-    }
+    }// </editor-fold>
 
     public List<String> vildateFormParams(String name, String email,
             String fullName) {
@@ -145,10 +141,5 @@ public class EditProfileController extends HttpServlet {
         }
         return userId;
     }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

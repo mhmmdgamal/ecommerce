@@ -33,6 +33,4 @@ public interface ControllerAdminPath {
 
     final String AdminEditComment = rootPath + "commedit-comment";
     
-    //get Pattern
-    public String getAdminPattern(String path);
 }

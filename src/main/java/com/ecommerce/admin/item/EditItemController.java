@@ -5,12 +5,10 @@ import com.ecommerce.general.comment.Comment;
 import com.ecommerce.general.item.Item;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.category.CategoryDaoImpl;
-import com.ecommerce.general.enumiration.ViewParent;
-import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.Helper;
-import com.ecommerce.general.helper.PathsHelper;
+import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +68,7 @@ public class EditItemController extends HttpServlet {
             request.setAttribute("item", itemFounded);
 
             // forword request to edit page
-            Helper.forwardRequest(request, response, PathsHelper.getAdminItem("edit_item"));
+            Helper.forwardRequest(request, response, ViewPath.edit_item_admin);
         } else {
             // redirect to the previous page with error message
             Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
@@ -113,7 +111,7 @@ public class EditItemController extends HttpServlet {
         request.setAttribute("errors", formErrors);
 
         if (formErrors.size() > 0) {
-            Helper.forwardRequest(request, response, PathsHelper.getAdminItem("edit_item"));
+            Helper.forwardRequest(request, response, ViewPath.edit_item_admin);
         } else {
             // make new user and set info to it
             User user = User.builder()
@@ -153,7 +151,7 @@ public class EditItemController extends HttpServlet {
             request.setAttribute("item", item);
 
             // forword to edit page
-            Helper.forwardRequest(request, response, PathsHelper.getAdminItem("edit_item"));
+            Helper.forwardRequest(request, response, ViewPath.edit_item_admin);
         }
 
     }// </editor-fold>

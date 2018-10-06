@@ -4,12 +4,10 @@ import com.ecommerce.general.comment.Comment;
 import com.ecommerce.general.item.Item;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.comment.CommentDaoImpl;
-import com.ecommerce.general.enumiration.ViewParent;
-import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.helper.CookieHelper;
 import com.ecommerce.general.helper.Helper;
-import com.ecommerce.general.helper.PathsHelper;
+import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,8 +53,7 @@ public class AddCommentController extends HttpServlet {
             request.setAttribute("comment", commentFounded);
 
             // forword request to edit page
-//            Helper.forwardRequest(request, response, customerJspPath + "comment/edit_comment.jsp");
-            Helper.forwardRequest(request, response, PathsHelper.getCustomerItem("show_item"));
+            Helper.forwardRequest(request, response, ViewPath.show_item);
 
         } else {
             // redirect to the previous page with error message
@@ -105,7 +102,7 @@ public class AddCommentController extends HttpServlet {
             formErrors.add("You Must Add Comment");
 
             // forward to show items page
-            Helper.forwardRequest(request, response, PathsHelper.getCustomerItem("show_item"));
+            Helper.forwardRequest(request, response, ViewPath.show_item);
 
         } else {// if no errors in textfield Comment
             //get user id
@@ -138,7 +135,7 @@ public class AddCommentController extends HttpServlet {
             }
 
             // forword request to manage page
-            Helper.forwardRequest(request, response, PathsHelper.getCustomerItem("show_item"));
+            Helper.forwardRequest(request, response, ViewPath.show_item);
         }
     }
 
@@ -155,5 +152,4 @@ public class AddCommentController extends HttpServlet {
         }
         return userId;
     }
-
 }

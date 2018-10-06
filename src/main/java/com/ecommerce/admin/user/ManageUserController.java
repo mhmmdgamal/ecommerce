@@ -1,12 +1,10 @@
 //<editor-fold>
 package com.ecommerce.admin.user;
 
-import com.ecommerce.general.enumiration.ViewParent;
-import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.Helper;
-import com.ecommerce.general.helper.PathsHelper;
+import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -20,15 +18,6 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet("/admin/manage-users")
 public class ManageUserController extends HttpServlet {
 
-    
-    ServletContext servletContext = null;
-
-    @Override
-    public void init() throws ServletException {
-        servletContext = getServletContext();
-        
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -41,16 +30,16 @@ public class ManageUserController extends HttpServlet {
         // check if the page param value if exists and equal Pending
         if (request.getParameter("page") != null && request.getParameter("page").equals("Pending")) {
             // get pendings users
-            users = new UserDaoImpl(servletContext).getAllUsers(true);
+            users = new UserDaoImpl(getServletContext()).getAllUsers(true);
         } else {
             // get users
-            users = new UserDaoImpl(servletContext).getAllUsers(false);
+            users = new UserDaoImpl(getServletContext()).getAllUsers(false);
         }
         // set users to the request
         request.setAttribute("users", users);
 
         // forword to manage page
-        Helper.forwardRequest(request, response, PathsHelper.getAdminUser("manage_users"));
+        Helper.forwardRequest(request, response, ViewPath.manage_user_admin);
     }
 
 }

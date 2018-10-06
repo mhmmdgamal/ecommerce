@@ -2,10 +2,9 @@ package com.ecommerce.admin.comment;
 
 import com.ecommerce.general.comment.Comment;
 import com.ecommerce.general.comment.CommentDaoImpl;
-import com.ecommerce.general.enumiration.ViewParent;
-import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.helper.Helper;
 import com.ecommerce.general.helper.PathsHelper;
+import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -17,13 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "EditCommentController", urlPatterns = {"/admin/edit-comment"})
 public class EditCommentController extends HttpServlet {
 
-    
     ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        
+
     }
 
     // <editor-fold >
@@ -47,7 +45,7 @@ public class EditCommentController extends HttpServlet {
             request.setAttribute("comment", commentFounded);
 
             // forword request to edit page
-            Helper.forwardRequest(request, response, PathsHelper.getAdminComment("edit_comment"));
+            Helper.forwardRequest(request, response, ViewPath.edit_comment_admin);
         } else {
             // redirect to the previous page with error message
             Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
@@ -88,7 +86,7 @@ public class EditCommentController extends HttpServlet {
         request.setAttribute("comment", comment);
 
         // forword request to the edit page
-        Helper.forwardRequest(request, response, PathsHelper.getAdminComment("edit_comment"));
+        Helper.forwardRequest(request, response, ViewPath.edit_comment_admin);
 
     }// </editor-fold>
 

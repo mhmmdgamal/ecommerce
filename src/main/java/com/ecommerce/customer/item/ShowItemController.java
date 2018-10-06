@@ -3,16 +3,12 @@ package com.ecommerce.customer.item;
 
 import com.ecommerce.general.comment.Comment;
 import com.ecommerce.general.item.Item;
-import com.ecommerce.general.user.User;
 import com.ecommerce.general.comment.CommentDaoImpl;
-import com.ecommerce.general.enumiration.ViewParent;
-import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.helper.CookieHelper;
 import com.ecommerce.general.helper.Helper;
-import com.ecommerce.general.helper.PathsHelper;
+import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -25,13 +21,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ShowItemControllerForCustomer", urlPatterns = {"/show-item"})
 public class ShowItemController extends HttpServlet {
 
-    
     ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        
     }
 
     /**
@@ -78,7 +72,7 @@ public class ShowItemController extends HttpServlet {
             request.setAttribute("itemComments", itemComments);
 
             // forword request to manage page
-            Helper.forwardRequest(request, response, PathsHelper.getCustomerItem("show_item"));
+            Helper.forwardRequest(request, response, ViewPath.show_item);
         } else {
             // redirect to the previous page with error message
             Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
@@ -98,10 +92,4 @@ public class ShowItemController extends HttpServlet {
         }
         return userId;
     }
-
-    @Override
-    public String getServletInfo() {
-        return " this controller show one item for one Category by itemId get from url";
-    }
-
 }

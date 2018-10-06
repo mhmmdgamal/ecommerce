@@ -2,10 +2,8 @@ package com.ecommerce.admin.category;
 
 import com.ecommerce.general.category.Category;
 import com.ecommerce.general.category.CategoryDaoImpl;
-import com.ecommerce.general.enumiration.ViewParent;
-import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.helper.Helper;
-import com.ecommerce.general.helper.PathsHelper;
+import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -44,7 +42,7 @@ public class EditCategoryController extends HttpServlet {
         if (categoryFounded != null) {
             // set the found category to the request
             request.setAttribute("category", categoryFounded);
-            
+
             //get all super categories
             List<Category> supCategories = new CategoryDaoImpl(servletContext).getAllSupCategories("ASC");
 
@@ -52,7 +50,7 @@ public class EditCategoryController extends HttpServlet {
             request.setAttribute("supCategories", supCategories);
 
             // forword request to edit page
-            Helper.forwardRequest(request, response, PathsHelper.getAdminCategory("edit_category"));
+            Helper.forwardRequest(request, response, ViewPath.edit_category_admin);
         } else {
             // redirect to the previous page with error message
             Helper.redriectToPrevPage(request, response, "There`s No Such ID", true);
@@ -105,7 +103,7 @@ public class EditCategoryController extends HttpServlet {
         request.setAttribute("category", category);
 
         // forword request to the edit page
-        Helper.forwardRequest(request, response, PathsHelper.getAdminCategory("edit_category"));
+        Helper.forwardRequest(request, response, ViewPath.edit_category_admin);
 
     }// </editor-fold>
 

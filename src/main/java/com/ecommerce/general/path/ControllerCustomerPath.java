@@ -25,7 +25,4 @@ public interface ControllerCustomerPath {
 
     //get Comment Pages
     final String CustomerEditComment = rootPath + "edit-comment";
-
-    public String getPattern(String path);
-
 }

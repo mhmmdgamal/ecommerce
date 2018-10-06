@@ -1,29 +1,17 @@
 package com.ecommerce.customer.item;
 
-import com.ecommerce.general.enumiration.ViewParent;
-import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.helper.Helper;
-import com.ecommerce.general.helper.PathsHelper;
+import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "DeleteItemControlllerForCustomer", urlPatterns = {"/delete-item"})
+@WebServlet(name = "DeleteItemControlller", urlPatterns = {"/delete-item"})
 public class DeleteItemController extends HttpServlet {
-
-    ServletContext servletContext = null;
-    
-
-    @Override
-    public void init() throws ServletException {
-        servletContext = getServletContext();
-        
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -36,13 +24,13 @@ public class DeleteItemController extends HttpServlet {
         long id = itemId != null && Helper.isNumber(itemId) ? Long.parseLong(itemId) : 0;
 
         // delete item depending on the itemId
-        boolean itemDeleted = new ItemDaoImpl(servletContext).deleteItem(id);
+        boolean itemDeleted = new ItemDaoImpl(getServletContext()).deleteItem(id);
 
         if (itemDeleted) {
             // set success message if User added
             request.setAttribute("success", "Item Has Been Deleted");
             // forword request to manage page
-            Helper.forwardRequest(request, response, PathsHelper.getCustomerUser("show_profile"));
+            Helper.forwardRequest(request, response, ViewPath.show_profile);
 
         } else {
             // redirect to the previous page with error message

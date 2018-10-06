@@ -4,12 +4,10 @@ import com.ecommerce.general.comment.Comment;
 import com.ecommerce.general.item.Item;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.comment.CommentDaoImpl;
-import com.ecommerce.general.enumiration.ViewParent;
-import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.Helper;
-import com.ecommerce.general.helper.PathsHelper;
+import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -53,6 +51,6 @@ public class ManageCommentController extends HttpServlet {
         request.setAttribute("comments", comments);
 
         // forword request to manage page
-        Helper.forwardRequest(request, response, PathsHelper.getAdminComment("manage_comments"));
+        Helper.forwardRequest(request, response, ViewPath.manage_comment_admin);
     }
 }
