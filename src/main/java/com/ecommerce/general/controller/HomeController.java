@@ -1,12 +1,10 @@
 // <editor-fold >
 package com.ecommerce.general.controller;
 
-import com.ecommerce.general.enumiration.ViewParent;
-import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.item.Item;
 import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.helper.Helper;
-import com.ecommerce.general.helper.PathsHelper;
+import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -38,6 +36,6 @@ public class HomeController extends HttpServlet {
         // set items to request
         request.setAttribute("allItems", items);
         // forword request to manage page
-        Helper.forwardRequest(request, response, PathsHelper.getCustomerHome("home"));
+        Helper.forwardRequest(request, response, ViewPath.home);
     }
 }

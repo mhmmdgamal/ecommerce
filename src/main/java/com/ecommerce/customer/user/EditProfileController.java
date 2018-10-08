@@ -4,6 +4,7 @@ package com.ecommerce.customer.user;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.CookieHelper;
+import com.ecommerce.general.helper.HashHelper;
 import com.ecommerce.general.helper.Helper;
 import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
@@ -64,6 +65,7 @@ public class EditProfileController extends HttpServlet {
         String pass = request.getParameter("pass");
         String email = request.getParameter("email");
         String fullName = request.getParameter("fullName");
+        String passwordHashed = HashHelper.stringHash(pass);
 
         List<String> formErrors = vildateFormParams(name, email, fullName);
         // set errors to the request
@@ -84,7 +86,7 @@ public class EditProfileController extends HttpServlet {
             User user = User.builder()
                     .id(userId)
                     .name(name)
-                    .password(pass)
+                    .password(passwordHashed)
                     .email(email)
                     .fullName(fullName)
                     .build();

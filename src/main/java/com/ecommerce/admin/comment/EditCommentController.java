@@ -3,7 +3,6 @@ package com.ecommerce.admin.comment;
 import com.ecommerce.general.comment.Comment;
 import com.ecommerce.general.comment.CommentDaoImpl;
 import com.ecommerce.general.helper.Helper;
-import com.ecommerce.general.helper.PathsHelper;
 import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
 import javax.servlet.ServletContext;

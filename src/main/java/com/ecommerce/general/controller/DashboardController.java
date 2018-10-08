@@ -1,12 +1,10 @@
 package com.ecommerce.general.controller;
 
 import com.ecommerce.general.comment.CommentDaoImpl;
-import com.ecommerce.general.enumiration.ViewParent;
-import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.Helper;
-import com.ecommerce.general.helper.PathsHelper;
+import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -74,7 +72,7 @@ public class DashboardController extends HttpServlet {
         request.setAttribute("latestComments", commentDao.getLatestComments(5));
 
         // forword the requset to the dashboard page
-        Helper.forwardRequest(request, response, PathsHelper.getAdminDashboard("dashboard"));
+        Helper.forwardRequest(request, response, ViewPath.dashboard_admin);
     }
 
     /**

@@ -7,7 +7,6 @@ import com.ecommerce.general.category.CategoryDaoImpl;
 import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.Helper;
-import com.ecommerce.general.helper.PathsHelper;
 import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
 import java.util.ArrayList;

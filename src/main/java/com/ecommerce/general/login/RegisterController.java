@@ -1,14 +1,12 @@
 //<editor-fold >
 package com.ecommerce.general.login;
 
-import com.ecommerce.general.enumiration.ViewParent;
-import com.ecommerce.general.enumiration.ViewType;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.CookieHelper;
 import com.ecommerce.general.helper.HashHelper;
 import com.ecommerce.general.helper.Helper;
-import com.ecommerce.general.helper.PathsHelper;
+import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +54,7 @@ public class RegisterController extends HttpServlet {
                 previous = "";
             }
             // forword the requset to the login page 
-            Helper.forwardRequest(request, response, PathsHelper.getPublicLogin("login_register") + previous, "Login");
+            Helper.forwardRequest(request, response, ViewPath.login_register + previous, "Login");
         }
     }
 
@@ -86,9 +84,9 @@ public class RegisterController extends HttpServlet {
             //if user come to login from other page 
             if (previous != null) {
                 //set parameter <previous> in url again 
-                Helper.forwardRequest(request, response, PathsHelper.getPublicLogin("login_register") + "?previous=" + previous);
+                Helper.forwardRequest(request, response, ViewPath.login_register + "?previous=" + previous);
             } else {
-                Helper.forwardRequest(request, response, PathsHelper.getPublicLogin("login_register"));
+                Helper.forwardRequest(request, response, ViewPath.login_register);
             }
             ///////////////End if there's errors ///////////////////////////////
             ///////////////Start if there's NO errors //////////////////////////
@@ -139,9 +137,9 @@ public class RegisterController extends HttpServlet {
                 //forword to login again 
                 Helper.setTitle(request, "Login");
                 if (previous != null) {
-                    Helper.forwardRequest(request, response, PathsHelper.getPublicLogin("login_register") + "?previous=" + previous);
+                    Helper.forwardRequest(request, response, ViewPath.login_register + "?previous=" + previous);
                 } else {
-                    Helper.forwardRequest(request, response, PathsHelper.getPublicLogin("login_register"));
+                    Helper.forwardRequest(request, response, ViewPath.login_register);
                 }
             }
         }
