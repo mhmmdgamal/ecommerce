@@ -1,4 +1,4 @@
-<%@page import="com.ecommerce.general.path.ResourcePath" %>z
+<%@page import="com.ecommerce.general.path.ResourcePath" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

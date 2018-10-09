@@ -1,3 +1,4 @@
+<%@page import="com.ecommerce.general.path.ControllerPath"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="com.ecommerce.general.path.ViewPath" %>
 
@@ -8,7 +9,7 @@
 
 <div class="container">
 
-    <form action="${initParam['adminPath']}add-item" class="form-horizontal" method="POST">
+    <form action="<%=ControllerPath.ADD_ITEM_ADMIN %>" class="form-horizontal" method="POST">
         <!-- action will go to the ItemController --> 
         <!-- Start Name Field -->
         <div class="form-group form-group-lg">

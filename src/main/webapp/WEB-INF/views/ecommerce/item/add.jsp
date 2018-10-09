@@ -1,6 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="com.ecommerce.general.path.ViewPath" %>
 <%@page import="com.ecommerce.general.path.ResourcePath" %>
+<%@page import="com.ecommerce.general.path.ControllerPath"%>
 
 <c:import url='<%=ViewPath.header %>' />
 
@@ -12,7 +13,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-8">
-                        <form class="form-horizontal main-form" action="${initParam['customerPath']}new-item" method="POST">
+                        <form class="form-horizontal main-form" action="<%=ControllerPath.ADD_ITEM %>" method="POST">
                             <!-- Start Name Field -->
                             <div class="form-group form-group-lg">
                                 <label class="col-sm-3 control-label">Name</label>

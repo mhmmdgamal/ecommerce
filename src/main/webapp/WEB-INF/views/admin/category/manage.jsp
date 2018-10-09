@@ -1,5 +1,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page import="com.ecommerce.general.path.ViewPath" %>
+<%@page import="com.ecommerce.general.path.ControllerPath" %>
 
 <c:import url='<%=ViewPath.header_admin %>' />
 <c:import url='<%=ViewPath.navebar_admin %>' />
@@ -27,8 +28,8 @@
                     <c:forEach items="${requestScope['supCategories']}" var="supCategory">
                         <div class='cat'>
                             <div class='hidden-buttons'>
-                                <a href='${initParam['adminPath']}edit-category?categoryid=${supCategory['id']}' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Edit</a>
-                                <a href='${initParam['adminPath']}delete-category?categoryid=${supCategory['id']}' class='confirm btn btn-xs btn-danger'><i class='fa fa-close'></i> Delete</a>
+                                <a href='<%=ControllerPath.EDIT_CATEGORY_ADMIN %>?categoryid=${supCategory['id']}' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Edit</a>
+                                <a href='<%=ControllerPath.EDIT_CATEGORY_ADMIN %>?categoryid=${supCategory['id']}' class='confirm btn btn-xs btn-danger'><i class='fa fa-close'></i> Delete</a>
                             </div>
                             <h3>${supCategory['name']}</h3>
                             <div class='full-view'>
@@ -55,9 +56,9 @@
                                         <h4 class='child-head'>Child Categories</h4>
                                         <ul class='list-unstyled child-cats'>
                                             <li class='child-link'>
-                                                <a href='${initParam['adminPath']}edit-category?categoryid=${subCategory['id']}'>${subCategory.name}</a>
-                                                <a href='${initParam['adminPath']}edit-category?categoryid=${subCategory['id']}' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Edit</a>
-                                                <a href='${initParam['adminPath']}delete-category?categoryid=${subCategory['id']}' class='confirm btn btn-xs btn-danger'><i class='fa fa-close'></i> Delete</a>
+                                                <a href='<%=ControllerPath.EDIT_CATEGORY_ADMIN %>?categoryid=${subCategory['id']}'>${subCategory.name}</a>
+                                                <a href='<%=ControllerPath.EDIT_CATEGORY_ADMIN %>?categoryid=${subCategory['id']}' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Edit</a>
+                                                <a href='<%=ControllerPath.DELETE_CATEGORY_ADMIN %>?categoryid=${subCategory['id']}' class='confirm btn btn-xs btn-danger'><i class='fa fa-close'></i> Delete</a>
                                             </li><br>
                                         </c:if>
                                     </c:forEach>
@@ -71,14 +72,14 @@
             </div>
         </div>
 
-        <a class="add-category btn btn-primary" href="${initParam['adminPath']}add-category"><i class="fa fa-plus"></i> Add New Category</a>
+        <a class="add-category btn btn-primary" href="<%=ControllerPath.ADD_CATEGORY_ADMIN %>"><i class="fa fa-plus"></i> Add New Category</a>
     </div>
 </c:when>
 <c:otherwise>
 
     <div class="container">
         <div class="nice-message">There's No Categories To Show</div>
-        <a href="${initParam['adminPath']}categories?action=Add" class="btn btn-primary">
+        <a href="<%=ControllerPath.MANAGE_CATEGORY_ADMIN %>categories?action=Add" class="btn btn-primary">
             <i class="fa fa-plus"></i> New Category
         </a>
     </div>

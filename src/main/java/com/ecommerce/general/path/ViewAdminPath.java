@@ -3,8 +3,7 @@ package com.ecommerce.general.path;
 interface ViewAdminPath {
 
     final String rootViews = "/WEB-INF/views/";
-    //admin Controller
-    final String adminPath = "/ecommerce/admin/";
+
     final String adminJspPath = rootViews + "admin/";
 
     //get dashborad page

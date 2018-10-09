@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/profile")
+@WebServlet("/show-profile")
 public class ShowProfileController extends HttpServlet {
 
     ServletContext servletContext = null;

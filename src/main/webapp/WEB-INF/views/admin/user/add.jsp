@@ -1,5 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="com.ecommerce.general.path.ViewPath" %>
+<%@page import="com.ecommerce.general.path.ControllerPath" %>
 
 <c:import url='<%=ViewPath.header_admin %>' />
 <c:import url='<%=ViewPath.navebar_admin %>' />
@@ -8,7 +9,7 @@
 
 <div class="container">
 
-    <form action="${initParam['adminPath']}add-user" class="form-horizontal" method="POST">
+    <form action="<%=ControllerPath.ADD_USER_ADMIN %>" class="form-horizontal" method="POST">
         <!-- Start Username Field -->        
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Username</label>

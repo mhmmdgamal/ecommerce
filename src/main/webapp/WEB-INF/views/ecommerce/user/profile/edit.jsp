@@ -1,5 +1,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="com.ecommerce.general.path.ViewPath" %>
+<%@page import="com.ecommerce.general.path.ControllerPath"%>
 
 <c:import url='<%=ViewPath.header %>' />
 
@@ -9,7 +10,7 @@
         <div class="panel panel-primary">
             <div class="panel-heading">Edit Information</div>
             <div class="panel-body">
-                <form class="form-horizontal main-form" action="${initParam['customerPath']}edit-profile" method="POST">
+                <form class="form-horizontal main-form" action="<%=ControllerPath.EDIT_PROFILE %>" method="POST">
                     <!-- Start id Field -->
                     <input type="hidden" name="userid" value="${user['id']}" />
                     <!-- End id Field -->

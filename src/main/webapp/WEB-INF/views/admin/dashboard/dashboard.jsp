@@ -1,5 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="com.ecommerce.general.path.ViewPath" %>
+<%@page import="com.ecommerce.general.path.ControllerPath" %>
 
 <c:import url='<%=ViewPath.header_admin %>' />
 <c:import url='<%=ViewPath.navebar_admin %>' />
@@ -15,7 +16,7 @@
                     <div class="info">
                         Total Users
                         <span>
-                            <a href="${initParam['adminPath']}manage-users">${numUsers}</a>
+                            <a href="<%=ControllerPath.MANAGE_USER_ADMIN %>">${numUsers}</a>
                         </span>
                     </div>
                 </div>
@@ -26,7 +27,7 @@
                     <div class="info">
                         Pending Users
                         <span>
-                            <a href="${initParam['adminPath']}manage-user?page=Pending">
+                            <a href="<%=ControllerPath.MANAGE_USER_ADMIN %>?page=Pending">
                                 ${numPendingUsers}
                             </a>
                         </span>
@@ -39,7 +40,7 @@
                     <div class="info">
                         Total Items
                         <span>
-                            <a href="${initParam['adminPath']}manage-items">${numItems}</a>
+                            <a href="<%=ControllerPath.MANAGE_ITEM_ADMIN %>">${numItems}</a>
                         </span>
                     </div>
                 </div>
@@ -50,7 +51,7 @@
                     <div class="info">
                         Total Comments
                         <span>
-                            <a href="${initParam['adminPath']}manage-comments">${numComments}</a>
+                            <a href="<%=ControllerPath.MANAGE_COMMENT_ADMIN %>">${numComments}</a>
                         </span>
                     </div>
                 </div>
@@ -79,19 +80,19 @@
                                         <li>
                                             ${user['name']}
 
-                                            <a href='${initParam['adminPath']}edit-user?userid=${user['id']}'>
+                                            <a href='<%=ControllerPath.EDIT_USER_ADMIN %>?userid=${user['id']}'>
                                                 <span class='btn btn-success pull-right'>
                                                     <i class="fa fa-edit"></i> Edit
                                                 </span>
                                             </a>
 
-                                            <a href='${initParam['adminPath']}delete-user?userid=${user['id']}'>
+                                            <a href='<%=ControllerPath.DELETE_USER_ADMIN %>?userid=${user['id']}'>
                                                 <span class='btn btn-danger pull-right confirm'>
                                                     <i class="fa fa-edit"></i> Delete
                                                 </span>
                                             </a>
                                             <c:if test="${user['regStatus'] eq 0}">
-                                                <a href='${initParam['adminPath']}active-user?userid=${user['id']}'>
+                                                <a href='<%=ControllerPath.ACTIVE_USER_ADMIN %>?userid=${user['id']}'>
                                                     <span class='btn btn-info pull-right'>
                                                         <i class='fa fa-check'></i> Activate
                                                     </span>
@@ -125,19 +126,19 @@
                                         <li>
                                             ${item['name']}
 
-                                            <a href='${initParam['adminPath']}edit-item?itemid=${item['id']}'>
+                                            <a href='<%=ControllerPath.EDIT_ITEM_ADMIN %>?itemid=${item['id']}'>
                                                 <span class='btn btn-success pull-right'>
                                                     <i class="fa fa-edit"></i> Edit
                                                 </span>
                                             </a>
 
-                                            <a href='${initParam['adminPath']}delete-item?itemid=${item['id']}'>
+                                            <a href='<%=ControllerPath.DELETE_ITEM_ADMIN %>?itemid=${item['id']}'>
                                                 <span class='btn btn-danger pull-right confirm'>
                                                     <i class="fa fa-edit"></i> Delete
                                                 </span>
                                             </a>
                                             <c:if test="${item['approve'] eq 0}">
-                                                <a href='${initParam['adminPath']}approve-item?itemid=${item['id']}'>
+                                                <a href='<%=ControllerPath.DELETE_ITEM_ADMIN %>?itemid=${item['id']}'>
                                                     <span class='btn btn-info pull-right'>
                                                         <i class='fa fa-check'></i> Activate
                                                     </span>
@@ -172,7 +173,7 @@
                                 <c:forEach items="${latestComments}" var="comment">
                                     <div class="comment-box">
                                         <span class="member-n">
-                                            <a href="${initParam['adminPath']}edit-user?userid=${comment['user']['id']}">
+                                            <a href="<%=ControllerPath.EDIT_USER_ADMIN %>?userid=${comment['user']['id']}">
                                                 ${comment['user']['name']}
                                             </a>
                                         </span>

@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 // </editor-fold>
 
-@WebServlet(name = "AddItemControllerForCustomer", urlPatterns = {"/new-item"})
+@WebServlet(name = "AddItemControllerForCustomer", urlPatterns = {"/add-item"})
 
 public class AddNewItemController extends HttpServlet {
 

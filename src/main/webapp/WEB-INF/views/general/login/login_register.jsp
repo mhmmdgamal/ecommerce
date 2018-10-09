@@ -9,8 +9,8 @@
         <span data-class="signup">Signup</span>
     </h1>
 
-    <c:import url="login_form.jsp" />
-    <c:import url="register_form.jsp" />
+    <c:import url="<%=ViewPath.login_Form %>" />
+    <c:import url="<%=ViewPath.register_Form %>" />
 
 </div>
 <c:import url='<%=ViewPath.footer%>' />

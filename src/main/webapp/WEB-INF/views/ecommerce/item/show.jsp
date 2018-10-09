@@ -1,3 +1,4 @@
+<%@page import="com.ecommerce.general.path.ControllerPath"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="com.ecommerce.general.path.ViewPath" %>
 <%@page import="com.ecommerce.general.path.ResourcePath" %>
@@ -32,19 +33,19 @@
                         </li>
                         <li>
                             <i class="fa fa-tags fa-fw"></i>
-                            <span>Category</span> : <a href="${initParam['customerPath']}categories?pageid=${item['category']['id']}">${item['category']['name']}</a>
+                            <span>Category</span> : <a href="<%=ControllerPath.SHOW_CATEGORY %>?pageid=${item['category']['id']}">${item['category']['name']}</a>
                         </li>
                         <c:choose>
                             <c:when test="${(item['user']['id'] eq sessionScope['userId']) || (item['user']['id'] eq cookie['userId']['value'])}">
                                 <li>
                                     <i class="fa fa-user fa-fw"></i>
-                                    <span>Added By</span> : <a href="${initParam['customerPath']}profile?userid=${item['user']['id']}">${item['user']['name']}</a>
+                                    <span>Added By</span> : <a href="<%=ControllerPath.SHOW_PROFILE %>?userid=${item['user']['id']}">${item['user']['name']}</a>
                                 </li>
                             </c:when>
                             <c:otherwise>
                                 <li>
                                     <i class="fa fa-user fa-fw"></i>
-                                    <span>Added By</span> : <a href="${initParam['customerPath']}users?userid=${item['user']['id']}">${item['user']['name']}</a>
+                                    <span>Added By</span> : <a href="<%=ControllerPath.SHOW_USER %>?userid=${item['user']['id']}">${item['user']['name']}</a>
                                 </li>
                             </c:otherwise>
                         </c:choose>
@@ -53,14 +54,14 @@
                             <span>Tags</span> : 
                             <c:forEach items="${Helper.explode(item['tags'], ',')}" var="tag">
                                 <c:if test="${tag ne null && !tag.isEmpty()}">
-                                    <a href="${initParam['customerPath']}tags?name=${tag.toLowerCase()}">${tag}</a>
+                                    <a href="<%=ControllerPath.SHOW_TAG %>?name=${tag.toLowerCase()}">${tag}</a>
                                 </c:if>
                             </c:forEach>
                         </li>
                     </ul>
                     <c:if test="${(item['user']['id'] eq sessionScope['userId']) || (item.user.id eq cookie['userId']['value'])}">
-                        <a href="${initParam['customerPath']}edit-item?itemid=${item['id']}" class="btn btn-default">Edit Item</a>
-                        <a href="${initParam['customerPath']}delete-item?itemid=${item['id']}" class="btn btn-default">Delete Item</a>
+                        <a href="<%=ControllerPath.EDIT__ITEM %>?itemid=${item['id']}" class="btn btn-default">Edit Item</a>
+                        <a href="<%=ControllerPath.DELETE__ITEM %>?itemid=${item['id']}" class="btn btn-default">Delete Item</a>
                     </c:if>
                 </div>
             </div>
@@ -72,7 +73,7 @@
                         <div class="col-md-offset-3">
                             <div class="add-comment">
                                 <h3>Add Your Comment</h3>
-                                <form action="${initParam['customerPath']}add-comment?itemid=${item['id']}" method="POST">
+                                <form action="<%=ControllerPath.ADD_COMMENT %>?itemid=${item['id']}" method="POST">
                                     <textarea name="comment" required></textarea>
                                     <input class="btn btn-primary" type="submit" value="Add Comment">
                                 </form>
@@ -82,7 +83,7 @@
                     <!-- End Add Comment -->
                 </c:when>
                 <c:otherwise>
-                    <a href="${initParam['customerPath']}login">Login/Register</a> To Add Comment
+                    <a href="<%=ControllerPath.LOGIN %>">Login/Register</a> To Add Comment
                 </c:otherwise>
             </c:choose>
             <hr class="custom-hr">

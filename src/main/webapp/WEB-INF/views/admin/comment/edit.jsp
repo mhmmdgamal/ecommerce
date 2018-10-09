@@ -1,5 +1,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page import="com.ecommerce.general.path.ViewPath" %>
+<%@page import="com.ecommerce.general.path.ControllerPath" %>
 
 <c:import url='<%=ViewPath.header_admin %>' />
 <c:import url='<%=ViewPath.navebar_admin %>' />
@@ -8,7 +9,7 @@
 
 <div class="container">
 
-    <form action="${initParam['adminPath']}edit-comment" class="form-horizontal" method="POST">
+    <form action="<%=ControllerPath.EDIT_COMMENT_ADMIN %>" class="form-horizontal" method="POST">
 
         <input type="hidden" name="commentid" value="${comment['id']}" />
         <!-- Start Comment Field -->

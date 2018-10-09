@@ -1,3 +1,4 @@
+<%@page import="com.ecommerce.general.path.ControllerPath"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="com.ecommerce.general.path.ResourcePath" %>
 
@@ -16,14 +17,14 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a href="${initParam['customerPath']}profile">My Profile</a></li>
-                            <li><a href="${initParam['customerPath']}new-item">New Item</a></li>
-                            <li><a href="${initParam['customerPath']}logout">Logout</a></li>
+                            <li><a href="<%=ControllerPath.SHOW_PROFILE %>">My Profile</a></li>
+                            <li><a href="<%=ControllerPath.ADD_ITEM %>">New Item</a></li>
+                            <li><a href="<%=ControllerPath.LOGOUT %>">Logout</a></li>
                         </ul>
                     </div>
                 </c:when>
                 <c:otherwise>
-                    <a href="${initParam['customerPath']}login">
+                    <a href="<%=ControllerPath.LOGIN %>">
                         <span class="pull-right">Login/Signup</span>
                     </a>
                 </c:otherwise>
@@ -43,13 +44,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${initParam['customerPath']}">Homepage</a>
+            <a class="navbar-brand" href="<%=ControllerPath.HOME %>">Homepage</a>
         </div>
         <div class="collapse navbar-collapse" id="app-nav">
             <ul class="nav navbar-nav navbar-right">
                 <c:forEach items="${navCategories}" var="category">
                     <li>
-                        <a href="${initParam['customerPath']}categories?pageid=${category['id']}">${category['name']}</a>
+                        <a href="<%=ControllerPath.SHOW_CATEGORY %>?pageid=${category['id']}">${category['name']}</a>
                     </li>
                 </c:forEach>
             </ul>

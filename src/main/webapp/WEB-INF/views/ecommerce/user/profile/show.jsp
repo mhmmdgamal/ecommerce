@@ -1,3 +1,4 @@
+<%@page import="com.ecommerce.general.path.ControllerPath"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="com.ecommerce.general.path.ViewPath" %>
 <%@page import="com.ecommerce.general.path.ResourcePath" %>
@@ -29,7 +30,7 @@
                     </li>
                 </ul>
                 <!--<improve>Button not work-->
-                <a href="${initParam['customerPath']}edit-profile" class="btn btn-default">Edit Information</a>
+                <a href="<%=ControllerPath.EDIT_PROFILE %>" class="btn btn-default">Edit Information</a>
             </div>
         </div>
     </div>
@@ -49,7 +50,7 @@
                                         <span class="price-tag">${item['price']}</span>
                                         <img class="img-responsive" src="<%=ResourcePath.img %>img.png" alt="No Image" />
                                         <div class="caption">
-                                            <h3><a href="${initParam['customerPath']}show-item?itemid=${item['id']}">${item['name']}</a></h3>
+                                            <h3><a href="<%=ControllerPath.SHOW__ITEM %>?itemid=${item['id']}">${item['name']}</a></h3>
                                             <p>${item['description']}</p>
                                             <div class="date">${item['addDate']}</div>
                                         </div>
@@ -59,7 +60,7 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="well">Sorry There's No Items To Show, Create <a href="${initParam['customerPath']}new-item">New Item</a></div>
+                        <div class="well">Sorry There's No Items To Show, Create <a href="<%=ControllerPath.ADD_ITEM %>">New Item</a></div>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -85,15 +86,15 @@
                                         <tr>
                                             <td>${comment['comment']}</td>
                                             <td>
-                                                <a href='${initParam['customerPath']}show-item?itemid=${comment['item']['id']}'>
+                                                <a href='<%=ControllerPath.SHOW__ITEM %>?itemid=${comment['item']['id']}'>
                                                     <i>${comment['item']['name']}</i></a>
                                             </td>
                                             <td>${comment['addDate']}</td>
                                             <td>
-                                                <a href='${initParam['customerPath']}edit-comment?commentid=${comment['id']}' 
+                                                <a href='<%=ControllerPath.EDIT_COMMENT %>?commentid=${comment['id']}' 
                                                    class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
 
-                                                <a href='${initParam['customerPath']}delete-comment?commentid=${comment['id']}' 
+                                                <a href='<%=ControllerPath.DELETE_COMMENT %>?commentid=${comment['id']}' 
                                                    class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>
                                             </td>
                                         </tr>

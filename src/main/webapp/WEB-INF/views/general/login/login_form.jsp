@@ -1,5 +1,6 @@
+<%@page import="com.ecommerce.general.path.ControllerPath"%>
 <!-- Start Login Form -->
-<form class="login" action="${initParam['customerPath']}login" method="POST">
+<form class="login" action="<%=ControllerPath.LOGIN %>" method="POST">
     <!-- action will go to the Login Controller -->
     <input type="text" hidden name="previous" value="${param['previous']}">
 

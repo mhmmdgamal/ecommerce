@@ -1,8 +1,9 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page import="com.ecommerce.general.path.ViewPath" %>
+<%@page import="com.ecommerce.general.path.ControllerPath" %>
 
-<c:import url='<%=ViewPath.header_admin %>' />
-<c:import url='<%=ViewPath.navebar_admin %>' />
+<c:import url='<%=ViewPath.header_admin%>' />
+<c:import url='<%=ViewPath.navebar_admin%>' />
 
 <h1 class="text-center">Manage Users </h1>
 
@@ -10,7 +11,7 @@
     <c:when test="${requestScope['users'].size() gt 0}">
 
         <div class="container">
-            <a href="${initParam['adminPath']}add-user" class="btn btn-primary">
+            <a href="<%=ControllerPath.EDIT_ITEM_ADMIN%>" class="btn btn-primary">
                 <i class="fa fa-plus"></i> Add New User 
             </a>
             <div class="table-responsive">
@@ -39,18 +40,18 @@
                             <td>${user['fullName']}</td>
                             <td>${user['date']}</td>
                             <td>
-                                <a href='${initParam['adminPath']}edit-user?userid=${user['id']}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
-                                <a href='${initParam['adminPath']}delete-user?userid=${user['id']}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete </a>
+                                <a href='<%=ControllerPath.EDIT_USER_ADMIN%>?userid=${user['id']}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
+                                <a href='<%=ControllerPath.DELETE_USER_ADMIN%>?userid=${user['id']}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete </a>
 
                                 <c:if test="${user['regStatus'] eq 0}">
-                                    <a href='${initParam['adminPath']}active-user?userid=${user['id']}' class='btn btn-info activate'><i class='fa fa-check'></i> Activate</a>
+                                    <a href='<%=ControllerPath.ACTIVE_USER_ADMIN%>?userid=${user['id']}' class='btn btn-info activate'><i class='fa fa-check'></i> Activate</a>
                                 </c:if>
                             </td>
                         </tr>
                     </c:forEach>
                 </table>
             </div>
-            <a href="${initParam['adminPath']}add-user" class="btn btn-primary">
+            <a href="<%=ControllerPath.ADD_USER_ADMIN%>" class="btn btn-primary">
                 <i class="fa fa-plus"></i> Add New User 
             </a>
         </div>
@@ -59,10 +60,10 @@
     <c:otherwise>
         <div class="container">
             <div class="nice-message">There's No Users To Show</div>
-            <a href="${initParam['adminPath']}add-user" class="btn btn-primary">
+            <a href="<%=ControllerPath.ADD_USER_ADMIN%>" class="btn btn-primary">
                 <i class="fa fa-plus"></i> Add New User 
             </a>
         </div>
     </c:otherwise>
 </c:choose>
-<c:import url='<%=ViewPath.footer_admin %>' />
+<c:import url='<%=ViewPath.footer_admin%>' />

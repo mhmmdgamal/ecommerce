@@ -1,6 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="com.ecommerce.general.path.ViewPath" %>
 <%@page import="com.ecommerce.general.path.ResourcePath" %>
+<%@page import="com.ecommerce.general.path.ControllerPath"%>
 
 <c:import url='<%=ViewPath.header%>' />
 
@@ -49,7 +50,7 @@
                                                 <span class="price-tag">${item['price']}</span>
                                                 <img class="img-responsive" src="<%=ResourcePath.img%>img.png" alt="No Image" />
                                                 <div class="caption">
-                                                    <h3><a href="${initParam['customerPath']}show-item?itemid=${item['id']}">${item['name']}</a></h3>
+                                                    <h3><a href="<%=ControllerPath.SHOW__ITEM %>?itemid=${item['id']}">${item['name']}</a></h3>
                                                     <p>${item['description']}</p>
                                                     <div class="date">${item.addDate}</div>
                                                 </div>

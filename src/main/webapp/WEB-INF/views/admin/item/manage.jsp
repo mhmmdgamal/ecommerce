@@ -1,5 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page import="com.ecommerce.general.path.ViewPath" %>
+<%@page import="com.ecommerce.general.path.ControllerPath" %>
+
 
 <c:import url='<%=ViewPath.header_admin %>' />
 <c:import url='<%=ViewPath.navebar_admin %>' />
@@ -33,17 +35,17 @@
                             <td>${item['user']['name']}</td>
                             <td>${item['category']['name']}</td>
                             <td>
-                                <a href='${initParam['adminPath']}edit-item?itemid=${item['id']}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
-                                <a href='${initParam['adminPath']}delete-item?itemid=${item['id']}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>
+                                <a href='<%=ControllerPath.EDIT_ITEM_ADMIN%>?itemid=${item['id']}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
+                                <a href='<%=ControllerPath.DELETE_ITEM_ADMIN%>?itemid=${item['id']}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>
                                 <c:if test="${item['approve'] eq 0}">
-                                    <a href='${initParam['adminPath']}approve-item?itemid=${item['id']}' class='btn btn-info activate'> <i class='fa fa-check'></i> Approve</a>
+                                    <a href='<%=ControllerPath.DELETE_ITEM_ADMIN%>?itemid=${item['id']}' class='btn btn-info activate'> <i class='fa fa-check'></i> Approve</a>
                                 </c:if>
                             </td>
                         </tr>
                     </c:forEach>
                 </table>
             </div>
-            <a href="${initParam['adminPath']}add-item" class="btn btn-sm btn-primary">
+            <a href="<%=ControllerPath.ADD_ITEM_ADMIN%>" class="btn btn-sm btn-primary">
                 <i class="fa fa-plus"></i> New Item
             </a>
         </div>
@@ -52,7 +54,7 @@
     <c:otherwise>
         <div class="container">
             <div class="nice-message">There's No Items To Show</div>
-            <a href="${initParam['adminPath']}add-item" class="btn btn-sm btn-primary">
+            <a href="<%=ControllerPath.ADD_ITEM_ADMIN%>" class="btn btn-sm btn-primary">
                 <i class="fa fa-plus"></i> New Item
             </a>
         </div>

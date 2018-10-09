@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 // </editor-fold>
 
-@WebServlet(name = "showTagControllerForCustomer", urlPatterns = {"/tags"})
+@WebServlet(name = "showTagControllerForCustomer", urlPatterns = {"/show-tag"})
 public class ShowTagController extends HttpServlet {
 
     @Override
