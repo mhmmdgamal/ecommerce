@@ -20,5 +20,4 @@ public interface CommentDao {
 
     public List<Comment> getLatestComments(int num);
     
-    public boolean approveComment(long id);
 }

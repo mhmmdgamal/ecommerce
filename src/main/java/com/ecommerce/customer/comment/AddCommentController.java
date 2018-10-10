@@ -1,13 +1,13 @@
 package com.ecommerce.customer.comment;
 
 import com.ecommerce.general.comment.Comment;
-import com.ecommerce.general.item.Item;
-import com.ecommerce.general.user.User;
 import com.ecommerce.general.comment.CommentDaoImpl;
-import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.helper.CookieHelper;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.item.Item;
+import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.path.ViewPath;
+import com.ecommerce.general.user.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,44 +21,20 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "AddCommentControllerForCustomer", urlPatterns = {"/add-comment"})
 public class AddCommentController extends HttpServlet {
 
-    
     ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        
+
     }
-@Override
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    
-    
+        response.sendRedirect("login");
+    }
 
-        // set page title
-        Helper.setTitle(request, "Edit Comment");
-        String servletPath = request.getServletPath();
-
-        // get commentId param from the request
-//        String commentId = request.getParameter("commentid");
-
-        // return the commentId if number or return 0
-//        long id = commentId != null && Helper.isNumber(commentId) ? Long.parseLong(commentId) : 0;
-
-        // get comment depending on commentId
-        Comment commentFounded = new CommentDaoImpl(servletContext).getCommentById(2);
-        
-        if (commentFounded != null) {
-            // set the found comment to the request
-            request.setAttribute("comment", commentFounded);
-
-            // forword request to edit page
-            Helper.forwardRequest(request, response, ViewPath.show_item);
-
-        } else {
-            // redirect to the previous page with error message
-            Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
-        }}
     /**
      * doPost method created to receive Comment for item :
      * <1> receive id and comment of this item
@@ -90,12 +66,6 @@ public class AddCommentController extends HttpServlet {
         // set item to request
         request.setAttribute("item", item);
 
-        // get all comments with descinding order links with item id
-        List<Comment> itemComments = new CommentDaoImpl(servletContext).getItemComments(id, "DESC");
-
-        // set comments to request
-        request.setAttribute("commentsOfItem", itemComments);
-
         // check if there is no comment
         if (comment == null || comment.isEmpty()) {
             // add error to form errors
@@ -125,17 +95,18 @@ public class AddCommentController extends HttpServlet {
 
             //if comment added
             if (commentAdded) {
-                // set success message to request
-                request.setAttribute("success", "comment added");
 
+                // get all comments with descinding order links with item id
+                List<Comment> itemComments = new CommentDaoImpl(servletContext).getItemComments(id, "DESC");
+
+                // set comments to request
+                request.setAttribute("itemComments", itemComments);
+
+                Helper.redriectToPrevPage(request, response, "comment added", false);
             } else {//if comment does not added
-                String error = "error in add";
-                // set error message to request 
-                request.setAttribute("error", error);
+                Helper.redriectToPrevPage(request, response, "error in add", true);
             }
 
-            // forword request to manage page
-            Helper.forwardRequest(request, response, ViewPath.show_item);
         }
     }
 

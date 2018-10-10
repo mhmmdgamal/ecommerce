@@ -1,9 +1,9 @@
 package com.ecommerce.general.comment;
 
-import com.ecommerce.general.item.ItemDaoImpl;
-import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.Helper;
 import com.ecommerce.general.helper.MySQLDatabaseHelper;
+import com.ecommerce.general.item.ItemDaoImpl;
+import com.ecommerce.general.user.UserDaoImpl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,27 +21,6 @@ public class CommentDaoImpl implements CommentDao {
         this.db = (MySQLDatabaseHelper) sc.getAttribute("db");
     }
 
-    /**
-     * approve comment depending on id
-     *
-     * @param id
-     * @return true if approved false otherwise
-     */
-    @Override
-    public boolean approveComment(long id) {
-
-        boolean approved = false;
-        try {
-            approved = db.table(table)
-                    .data("status", 1)
-                    .where("`id`=?", id)
-                    .update();
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        }
-        return approved;
-    }
 
     /**
      * update comment
@@ -76,7 +55,6 @@ public class CommentDaoImpl implements CommentDao {
         try {
             inserted = db.table(table)
                     .data("comment", comment.getComment())
-                    .data("status", comment.getStatus())
                     .data("add_date", Helper.getCurrentDate())
                     .data("item_id", comment.getItem().getId())
                     .data("user_id", comment.getUser().getId())
@@ -130,7 +108,6 @@ public class CommentDaoImpl implements CommentDao {
                         .id(rs.getLong("id"))
                         .comment(rs.getString("comment"))
                         .addDate(rs.getDate("add_date"))
-                        .status(rs.getByte("status"))
                         .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
                         .item(new ItemDaoImpl(sc).getItemById(rs.getLong("item_id")))
                         .build();
@@ -158,7 +135,7 @@ public class CommentDaoImpl implements CommentDao {
 
         String where = "";
         if (id != 0) {
-            where = " `item_id`=" + id + " AND status = 1";
+            where = " `item_id`=" + id;
         }
 
         try (ResultSet rs = db.select()
@@ -173,7 +150,6 @@ public class CommentDaoImpl implements CommentDao {
                         .id(rs.getLong("id"))
                         .comment(rs.getString("comment"))
                         .addDate(rs.getDate("add_date"))
-                        .status(rs.getByte("status"))
                         .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
                         .item(new ItemDaoImpl(sc).getItemById(rs.getLong("item_id")))
                         .build();
@@ -211,7 +187,6 @@ public class CommentDaoImpl implements CommentDao {
                         .id(rs.getLong("id"))
                         .comment(rs.getString("comment"))
                         .addDate(rs.getDate("add_date"))
-                        .status(rs.getByte("status"))
                         .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
                         .item(new ItemDaoImpl(sc).getItemById(rs.getLong("item_id")))
                         .build();
@@ -269,7 +244,6 @@ public class CommentDaoImpl implements CommentDao {
                         .id(rs.getLong("id"))
                         .comment(rs.getString("comment"))
                         .addDate(rs.getDate("add_date"))
-                        .status(rs.getByte("status"))
                         .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
                         .item(new ItemDaoImpl(sc).getItemById(rs.getLong("item_id")))
                         .build();

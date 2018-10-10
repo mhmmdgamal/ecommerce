@@ -2,9 +2,9 @@ package com.ecommerce.general.item;
 
 import com.ecommerce.general.category.CategoryDaoImpl;
 import com.ecommerce.general.comment.Comment;
-import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.Helper;
 import com.ecommerce.general.helper.MySQLDatabaseHelper;
+import com.ecommerce.general.user.UserDaoImpl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -115,7 +115,6 @@ public class ItemDaoImpl implements ItemDao {
                         .id(rs.getLong("id"))
                         .comment(rs.getString("comment"))
                         .addDate(rs.getDate("add_date"))
-                        .status(rs.getByte("status"))
                         .user(new UserDaoImpl(sc).getUserById(rs.getLong("user_id")))
                         .item(new ItemDaoImpl(sc).getItemById(rs.getLong("item_id")))
                         .build();

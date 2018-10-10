@@ -29,9 +29,6 @@
                             <td>
                                 <a href='<%=ControllerPath.EDIT_COMMENT_ADMIN%>?commentid=${comment['id']}' class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
                                 <a href='<%=ControllerPath.DELETE_COMMENT_ADMIN%>?commentid=${comment['id']}' class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>
-                                <c:if test="${comment['status'] eq 0}">
-                                    <a href='<%=ControllerPath.APPROVE_COMMENT_ADMIN%>?commentid=${comment['id']}' class='btn btn-info activate'> <i class='fa fa-check'></i> Approve</a>
-                                </c:if>
                             </td>
                         </tr>
                     </c:forEach>
