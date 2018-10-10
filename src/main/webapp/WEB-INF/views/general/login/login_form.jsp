@@ -1,6 +1,7 @@
 <%@page import="com.ecommerce.general.path.ControllerPath"%>
 <!-- Start Login Form -->
-<form class="login" action="<%=ControllerPath.LOGIN %>" method="POST">
+<form id="login-form" class="login" action="<%=ControllerPath.LOGIN%>" method="POST">
+    <div id="login-results" style="font-weight: bold"></div>
     <!-- action will go to the Login Controller -->
     <input type="text" hidden name="previous" value="${param['previous']}">
 
