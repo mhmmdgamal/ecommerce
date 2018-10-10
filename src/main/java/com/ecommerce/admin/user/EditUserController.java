@@ -1,9 +1,10 @@
 package com.ecommerce.admin.user;
 
-import com.ecommerce.general.user.User;
-import com.ecommerce.general.user.UserDaoImpl;
+import com.ecommerce.general.helper.HashHelper;
 import com.ecommerce.general.helper.Helper;
 import com.ecommerce.general.path.ViewPath;
+import com.ecommerce.general.user.User;
+import com.ecommerce.general.user.UserDaoImpl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +74,7 @@ public class EditUserController extends HttpServlet {
                 // vildate parameter of FORM 
                 = vildateFormParams(username, fullName, email);
         //<improve> write **** in text field password  
-        String password = newPassword == null ? oldPassword : newPassword;
+        String password = (newPassword == null || newPassword.isEmpty()) ? oldPassword : HashHelper.stringHash(newPassword);
 
         // set errors to the request
         request.setAttribute("errors", formErrors);

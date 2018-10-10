@@ -1,12 +1,12 @@
 // <editor-fold >
 package com.ecommerce.customer.user;
 
-import com.ecommerce.general.user.User;
-import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.CookieHelper;
 import com.ecommerce.general.helper.HashHelper;
 import com.ecommerce.general.helper.Helper;
 import com.ecommerce.general.path.ViewPath;
+import com.ecommerce.general.user.User;
+import com.ecommerce.general.user.UserDaoImpl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,12 +62,16 @@ public class EditProfileController extends HttpServlet {
 
         //get FORM Patameter
         String name = request.getParameter("name");
-        String pass = request.getParameter("pass");
+        String oldPassword = request.getParameter("oldPassword");
+        String newPassword = request.getParameter("newPassword");
         String email = request.getParameter("email");
         String fullName = request.getParameter("fullName");
-        String passwordHashed = HashHelper.stringHash(pass);
 
         List<String> formErrors = vildateFormParams(name, email, fullName);
+        
+        
+        String password = (newPassword == null || newPassword.isEmpty()) ? oldPassword : HashHelper.stringHash(newPassword);
+
         // set errors to the request
         request.setAttribute("errors", formErrors);
 
@@ -86,7 +90,7 @@ public class EditProfileController extends HttpServlet {
             User user = User.builder()
                     .id(userId)
                     .name(name)
-                    .password(passwordHashed)
+                    .password(password)
                     .email(email)
                     .fullName(fullName)
                     .build();

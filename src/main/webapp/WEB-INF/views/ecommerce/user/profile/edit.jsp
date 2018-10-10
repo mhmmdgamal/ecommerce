@@ -33,15 +33,17 @@
                         <label class="col-sm-3 control-label"><span>Password</span> :</label>
                         <div class="col-sm-10 col-md-9">
                             <input 
-                                pattern=".{4,}"
+                                type="hidden" 
+                                name="oldPassword" 
+                                value="${user['password']}" />
+                            <input 
                                 title="This Field Require At Least 4 Characters"
                                 type="password" 
-                                name="pass" 
+                                name="newPassword" 
                                 class="form-control live"  
-                                placeholder="New password"
+                                placeholder="Leave Blank If You Dont Want To Change"
                                 data-class=".live-title"
-                                required 
-                                value="${user['password']}"/>
+                                />
                         </div>
                     </div>
                     <div class="form-group form-group-lg">
