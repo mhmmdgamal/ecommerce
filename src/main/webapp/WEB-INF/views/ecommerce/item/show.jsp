@@ -177,6 +177,12 @@
 <script src="<%=ResourcePath.js%>jquery-1.12.1.min.js"></script>
 <script>
     $(function () {
+        $('textarea[name="comment"]').keypress(function (e) {
+            if (e.which == 13) {
+                $('#add-comment-form').submit();
+                return false;    //<---- Add this line
+            }
+        });
         var flag = false;
         $('#add-comment-form').on('submit', function (e) {
             if ($('textarea[name="comment"]').val() === '') {
