@@ -6,17 +6,16 @@ import com.ecommerce.general.helper.CookieHelper;
 import com.ecommerce.general.helper.Helper;
 import com.ecommerce.general.item.Item;
 import com.ecommerce.general.item.ItemDaoImpl;
-import com.ecommerce.general.path.ViewPath;
 import com.ecommerce.general.user.User;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 @WebServlet(name = "AddCommentControllerForCustomer", urlPatterns = {"/add-comment"})
 public class AddCommentController extends HttpServlet {
@@ -45,13 +44,17 @@ public class AddCommentController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // set page title
-        Helper.setTitle(request, "Show Item");
-        // make new list of errors
-        List<String> formErrors = new ArrayList();
-        // set message errors to the request
-        request.setAttribute("formErrors", formErrors);
+        JSONObject obj = new JSONObject();
+        JSONArray errors = new JSONArray();
+        JSONObject data = new JSONObject();
+        String success = null;
 
+        // set page title
+//        Helper.setTitle(request, "Show Item");
+        // make new list of errors
+//        List<String> formErrors = new ArrayList();
+        // set message errors to the request
+//        request.setAttribute("formErrors", formErrors);
         // get comment param from FORM 
         String comment = request.getParameter("comment");
         // get itemId param from request
@@ -69,10 +72,10 @@ public class AddCommentController extends HttpServlet {
         // check if there is no comment
         if (comment == null || comment.isEmpty()) {
             // add error to form errors
-            formErrors.add("You Must Add Comment");
-
+//            formErrors.add("You Must Add Comment");
+            errors.add("You Must Add Comment");
             // forward to show items page
-            Helper.forwardRequest(request, response, ViewPath.show_item);
+//            Helper.forwardRequest(request, response, ViewPath.show_item);
 
         } else {// if no errors in textfield Comment
             //get user id
@@ -90,6 +93,9 @@ public class AddCommentController extends HttpServlet {
                     .user(user)
                     .build();
 
+            data.put("comment", comment);
+            data.put("user", getCurrentUsername(request, response));
+
             // add comment to DB 
             boolean commentAdded = new CommentDaoImpl(servletContext).addComment(com);
 
@@ -97,17 +103,23 @@ public class AddCommentController extends HttpServlet {
             if (commentAdded) {
 
                 // get all comments with descinding order links with item id
-                List<Comment> itemComments = new CommentDaoImpl(servletContext).getItemComments(id, "DESC");
-
+//                List<Comment> itemComments = new CommentDaoImpl(servletContext).getItemComments(id, "DESC");
                 // set comments to request
-                request.setAttribute("itemComments", itemComments);
-
-                Helper.redriectToPrevPage(request, response, "comment added", false);
+//                request.setAttribute("itemComments", itemComments);
+//                Helper.redriectToPrevPage(request, response, "comment added", false);
+                success = "comment added";
             } else {//if comment does not added
-                Helper.redriectToPrevPage(request, response, "error in add", true);
+//                Helper.redriectToPrevPage(request, response, "error in add", true);
+                errors.add("error in add");
             }
 
         }
+
+        obj.put("success", success);
+        obj.put("errors", errors);
+        obj.put("data", data);
+        response.setContentType("application/json");
+        response.getWriter().print(obj.toJSONString());
     }
 
     public long getCurrentUserId(HttpServletRequest request, HttpServletResponse response)
@@ -122,5 +134,19 @@ public class AddCommentController extends HttpServlet {
             userId = (Long) request.getSession().getAttribute("userId");
         }
         return userId;
+    }
+    
+    public String getCurrentUsername(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String user;
+        if (CookieHelper.isCookie("user", request, response)) {
+            // get user id from cookie
+            user = CookieHelper.getCookie("user", request, response);
+        } else {
+            // get userId from session
+            user = request.getSession().getAttribute("user").toString();
+        }
+        return user;
     }
 }
