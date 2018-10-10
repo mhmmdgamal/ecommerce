@@ -118,7 +118,7 @@
 </script>
 <script src="<%=ResourcePath.js%>jquery-ui.min.js"></script>
 <script src="<%=ResourcePath.js%>bootstrap.min.js"></script>
-<script src='<%=ResourcePath.js%>nicescroll.min.js")}'></script>
+<script src="<%=ResourcePath.js%>nicescroll.min.js"></script>
 <script src="<%=ResourcePath.js%>jquery.selectBoxIt.min.js"></script>
 <script src="<%=ResourcePath.js%>ecommerce.js"></script>
 </body>
