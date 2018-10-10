@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 26, 2018 at 05:34 PM
+-- Generation Time: Oct 10, 2018 at 09:15 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -60,7 +60,6 @@ INSERT INTO `categories` (`id`, `name`, `description`, `parent`, `ordering`, `vi
 CREATE TABLE `comments` (
   `id` int(11) NOT NULL,
   `comment` text NOT NULL,
-  `status` tinyint(4) NOT NULL,
   `add_date` date NOT NULL,
   `item_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
@@ -70,13 +69,18 @@ CREATE TABLE `comments` (
 -- Dumping data for table `comments`
 --
 
-INSERT INTO `comments` (`id`, `comment`, `status`, `add_date`, `item_id`, `user_id`) VALUES
-(2, 'good Item Thanks so much1', 1, '2016-05-11', 18, 28),
-(7, 'Very Cool', 1, '2016-06-17', 18, 25),
-(8, 'Very Nice This Is The Second Comment', 1, '2016-06-17', 18, 25),
-(10, 'coooooooooool', 0, '2018-09-24', 18, 1),
-(11, 'coooooooooool', 0, '2018-09-24', 18, 1),
-(12, 'coooooooooool \r\nnice\r\n', 0, '2018-09-24', 30, 1);
+INSERT INTO `comments` (`id`, `comment`, `add_date`, `item_id`, `user_id`) VALUES
+(2, 'good Item Thanks so much1', '2016-05-11', 18, 28),
+(7, 'Very Cool', '2016-06-17', 18, 25),
+(8, 'Very Nice This Is The Second Comment', '2016-06-17', 18, 25),
+(19, 'so cool item', '2018-10-10', 18, 38),
+(20, 'cool', '2018-10-10', 18, 38),
+(21, 'test ajax', '2018-10-10', 18, 38),
+(22, 'test ajax', '2018-10-10', 18, 38),
+(23, 'test ajax 2', '2018-10-10', 18, 38),
+(24, 'test ajax 3', '2018-10-10', 18, 38),
+(26, 'ajax is so coooooooooool', '2018-10-10', 18, 38),
+(63, 'hello ramadan', '2018-10-10', 18, 38);
 
 -- --------------------------------------------------------
 
@@ -111,7 +115,8 @@ INSERT INTO `items` (`id`, `name`, `description`, `price`, `add_date`, `country_
 (30, 'labtop hp', 'ram=8 , screen = 15.6 inch', '400$', '2018-09-22', 'canda', NULL, '3', 0, 1, 9, 1, 'hp, labtop, computer'),
 (31, 'xiamei rdemy not 4', 'ram=1 gb , memory = 16 gb', '100 $', '2018-09-22', 'china', NULL, '1', 0, 1, 10, 1, 'xiomei, mobile'),
 (32, 'item 2', 'description test', '1000$', '2018-09-22', 'Egypt12', NULL, '4', 0, 1, 12, 38, 'item'),
-(33, 'item3', 'Hand Made Items >>', '100 $', '2018-09-22', 'candan', NULL, '3', 0, 0, 10, 38, 'item, tag');
+(51, 'tttt', 'ttttt', '55', '2018-10-03', 'hh', NULL, '4', 0, 0, 14, 46, 'hhh'),
+(52, 'tttt', 'ttttt', '55', '2018-10-03', 'hh', NULL, '4', 0, 0, 14, 46, 'hhh');
 
 -- --------------------------------------------------------
 
@@ -149,9 +154,8 @@ INSERT INTO `users` (`id`, `name`, `password`, `email`, `full_name`, `group_id`,
 (40, 'Momen', '81DC9BDB52D04DC20036DBD8313ED055', 'MomenHesham@gmai.com', 'Momen', 0, 0, 1, '2018-09-21', NULL),
 (41, 'hamdy', '81DC9BDB52D04DC20036DBD8313ED055', 'hamdyhamdy@gmai.com', 'hamdy', 0, 0, 1, '2018-09-21', NULL),
 (42, 'fdway', '81DC9BDB52D04DC20036DBD8313ED055', 'ahmedRamadan@gmai.com', 'fdway', 0, 0, 1, '2018-09-21', NULL),
-(43, 'ahmedTELEB', '81DC9BDB52D04DC20036DBD8313ED055', 'ahmedRamadantELEB@gmai.com', NULL, 0, 0, 0, '2018-09-23', NULL),
-(44, 'ahmedrrr', '81DC9BDB52D04DC20036DBD8313ED055', 'ahmedRamadantELEB@gmai.com', NULL, 0, 0, 1, '2018-09-23', NULL),
-(45, 'ahmed mohmed', '81DC9BDB52D04DC20036DBD8313ED055', 'ahmedRamadana@gmai.com', NULL, 0, 0, 1, '2018-09-23', NULL),
+(43, 'ahmedTELEB', '81DC9BDB52D04DC20036DBD8313ED055', 'ahmedRamadantELEB@gmai.com', NULL, 0, 0, 1, '2018-09-23', NULL),
+(44, 'ahmedrrr', '', 'ahmedRamadantELEB@gmai.com', 'hhhhh', 0, 0, 1, '2018-09-23', NULL),
 (46, 'aderhman', '81DC9BDB52D04DC20036DBD8313ED055', 'abderhman@gmai.com', 'aderhman', 0, 0, 1, '2018-09-23', NULL);
 
 --
@@ -201,12 +205,12 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 --
 -- AUTO_INCREMENT for table `users`
 --
