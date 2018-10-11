@@ -127,21 +127,21 @@ public class LoginController extends HttpServlet {
             //////////////////////End user existed in DB//////////////////////////
             //////////////////////Start if user Not existed in DB//////////////////////////
         } else {
-            List<String> formErrors = new ArrayList();
+//            List<String> formErrors = new ArrayList();
 //            formErrors.add("user not Existed! try again ");
-
 //            request.setAttribute("errors", formErrors);
+
             errors.add("user not Existed! try again ");
 
             // redirect to login page 
 //            Helper.setTitle(request, "Login");
-//            if (previous != null) {
+            if (previous != null) {
 //                Helper.forwardRequest(request, response, ViewPath.login_register  + "?previous=" + previous);
             redirect = ViewPath.login_register + "?previous=" + previous;
-//            } else {
+            } else {
 //                Helper.forwardRequest(request, response, ViewPath.login_register );
             redirect = ViewPath.login_register;
-//            }
+            }
         }
         obj.put("success", success);
         obj.put("errors", errors);

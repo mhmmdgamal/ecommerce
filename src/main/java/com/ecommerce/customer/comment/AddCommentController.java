@@ -110,7 +110,7 @@ public class AddCommentController extends HttpServlet {
                 success = "comment added";
             } else {//if comment does not added
 //                Helper.redriectToPrevPage(request, response, "error in add", true);
-                errors.add("error in add");
+                errors.add("comment NOT added");
             }
 
         }

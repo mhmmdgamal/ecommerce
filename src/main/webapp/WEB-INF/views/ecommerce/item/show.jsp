@@ -1,7 +1,7 @@
-<%@page import="com.ecommerce.general.path.ControllerPath"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="com.ecommerce.general.path.ViewPath" %>
 <%@page import="com.ecommerce.general.path.ResourcePath" %>
+<%@page import="com.ecommerce.general.path.ControllerPath"%>
 
 <c:import url='<%=ViewPath.header%>' />
 
@@ -75,7 +75,7 @@
                                 <h3>Add Your Comment</h3>
                                 <form id="add-comment-form" action="<%=ControllerPath.ADD_COMMENT%>?itemid=${item['id']}" method="POST">
                                     <textarea name="comment"></textarea>
-                                    <input name="add-comment" class="btn btn-primary" type="submit" value="Add Comment">
+                                    <!--<input name="add-comment" class="btn btn-primary" type="submit" value="Add Comment">-->
                                 </form>
                             </div>
                         </div>
@@ -177,46 +177,48 @@
 <script src="<%=ResourcePath.js%>jquery-1.12.1.min.js"></script>
 <script>
     $(function () {
-        $('textarea[name="comment"]').keypress(function (e) {
-            if (e.which == 13) {
+        $('textarea[name="comment"]').keypress(function (event) {
+            if (event.which === 13) {
                 $('#add-comment-form').submit();
-                return false;    //<---- Add this line
+                return false;
             }
         });
         var flag = false;
-        $('#add-comment-form').on('submit', function (e) {
+        $('#add-comment-form').on('submit', function (event) {
             if ($('textarea[name="comment"]').val() === '') {
                 alert('enter comment');
                 return false;
             }
-            e.preventDefault();
+            event.preventDefault();
             if (flag === true) {
                 return false;
             }
             form = $(this);
             requestUrl = form.attr('action');
             requestMethod = form.attr('method');
-            requestData = form.serialize();
-            $.ajax({
-                url: requestUrl,
-                type: requestMethod,
-                data: requestData,
+            requestData = form.serialize(); //read comment
+
+            $.ajax({//define object from XML Http Request 
+                url: requestUrl, //action : go to Add Comment controller
+                type: requestMethod, //GET OR POST 
+                data: requestData, //get Comment(FORM Data)
                 dataType: 'json',
                 beforeSend: function () {
                     flag = true;
                     $('input[name="add-comment"]').attr('disabled', true);
                 },
-                success: function (results) {
-                    if (results.success !== null) {
+                success: function (response) {
+//                    console.log(results);
+                    if (response.success !== null) {
                         $('#comments').prepend(
                                 '<div class="comment-box">' +
                                 '<div class="row">' +
                                 '<div class="col-sm-2 text-center">' +
                                 '<img class="img-responsive img-thumbnail img-circle center-block" src="<%=ResourcePath.img%>img.png" alt="No Image" />' +
-                                results.data.user +
+                                response.data.user +
                                 '</div>' +
                                 '<div class="col-sm-10">' +
-                                '<p class="lead">' + results.data.comment + '</p>' +
+                                '<p class="lead">' + response.data.comment + '</p>' +
                                 '</div>' +
                                 '</div>' +
                                 '</div>' +
