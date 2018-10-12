@@ -183,7 +183,7 @@
                 return false;
             }
         });
-        var flag = false;
+        var flag = false;// mean success is true 
         $('#add-comment-form').on('submit', function (event) {
             if ($('textarea[name="comment"]').val() === '') {
                 alert('enter comment');

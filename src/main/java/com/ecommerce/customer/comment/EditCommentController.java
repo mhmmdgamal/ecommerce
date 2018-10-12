@@ -11,17 +11,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 @WebServlet(name = "EditCommentControlllerForCustomer", urlPatterns = {"/edit-comment"})
 public class EditCommentController extends HttpServlet {
 
-    
     ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        
+
     }
 
     // <editor-fold >
@@ -56,8 +57,12 @@ public class EditCommentController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        JSONObject obj = new JSONObject();
+        JSONArray errors = new JSONArray();
+        JSONObject data = new JSONObject();
+        String success = null;
         // set page title
-        Helper.setTitle(request, "Edit Comment");
+//        Helper.setTitle(request, "Edit Comment");
 
         // get form params from the request
         int id = Integer.parseInt(request.getParameter("commentid"));
@@ -70,21 +75,31 @@ public class EditCommentController extends HttpServlet {
                 .build();
 
         // update comment
-        boolean commentUpdated = new CommentDaoImpl(servletContext).updateComment(comment);
+        boolean commentUpdated
+                = new CommentDaoImpl(servletContext).updateComment(comment);
 
         if (!commentUpdated) {
-            String error = "error in update";
+//            String error = "error in update";
             // set error message to request if comment does not update successfully
-            request.setAttribute("error", error);
+//            request.setAttribute("error", error);
+            errors.add("comment NOT added");
         } else {
             // set success message to request if comment updated successfully
-            request.setAttribute("success", "comment updated");
+//            request.setAttribute("success", "comment updated");
+            success = "comment added";
+            data.put("comment", comment.getComment());
+            data.put("commentid", comment.getId());
+
         }
 
         // set comment to request
-        request.setAttribute("comment", comment);
-
+//        request.setAttribute("comment", comment);
         // forword request to the edit page
-        Helper.forwardRequest(request, response, ViewPath.edit_comment);
+//        Helper.forwardRequest(request, response, ViewPath.edit_comment);
+        obj.put("success", success);
+        obj.put("errors", errors);
+        obj.put("data", data);
+        response.setContentType("application/json");
+        response.getWriter().print(obj.toJSONString());
     }
 }

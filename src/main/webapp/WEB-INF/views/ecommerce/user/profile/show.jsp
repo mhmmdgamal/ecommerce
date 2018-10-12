@@ -3,7 +3,7 @@
 <%@page import="com.ecommerce.general.path.ViewPath" %>
 <%@page import="com.ecommerce.general.path.ResourcePath" %>
 
-<c:import url='<%=ViewPath.header %>' />
+<c:import url='<%=ViewPath.header%>' />
 
 <h1 class="text-center">My Profile</h1>
 <div class="information block">
@@ -30,7 +30,7 @@
                     </li>
                 </ul>
                 <!--<improve>Button not work-->
-                <a href="<%=ControllerPath.EDIT_PROFILE %>" class="btn btn-default">Edit Information</a>
+                <a href="<%=ControllerPath.EDIT_PROFILE%>" class="btn btn-default">Edit Information</a>
             </div>
         </div>
     </div>
@@ -48,9 +48,9 @@
                                             <span class="approve-status">Waiting Approval</span>
                                         </c:if>
                                         <span class="price-tag">${item['price']}</span>
-                                        <img class="img-responsive" src="<%=ResourcePath.img %>img.png" alt="No Image" />
+                                        <img class="img-responsive" src="<%=ResourcePath.img%>img.png" alt="No Image" />
                                         <div class="caption">
-                                            <h3><a href="<%=ControllerPath.SHOW__ITEM %>?itemid=${item['id']}">${item['name']}</a></h3>
+                                            <h3><a href="<%=ControllerPath.SHOW__ITEM%>?itemid=${item['id']}">${item['name']}</a></h3>
                                             <p>${item['description']}</p>
                                             <div class="date">${item['addDate']}</div>
                                         </div>
@@ -60,7 +60,7 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="well">Sorry There's No Items To Show, Create <a href="<%=ControllerPath.ADD_ITEM %>">New Item</a></div>
+                        <div class="well">Sorry There's No Items To Show, Create <a href="<%=ControllerPath.ADD_ITEM%>">New Item</a></div>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -86,15 +86,40 @@
                                         <tr>
                                             <td>${comment['comment']}</td>
                                             <td>
-                                                <a href='<%=ControllerPath.SHOW__ITEM %>?itemid=${comment['item']['id']}'>
+                                                <a href='<%=ControllerPath.SHOW__ITEM%>?itemid=${comment['item']['id']}'>
                                                     <i>${comment['item']['name']}</i></a>
                                             </td>
-                                            <td>${comment['addDate']}</td>
+                                            <td id="${comment['id']}">${comment['addDate']}</td>
                                             <td>
-                                                <a href='<%=ControllerPath.EDIT_COMMENT %>?commentid=${comment['id']}' 
-                                                   class='btn btn-success'><i class='fa fa-edit'></i> Edit</a>
+                                                <button type="button" class="btn btn-info btn-lg"
+                                                        data-toggle="modal" data-target="#myModal">
+                                                    Edit 
+                                                </button>
+                                                <!-- show Modal -->
+                                                <div class="modal fade" id="myModal" role="dialog">
+                                                    <div class="modal-dialog">
 
-                                                <a href='<%=ControllerPath.DELETE_COMMENT %>?commentid=${comment['id']}' 
+                                                        <!-- Modal content-->
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                <h4 class="modal-title">Modal Header</h4>
+                                                            </div>
+                                                            <form action="<%=ControllerPath.EDIT_COMMENT%>?commentid=${comment['id']}" method="POST">
+                                                                <div class="modal-body">
+                                                                    <input type="input" value="${comment['comment']}" name="comment"/>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                                <button type="submit" name="edit-comment-model" >Edit </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--  end Modal -->
+
+                                                <a href='<%=ControllerPath.DELETE_COMMENT%>?commentid=${comment['id']}' 
                                                    class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>
                                             </td>
                                         </tr>
@@ -112,4 +137,52 @@
     </div>
 </div>
 
-<c:import url='<%=ViewPath.footer %>' />
+<c:import url='<%=ViewPath.footer%>' />
+
+<script src="<%=ResourcePath.js%>jquery-1.12.1.min.js"></script>
+<script>
+    $(function () {
+//        $('textarea[name="comment"]').keypress(function (event) {
+//            if (event.which === 13) {
+//                $('#add-comment-form').submit();
+//                return false;
+//            }
+//        });
+    var flag = false;
+//        $('#add-comment-form').on('submit', function (event) {
+//            if ($('textarea[name="comment"]').val() === '') {
+//                alert('enter comment');
+//                return false;
+//            }
+//            event.preventDefault();
+//            if (flag === true) {
+//                return false;
+//            }
+            form = $(this);
+            requestUrl = form.attr('action');
+            requestMethod = form.attr('method');
+            requestData = form.serialize(); //read comment
+
+            $.ajax({//define object from XML Http Request 
+            url: requestUrl, //action : go to Add Comment controller
+                    type: requestMethod, //GET OR POST 
+                    data: requestData, //get Comment(FORM Data)
+                    dataType: 'json',
+                    beforeSend: function () {
+                    flag = true;
+                            $('button[name="edit-comment-model"]').attr('disabled', true);
+                    },
+                    success: function (response) {
+                    var commentid = "#" + response.data.commentid;
+                            $(commentid).text(response.data.comment);
+                    }
+            });
+    });
+    }
+    );
+</script>
+<script src="<%=ResourcePath.js%>jquery-ui.min.js"></script>
+<script src="<%=ResourcePath.js%>bootstrap.min.js"></script>
+<script src="<%=ResourcePath.js%>nicescroll.min.js"></script>
+<script src="<%=ResourcePath.js%>jquery.selectBoxIt.min.js"></script>
+<script src="<%=ResourcePath.js%>ecommerce.js"></script>
