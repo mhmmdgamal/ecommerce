@@ -1,9 +1,9 @@
 package com.ecommerce.general.path;
 
-interface ViewEcommercePath {
+interface ViewCustomerPath {
 
     final String rootViews = "/WEB-INF/views/";
-    final String customerJspPath = rootViews + "ecommerce/";
+    final String customerJspPath = rootViews + "customer/";
 
     //get Home Page
     final String home = customerJspPath + "home/home.jsp";
