@@ -74,7 +74,8 @@
             <div class="panel-body">
                 <c:choose>
                     <c:when test="${requestScope['userComments'].size() gt 0}">
-                        <div class="container"><div class="table-responsive">
+                        <div class="container">
+                            <div class="table-responsive">
                                 <table class="main-table text-center table table-bordered">
                                     <tr>
                                         <td>Comment</td>
@@ -84,46 +85,44 @@
                                     </tr>
                                     <c:forEach items="${requestScope['userComments']}" var="comment">
                                         <tr>
-                                            <td>${comment['comment']}</td>
+                                            <td id="${comment['id']}">${comment['comment']}</td>
                                             <td>
                                                 <a href='<%=ControllerPath.SHOW__ITEM%>?itemid=${comment['item']['id']}'>
-                                                    <i>${comment['item']['name']}</i></a>
+                                                    ${comment['item']['name']}</a>
                                             </td>
-                                            <td id="${comment['id']}">${comment['addDate']}</td>
+                                            <td>${comment['addDate']}</td>
                                             <td>
-                                                <button type="button" class="btn btn-info btn-lg"
-                                                        data-toggle="modal" data-target="#myModal">
-                                                    Edit 
-                                                </button>
-                                                <!-- show Modal -->
-                                                <div class="modal fade" id="myModal" role="dialog">
-                                                    <div class="modal-dialog">
-
-                                                        <!-- Modal content-->
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                <h4 class="modal-title">Modal Header</h4>
-                                                            </div>
-                                                            <form action="<%=ControllerPath.EDIT_COMMENT%>?commentid=${comment['id']}" method="POST">
-                                                                <div class="modal-body">
-                                                                    <input type="input" value="${comment['comment']}" name="comment"/>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                </div>
-                                                                <button type="submit" name="edit-comment-model" >Edit </button>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--  end Modal -->
-
+                                                <a href="#" type="button" class="edit-comment btn btn-info" data-toggle="modal" data-target="#myModal">
+                                                    <i class='fa fa-edit'></i> Edit 
+                                                </a>
                                                 <a href='<%=ControllerPath.DELETE_COMMENT%>?commentid=${comment['id']}' 
                                                    class='btn btn-danger confirm'><i class='fa fa-close'></i> Delete</a>
                                             </td>
                                         </tr>
                                     </c:forEach>
+                                    <!-- show Modal -->
+                                    <div class="modal text-center" id="myModal" role="dialog">
+                                        <div class="modal-dialog modal-sm">
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Modal Header</h4>
+                                                </div>
+                                                <form id='edit-comment-form' action='<%=ControllerPath.EDIT_COMMENT%>' method='POST'>
+                                                    <div class="modal-body">
+                                                        <input type="hidden" name="commentid"/>
+                                                        <input type="text" name="comment"/>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default close-modal" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-default" >Edit </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  end Modal -->
                                 </table>
                             </div>
                         </div>
@@ -137,52 +136,43 @@
     </div>
 </div>
 
-<c:import url='<%=ViewPath.footer%>' />
-
 <script src="<%=ResourcePath.js%>jquery-1.12.1.min.js"></script>
 <script>
     $(function () {
-//        $('textarea[name="comment"]').keypress(function (event) {
-//            if (event.which === 13) {
-//                $('#add-comment-form').submit();
-//                return false;
-//            }
-//        });
-    var flag = false;
-//        $('#add-comment-form').on('submit', function (event) {
-//            if ($('textarea[name="comment"]').val() === '') {
-//                alert('enter comment');
-//                return false;
-//            }
-//            event.preventDefault();
-//            if (flag === true) {
-//                return false;
-//            }
+
+        $('.edit-comment').click(function () {
+            var commentData = $(this).parent().parent().find('td').first();
+            var commentId = commentData.attr('id');
+            var comment = commentData.text();
+            $('.modal .modal-content .modal-body input[type="hidden"]').val(commentId);
+            $('.modal .modal-content .modal-body input[type="text"]').val(comment);
+        });
+
+        $('#edit-comment-form').on('submit', function (event) {
+            event.preventDefault();
             form = $(this);
             requestUrl = form.attr('action');
             requestMethod = form.attr('method');
             requestData = form.serialize(); //read comment
 
             $.ajax({//define object from XML Http Request 
-            url: requestUrl, //action : go to Add Comment controller
-                    type: requestMethod, //GET OR POST 
-                    data: requestData, //get Comment(FORM Data)
-                    dataType: 'json',
-                    beforeSend: function () {
-                    flag = true;
-                            $('button[name="edit-comment-model"]').attr('disabled', true);
-                    },
-                    success: function (response) {
+                url: requestUrl, //action : go to Add Comment controller
+                type: requestMethod, //GET OR POST 
+                data: requestData, //get Comment(FORM Data)
+                dataType: 'json',
+                success: function (response) {
                     var commentid = "#" + response.data.commentid;
-                            $(commentid).text(response.data.comment);
-                    }
+                    $(commentid).text(response.data.comment);
+                    $('.modal .modal-content .modal-footer .close-modal').click();
+                }
             });
+        });
     });
-    }
-    );
 </script>
 <script src="<%=ResourcePath.js%>jquery-ui.min.js"></script>
 <script src="<%=ResourcePath.js%>bootstrap.min.js"></script>
 <script src="<%=ResourcePath.js%>nicescroll.min.js"></script>
 <script src="<%=ResourcePath.js%>jquery.selectBoxIt.min.js"></script>
 <script src="<%=ResourcePath.js%>ecommerce.js"></script>
+</body>
+</html>
