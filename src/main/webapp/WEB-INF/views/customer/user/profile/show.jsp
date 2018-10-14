@@ -139,13 +139,17 @@
 <script src="<%=ResourcePath.js%>jquery-1.12.1.min.js"></script>
 <script>
     $(function () {
-
+        let commentData;
+        let commentId;
+        let comment;
+        let modalComment = $('.modal .modal-content .modal-body input[type="text"]');
+        let modalId = $('.modal .modal-content .modal-body input[type="hidden"]');
         $('.edit-comment').click(function () {
-            var commentData = $(this).parent().parent().find('td').first();
-            var commentId = commentData.attr('id');
-            var comment = commentData.text();
-            $('.modal .modal-content .modal-body input[type="hidden"]').val(commentId);
-            $('.modal .modal-content .modal-body input[type="text"]').val(comment);
+            commentData = $(this).parent().parent().find('td').first();
+            commentId = commentData.attr('id');
+            comment = commentData.text();
+            modalId.val(commentId);
+            modalComment.val(comment);
         });
 
         $('#edit-comment-form').on('submit', function (event) {
@@ -161,9 +165,10 @@
                 data: requestData, //get Comment(FORM Data)
                 dataType: 'json',
                 success: function (response) {
-                    var commentid = "#" + response.data.commentid;
-                    $(commentid).text(response.data.comment);
-                    $('.modal .modal-content .modal-footer .close-modal').click();
+                    if (response.success) {
+                        $("#" + commentId).text(modalComment.val());
+                        $('.modal .modal-content .modal-footer .close-modal').click();
+                    }
                 }
             });
         });

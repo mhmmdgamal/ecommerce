@@ -11,7 +11,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 @WebServlet(name = "EditCommentControlllerForCustomer", urlPatterns = {"/edit-comment"})
@@ -58,9 +57,7 @@ public class EditCommentController extends HttpServlet {
             throws ServletException, IOException {
 
         JSONObject obj = new JSONObject();
-        JSONArray errors = new JSONArray();
-        JSONObject data = new JSONObject();
-        String success = null;
+        boolean success = false;
         // set page title
 //        Helper.setTitle(request, "Edit Comment");
 
@@ -82,14 +79,11 @@ public class EditCommentController extends HttpServlet {
 //            String error = "error in update";
             // set error message to request if comment does not update successfully
 //            request.setAttribute("error", error);
-            errors.add("comment NOT added");
+            success = false;
         } else {
             // set success message to request if comment updated successfully
 //            request.setAttribute("success", "comment updated");
-            success = "comment added";
-            data.put("comment", comment.getComment());
-            data.put("commentid", comment.getId());
-
+            success = true;
         }
 
         // set comment to request
@@ -97,8 +91,6 @@ public class EditCommentController extends HttpServlet {
         // forword request to the edit page
 //        Helper.forwardRequest(request, response, ViewPath.edit_comment);
         obj.put("success", success);
-        obj.put("errors", errors);
-        obj.put("data", data);
         response.setContentType("application/json");
         response.getWriter().print(obj.toJSONString());
     }
