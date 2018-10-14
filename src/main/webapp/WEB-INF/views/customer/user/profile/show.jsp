@@ -139,34 +139,71 @@
 <script src="<%=ResourcePath.js%>jquery-1.12.1.min.js"></script>
 <script>
     $(function () {
+        // var to store <td> data that contain comment id and value
         let commentData;
+        
+        // var to store comment id 
         let commentId;
+        
+        // var to store comment value
         let comment;
+        
+        // store object input of modal that will contain comment value
         let modalComment = $('.modal .modal-content .modal-body input[type="text"]');
+        
+        // store object input of modal that will contain comment id
         let modalId = $('.modal .modal-content .modal-body input[type="hidden"]');
+        
+        // when click edit button do:
         $('.edit-comment').click(function () {
+            // git td contain comment data
             commentData = $(this).parent().parent().find('td').first();
+            
+            // get comment id
             commentId = commentData.attr('id');
+            
+            // get comment value
             comment = commentData.text();
+            
+            // set comment id to modal
             modalId.val(commentId);
+            
+            // set comment value to comment
             modalComment.val(comment);
         });
 
+        // when submit edit request 
         $('#edit-comment-form').on('submit', function (event) {
+            // prevent the form from making the default action (submit)
             event.preventDefault();
+            
+            // git form object
             form = $(this);
+            
+            // get form action
             requestUrl = form.attr('action');
+            
+            // get form method
             requestMethod = form.attr('method');
+            
+            // get form params
             requestData = form.serialize(); //read comment
 
+            // send request with ajax
             $.ajax({//define object from XML Http Request 
                 url: requestUrl, //action : go to Add Comment controller
                 type: requestMethod, //GET OR POST 
                 data: requestData, //get Comment(FORM Data)
-                dataType: 'json',
+                dataType: 'json', // data will be deal with it
+                
+                // on success do:
                 success: function (response) {
+                    // if comment updated successfuly do:
                     if (response.success) {
+                        // get tag object with this id and set comment value to it
                         $("#" + commentId).text(modalComment.val());
+                        
+                        // close modal window after comment updated
                         $('.modal .modal-content .modal-footer .close-modal').click();
                     }
                 }
