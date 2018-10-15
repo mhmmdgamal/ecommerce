@@ -8,14 +8,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONObject;
 
-@WebServlet(name = "DeleteCommentControllerForCustomer", urlPatterns = {"/delete-comment"})
+@WebServlet(name = "DeleteCommentControllerC", urlPatterns = {"/delete-comment"})
 public class DeleteCommentController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
 
         // get commentId param from the request
         String commentId = request.getParameter("commentid");
@@ -23,14 +23,13 @@ public class DeleteCommentController extends HttpServlet {
         // return the commentId if number or return 0
         long id = commentId != null && Helper.isNumber(commentId) ? Long.parseLong(commentId) : 0;
 
-        // delete comment depending on the commentId
-        boolean commentDeleted = new CommentDaoImpl(getServletContext()).deleteComment(id);
-        if (commentDeleted) {
-            // redirect to the previous page with deleted message
-            Helper.redriectToPrevPage(request, response, "comment deleted", false);
-        } else {
-            // redirect to the previous page with error message
-            Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
-        }
+        // delete comment By id 
+        boolean commentDeleted 
+                = new CommentDaoImpl(getServletContext()).deleteComment(id);
+
+        JSONObject obj = new JSONObject();
+        obj.put("success", commentDeleted);
+        response.setContentType("application/json");
+        response.getWriter().print(obj.toJSONString());
     }
 }

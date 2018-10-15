@@ -177,6 +177,7 @@
 <script src="<%=ResourcePath.js%>jquery-1.12.1.min.js"></script>
 <script>
     $(function () {
+        //submit with press enter 
         $('textarea[name="comment"]').keypress(function (event) {
             if (event.which === 13) {
                 $('#add-comment-form').submit();
@@ -184,14 +185,16 @@
             }
         });
         var flag = false;// mean success is true 
+        //control with FORM 
         $('#add-comment-form').on('submit', function (event) {
             if ($('textarea[name="comment"]').val() === '') {
                 alert('enter comment');
                 return false;
             }
+            //stop show Controller page 
             event.preventDefault();
             if (flag === true) {
-                return false;
+                return false;//out don't complete
             }
             form = $(this);
             requestUrl = form.attr('action');

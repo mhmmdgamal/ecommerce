@@ -24,9 +24,6 @@ interface ViewCustomerPath {
     final String show_profile = customerJspPath + "user/profile/show.jsp";
     final String show_user = customerJspPath + "user/show.jsp";
 
-    //get Comment Pages
-    final String edit_comment = customerJspPath + "comment/edit.jsp";
-
     //get Include Pages
     final String header = customerJspPath + "include/header.jsp";
     final String footer = customerJspPath + "include/footer.jsp";

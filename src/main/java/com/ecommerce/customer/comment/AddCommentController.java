@@ -25,20 +25,13 @@ public class AddCommentController extends HttpServlet {
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.sendRedirect("login");
     }
 
     /**
      * doPost method created to receive Comment for item :
      * <1> receive id and comment of this item
      * <2> get item from DB
-     * <3> set item in request to show it again
+     * <3> with use ajax we won't need to: set item in request to show it again
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -49,12 +42,6 @@ public class AddCommentController extends HttpServlet {
         JSONObject data = new JSONObject();
         String success = null;
 
-        // set page title
-//        Helper.setTitle(request, "Show Item");
-        // make new list of errors
-//        List<String> formErrors = new ArrayList();
-        // set message errors to the request
-//        request.setAttribute("formErrors", formErrors);
         // get comment param from FORM 
         String comment = request.getParameter("comment");
         // get itemId param from request
@@ -67,15 +54,11 @@ public class AddCommentController extends HttpServlet {
         Item item = new ItemDaoImpl(servletContext).getApprovedItemById(id);
 
         // set item to request
-        request.setAttribute("item", item);
+//        request.setAttribute("item", item);
 
         // check if there is no comment
         if (comment == null || comment.isEmpty()) {
-            // add error to form errors
-//            formErrors.add("You Must Add Comment");
             errors.add("You Must Add Comment");
-            // forward to show items page
-//            Helper.forwardRequest(request, response, ViewPath.show_item);
 
         } else {// if no errors in textfield Comment
             //get user id
@@ -101,18 +84,10 @@ public class AddCommentController extends HttpServlet {
 
             //if comment added
             if (commentAdded) {
-
-                // get all comments with descinding order links with item id
-//                List<Comment> itemComments = new CommentDaoImpl(servletContext).getItemComments(id, "DESC");
-                // set comments to request
-//                request.setAttribute("itemComments", itemComments);
-//                Helper.redriectToPrevPage(request, response, "comment added", false);
                 success = "comment added";
-            } else {//if comment does not added
-//                Helper.redriectToPrevPage(request, response, "error in add", true);
+            } else {
                 errors.add("comment NOT added");
             }
-
         }
 
         obj.put("success", success);
