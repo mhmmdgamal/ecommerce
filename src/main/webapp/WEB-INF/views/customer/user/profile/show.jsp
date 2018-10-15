@@ -84,7 +84,7 @@
                                         <td>Control</td>
                                     </tr>
                                     <c:forEach items="${requestScope['userComments']}" var="comment">
-                                        <tr id="rowid=${comment['id']}">
+                                        <tr id="row${comment['id']}">
                                             <td id="${comment['id']}">${comment['comment']}</td>
                                             <td>
                                                 <a href='<%=ControllerPath.SHOW__ITEM%>?itemid=${comment['item']['id']}'>
@@ -93,11 +93,10 @@
                                             <td>${comment['addDate']}</td>
                                             <td>
                                                 <!--Edit Comment button-->
-                                                <a href="#" type="button" class="edit-comment btn btn-info" data-toggle="modal" data-target="#myModal">
+                                                <a href="#" class="edit-comment btn btn-info" data-toggle="modal" data-target="#myModal">
                                                     <i class='fa fa-edit'></i> Edit 
                                                 </a>
-                                                <a href='<%=ControllerPath.DELETE_COMMENT%>?commentid=${comment['id']}' 
-                                                   class='delete-comment btn btn-danger confirm'>
+                                                <a href='#' class='delete-comment btn btn-danger'>
                                                     <i class='fa fa-close'></i> Delete
                                                 </a>
                                             </td>
@@ -153,7 +152,11 @@
         // store object input of modal that will contain comment id
         let modalId = $('.modal .modal-content .modal-body input[type="hidden"]');
         // when click edit button do:
-        $('.edit-comment').click(function () {
+        $('.edit-comment').click(function (event) {
+            console.log("error");
+            // prevent the form from making the default action (submit)
+            event.preventDefault();
+
             // git td contain comment data
             commentData = $(this).parent().parent().find('td').first();
             // get comment id
@@ -167,30 +170,30 @@
         });
         // when click Delete button do:
         $('.delete-comment').click(function (event) {
-            // get comment id
-            commentId = $(this).parent().parent().find('td').first().attr('id');
             // prevent the form from making the default action (submit)
             event.preventDefault();
 
-            // send request with ajax
-            $.ajax({//define object from XML Http Request 
-                url: <%=ControllerPath.DELETE_COMMENT%>, //action : go to Add Comment controller
-                type: GET, //GET OR POST 
-//                data: requestData, //get Comment(FORM Data)
-                dataType: 'json', // data will be deal with it
+            if (confirm("Are you sure?")) {
+                // get comment id
+                commentId = $(this).parent().parent().find('td').first().attr('id');
 
-                // on success do:
-                success: function (response) {
-                    // if comment updated successfuly do:
-                    if (response.success) {
-                        //delete row
-                        $("#row" + commentId).remove();
+                // send request with ajax
+                $.ajax({//define object from XML Http Request 
+                    url: '<%=ControllerPath.DELETE_COMMENT%>', //action : go to Add Comment controller
+                    type: 'GET', //GET OR POST 
+                    data: {commentid: commentId}, //get Comment(FORM Data)
+                    dataType: 'json', // data will be deal with it
+                    // on success do:
+                    success: function (response) {
+                        // if comment updated successfuly do:
+                        if (response.success) {
+                            //delete row
+                            $("#row" + commentId).remove();
+                        }
                     }
-                }
-            });
+                });
 
-
-
+            }
         });
         // when submit edit request 
         $('#edit-comment-form').on('submit', function (event) {
@@ -225,53 +228,7 @@
             });
         });
     });
-    // when click edit button do:
-    $('.edit-comment').click(function () {
-        // git td contain comment data
-        commentData = $(this).parent().parent().find('td').first();
-        // get comment id
-        commentId = commentData.attr('id');
-        // get comment value
-        comment = commentData.text();
-        // set comment id to modal
-        modalId.val(commentId);
-        // set comment value to comment
-        modalComment.val(comment);
-    });
-    // when submit edit request 
-    $('#edit-comment-form').on('submit', function (event) {
-    // prevent the form from making the default action (submit)
-    event.preventDefault();
-            // git form object
-            form = $(this);
-            // get form action
-            requestUrl = form.attr('action');
-            // get form method
-            requestMethod = form.attr('method');
-            // get form params
-            requestData = form.serialize(); //read comment
-
-            // send request with ajax
-            $.ajax({//define object from XML Http Request 
-            url: requestUrl, //action : go to Add Comment controller
-                    type: requestMethod, //GET OR POST 
-                    data: requestData, //get Comment(FORM Data)
-                    dataType: 'json', // data will be deal with it
-
-                    // on success do:
-                    success: function (response) {
-                    // if comment updated successfuly do:
-                    if (response.success) {
-                    // get tag object with this id and set comment value to it
-                    $("#" + commentId).text(modalComment.val());
-                            // close modal window after comment updated
-                            $('.modal .modal-content .modal-footer .close-modal').click();
-                    }
-                    }
-            });
-    });
-    }
-    );</script>
+</script>
 <script src="<%=ResourcePath.js%>jquery-ui.min.js"></script>
 <script src="<%=ResourcePath.js%>bootstrap.min.js"></script>
 <script src="<%=ResourcePath.js%>nicescroll.min.js"></script>
