@@ -8,9 +8,6 @@ import com.ecommerce.general.path.ViewPath;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.user.UserDaoImpl;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,18 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+//</editor-fold >
 
 @WebServlet(urlPatterns = {"/login"})
 public class LoginController extends HttpServlet {
-
-    private ServletContext servletContext = null;
-
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        servletContext = getServletContext();
-
-    }//</editor-fold >
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -68,7 +57,6 @@ public class LoginController extends HttpServlet {
         JSONArray errors = new JSONArray();
         String success = null;
         String redirect = null;
-        
 
         // get FORM params from the request
         String username = request.getParameter("user");
@@ -80,75 +68,30 @@ public class LoginController extends HttpServlet {
         String previous = request.getParameter("previous");
 
         // get USER logging from DB
-        User user = new UserDaoImpl(servletContext).getLoginUser(username, passwordHashed);
-        ////////////////////////////////////////////////////////////////////////
-        //////////////////////Start if user existed in DB///////////////////////
-        if (user != null) {
+        User user = new UserDaoImpl(getServletContext()).getLoginUser(username, passwordHashed);
 
-            int groupId = user.getGroupId();
+        if (user != null) {//if user existed in DB 
 
+            //if user Click Remember Me 
             if (remember != null && remember.equalsIgnoreCase("y")) {
-                //<set Cookies>if user doing Remember Me 
-                CookieHelper.addCookie("user", username, response);
-                CookieHelper.addCookie("userId", "" + user.getId(), response);
-                CookieHelper.addCookie("fullName", (user.getFullName().split(" ")[0]), response);
+                setUserCookies(user, response);//set Cookies
 
-                // set group id to cookie if admin
-                if (groupId == 1) {
-                    CookieHelper.addCookie("groupId", groupId + "", response);
-                }
-            } else {
-                //get session
-                HttpSession session = request.getSession();
-
-                //<set Session>if user ignore remember Me 
-                SetUserSession(user, session);
-
-                // set group id to session if admin
-                if (groupId == 1) {
-                    session.setAttribute("groupId", groupId);
-                }
+            } else {//if user ignore remember Me 
+                SetUserSession(user, request.getSession()); //set Session 
             }
-            //check on parameter previous from url
-            if (previous != null && !previous.equals("")) {//previousPage == null <improve>
-//                response.sendRedirect(previous);
-                redirect = previous;
-            } else {
-
-                if (groupId == 1) {
-//                    response.sendRedirect("admin/dashboard");
-                    redirect = "admin/dashboard";
-                } else {
-//                    response.sendRedirect("home");
-                    redirect = "home";
-                }
-            }
+            //get Redirect page based on: <previous> or <group id> 
+            redirect = getRedirect(previous, user.getGroupId());
             success = "login success";
-            //////////////////////End user existed in DB//////////////////////////
-            //////////////////////Start if user Not existed in DB//////////////////////////
-        } else {
-//            List<String> formErrors = new ArrayList();
-//            formErrors.add("user not Existed! try again ");
-//            request.setAttribute("errors", formErrors);
 
+        } else {//if user Not existed in DB
             errors.add("user not Existed! try again ");
-
-            // redirect to login page 
-//            Helper.setTitle(request, "Login");
-            if (previous != null) {
-//                Helper.forwardRequest(request, response, ViewPath.login_register  + "?previous=" + previous);
-            redirect = ViewPath.login_register + "?previous=" + previous;
-            } else {
-//                Helper.forwardRequest(request, response, ViewPath.login_register );
             redirect = ViewPath.login_register;
-            }
         }
         obj.put("success", success);
         obj.put("errors", errors);
         obj.put("redirect", redirect);
         response.setContentType("application/json");
         response.getWriter().print(obj.toJSONString());
-        //////////////////////End if user Not existed in DB//////////////////////////
     }
 
     public void SetUserSession(User user, HttpSession session) {
@@ -157,6 +100,37 @@ public class LoginController extends HttpServlet {
         session.setAttribute("user", user.getName());
         session.setAttribute("userId", user.getId());
         session.setAttribute("fullName", (user.getFullName().split(" ")[0]));
+
+        // set group id to session if admin
+        if (user.getGroupId() == 1) {
+            session.setAttribute("groupId", 1);
+        }
     }
 
+    public void setUserCookies(User user, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        //<set Cookies>if user doing Remember Me 
+        CookieHelper.addCookie("user", user.getName(), response);
+        CookieHelper.addCookie("userId", "" + user.getId(), response);
+        CookieHelper.addCookie("fullName", (user.getFullName().split(" ")[0]), response);
+
+        // set group id to cookie if admin
+        if (user.getGroupId() == 1) {
+            CookieHelper.addCookie("groupId", 1 + "", response);
+        }
+    }
+
+    public String getRedirect(String previous, int groupId) {
+
+        String redirect;
+        //check previous parameter existed in URL
+        if (previous != null && !previous.equals("")) {
+            redirect = previous;
+
+        } else {//if No previous page
+            redirect = (groupId == 1) ? "admin/dashboard" : "home";
+        }
+        return redirect;
+    }
 }

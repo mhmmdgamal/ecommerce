@@ -1,6 +1,7 @@
 <%@page import="com.ecommerce.general.path.ControllerPath"%>
 <!-- Start Signup Form -->
-<form class="signup" action="<%=ControllerPath.REGISTER %>" method="POST">
+<form id="register-form" class="signup" action="<%=ControllerPath.REGISTER%>" method="POST">
+    <div id="login-results" style="font-weight: bold"></div>
     <input type="text" hidden name="previous" value="${param['previous']}">
 
     <div class="input-container">

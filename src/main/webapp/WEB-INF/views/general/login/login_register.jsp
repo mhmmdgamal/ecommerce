@@ -114,6 +114,44 @@
                 }
             });
         });
+        $('#register-form').on('submit', function (e) {
+
+//            $(document).ajaxSuccess(function () {
+//                alert("AJAX request successfully completed");
+//            });
+            e.preventDefault();
+            if (flag === true) {
+                return false;
+            }
+            form = $(this);
+            requestUrl = form.attr('action');
+            requestMethod = form.attr('method');
+            requestData = form.serialize();
+            $.ajax({
+                url: requestUrl,
+                type: requestMethod,
+                data: requestData,
+                dataType: 'json',
+                beforeSend: function () {
+                    flag = true;
+                    $('input[name="signup"]').attr('disabled', true);
+                    loginResults.removeClass().addClass('alert alert-info').html('sing up...');
+                },
+                success: function (results) {
+                    if (results.errors.length > 0) {
+                        loginResults.removeClass().addClass('alert alert-danger').html(results.errors);
+                        $('input[name="login"]').removeAttr('disabled');
+                        flag = false;
+                    } else if (results.success !== null) {
+                        loginResults.removeClass().addClass('alert alert-success')
+                                .html(results.success);
+                        if (results.redirect) {
+                            window.location.href = results.redirect;
+                        }
+                    }
+                }
+            });
+        });
     });
 </script>
 <script src="<%=ResourcePath.js%>jquery-ui.min.js"></script>

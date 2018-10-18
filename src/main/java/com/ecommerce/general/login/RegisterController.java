@@ -8,8 +8,6 @@ import com.ecommerce.general.helper.HashHelper;
 import com.ecommerce.general.helper.Helper;
 import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,18 +15,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+//</editor-fold >
 
 @WebServlet(name = "RegisterController", urlPatterns = {"/register"})
 public class RegisterController extends HttpServlet {
-
-    private ServletContext servletContext = null;
-
-    @Override
-    public void init() throws ServletException {
-        super.init(); //To change body of generated methods, choose Tools | Templates.
-        servletContext = getServletContext();
-
-    }//</editor-fold >
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -62,6 +54,11 @@ public class RegisterController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        JSONObject obj = new JSONObject();
+        JSONArray errors = new JSONArray();
+        String success = null;
+        String redirect = null;
+
         // get FORM params from the request
         String username = request.getParameter("user");
         String password = request.getParameter("pass");
@@ -72,25 +69,19 @@ public class RegisterController extends HttpServlet {
         //get param previous page from url
         String previous = request.getParameter("previous");
 
-        //create list for errors
-        List<String> formErrors
-                // validate the FORM params
-                = validateParams(username, password, confirmPassword, email);
-        // set errors to the request
-        request.setAttribute("errors", formErrors);
+        // validate the FORM params
+        errors = validateParams(username, password, confirmPassword, email);
 
-        ///////////////Start if there's errors /////////////////////////////////
-        if (formErrors.size() > 0) {
-            //if user come to login from other page 
-            if (previous != null) {
+        if (errors.size() > 0) {//if there's errors
+            
+            if (previous != null) {//if user come to login from other page 
                 //set parameter <previous> in url again 
-                Helper.forwardRequest(request, response, ViewPath.login_register + "?previous=" + previous);
+                redirect = ViewPath.login_register + "?previous=" + previous;
             } else {
-                Helper.forwardRequest(request, response, ViewPath.login_register);
+                redirect = ViewPath.login_register;
             }
-            ///////////////End if there's errors ///////////////////////////////
-            ///////////////Start if there's NO errors //////////////////////////
-        } else {
+
+        } else {//if there's NO errors
             // hash password
             String passwordHashed = HashHelper.stringHash(password);
             // make new user and set info to it
@@ -102,54 +93,57 @@ public class RegisterController extends HttpServlet {
                     .build();
 
             //creat new user in Database
-            boolean userCreated = new UserDaoImpl(servletContext).addUser(user);
+            boolean userCreated = new UserDaoImpl(getServletContext()).addUser(user);
 
-            //if user created successfully  
-            if (userCreated) {
-                // set success message if user added
-                request.setAttribute("success", "Congrats You Are Now Registerd User");
-
-                //<set Cookies>if user doing Remember Me 
+            if (userCreated) {//if user created successfully  
+                // set success message 
+                success = "Congrats You Are Now Registerd User";
+                //if user Click Remember Me 
                 if (remember != null && remember.equalsIgnoreCase("y")) {
-                    // set user data to cookies 
-                    CookieHelper.addCookie("user", username, response);
-                    CookieHelper.addCookie("userId", "" + user.getId(), response);
-                    CookieHelper.addCookie("fullName", (user.getFullName().split(" ")[0]), response);
+                    //<set Cookies>
+                    setUserCookies(user, response);
 
                 } else {
-                    //get session
-                    HttpSession session = request.getSession();
-                    //<set Session>if user ignore remember Me 
-                    SetUserSession(user, session);
+                    //<set Session>
+                    SetUserSession(user, request.getSession());
                 }
 
                 //System.out.println(previous);
-                if (previous != null) {//previousPage == null <improve>
-                    response.sendRedirect(previous);
+                if (previous != null && !previous.equals("")) {//previousPage == null <improve>
+                    redirect = previous;
                 } else {
-                    response.sendRedirect("home");
+                    redirect = "home";
                 }
 
             } else {//if user not created 
                 // add new error to errors 
-                formErrors.add("Sorry This User Is Exist");
+                errors.add("Sorry This User Is Exist");
 
                 //forword to login again 
-                Helper.setTitle(request, "Login");
+//                Helper.setTitle(request, "Login");
                 if (previous != null) {
-                    Helper.forwardRequest(request, response, ViewPath.login_register + "?previous=" + previous);
+//                    Helper.forwardRequest(request, response, ViewPath.login_register + "?previous=" + previous);
+                    redirect = ViewPath.login_register + "?previous=" + previous;
                 } else {
-                    Helper.forwardRequest(request, response, ViewPath.login_register);
+                    
+//                    Helper.forwardRequest(request, response, ViewPath.login_register);
+                    redirect = ViewPath.login_register;
                 }
             }
         }
-        ///////////////End if there's NO errors /////////////////////////////////
+
+        obj.put("success", success);
+        obj.put("errors", errors);
+        obj.put("redirect", redirect);
+        response.setContentType("application/json");
+        response.getWriter().print(obj.toJSONString());
+
     }
 
-    public List<String> validateParams(String username, String password, String confirmPassword, String email) {
+    public JSONArray validateParams(String username, String password, String confirmPassword, String email) {
 
         // make empty list to errors
-        List<String> formErrors = new ArrayList();
+        JSONArray formErrors = new JSONArray();
 
         // validate the form params
         if (username != null) {
@@ -180,6 +174,15 @@ public class RegisterController extends HttpServlet {
         session.setAttribute("user", user.getName());
         session.setAttribute("userId", user.getId());
         session.setAttribute("fullName", (user.getFullName().split(" ")[0]));
+    }
+
+    public void setUserCookies(User user, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // set user data to cookies 
+        CookieHelper.addCookie("user", user.getName(), response);
+        CookieHelper.addCookie("userId", "" + user.getId(), response);
+        CookieHelper.addCookie("fullName", (user.getFullName().split(" ")[0]), response);
     }
 
 }

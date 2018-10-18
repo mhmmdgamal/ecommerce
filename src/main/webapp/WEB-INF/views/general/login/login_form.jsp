@@ -24,8 +24,8 @@
             placeholder="Type your password" 
             required 
             value="1234"/>
-        <input id="save" type="checkbox" name="remember" value="y">
-        <label for="save" >Remember me</label>
+        <input id="save1" type="checkbox" name="remember" value="y">
+        <label for="save1" >Remember me</label>
     </div>
     <input class="btn btn-primary btn-block" name="login" type="submit" value="Login" />
 </form>

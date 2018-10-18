@@ -16,6 +16,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 @WebServlet(name = "EditProfileController", urlPatterns = {"/edit-profile"})
 public class EditProfileController extends HttpServlet {
@@ -60,6 +62,11 @@ public class EditProfileController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        JSONObject obj = new JSONObject();
+        JSONArray errors = new JSONArray();
+        boolean success = false;
+        String redirect = null;
+
         //get FORM Patameter
         String name = request.getParameter("name");
         String oldPassword = request.getParameter("oldPassword");
@@ -67,19 +74,18 @@ public class EditProfileController extends HttpServlet {
         String email = request.getParameter("email");
         String fullName = request.getParameter("fullName");
 
-        List<String> formErrors = vildateFormParams(name, email, fullName);
-        
-        
+        errors = vildateFormParams(name, email, fullName);
+
         String password = (newPassword == null || newPassword.isEmpty()) ? oldPassword : HashHelper.stringHash(newPassword);
 
         // set errors to the request
-        request.setAttribute("errors", formErrors);
-
-        if (formErrors.size() > 0) {// if there is errors
+//        request.setAttribute("errors", formErrors);
+        if (errors.size() > 0) {// if there is errors
 
             // forword to login page
-            Helper.setTitle(request, "Edit Profile");
-            Helper.forwardRequest(request, response, ViewPath.edit_profile);
+//            Helper.setTitle(request, "Edit Profile");
+//            Helper.forwardRequest(request, response, ViewPath.edit_profile);
+            redirect = ViewPath.edit_profile;
 
         } else {//if there is no errors
 
@@ -101,26 +107,34 @@ public class EditProfileController extends HttpServlet {
             //set message success or error
             if (!userUpdated) {
                 // add new error to errors if User not added
-                //<improve>formErrors.add("can not update this User");             request.setAttribute("success", "User Has Been Updated");
-                request.setAttribute("error", "can not update this User");
+                //<improve>formErrors.add("can not update this User");         
+                //request.setAttribute("success", "User Has Been Updated");
+                errors.add("can not update this User");
 
             } else {
                 // set success message if User added
-                request.setAttribute("success", "User Has Been Updated");
+//                request.setAttribute("success", "User Has Been Updated");
+                success = true;
             }
 
             // set User to request
-            request.setAttribute("user", user);
-
+//            request.setAttribute("user", user);
             // forword to add page
-            Helper.forwardRequest(request, response, ViewPath.edit_profile);
-
+//            Helper.forwardRequest(request, response, ViewPath.edit_profile);
+//            redirect = ViewPath.edit_profile;
         }
+
+        obj.put("success", success);
+        obj.put("errors", errors);
+//        obj.put("redirect", redirect);
+        response.setContentType("application/json");
+        response.getWriter().print(obj.toJSONString());
+
     }// </editor-fold>
 
-    public List<String> vildateFormParams(String name, String email,
+    public JSONArray vildateFormParams(String name, String email,
             String fullName) {
-        List<String> formErrors = new ArrayList();
+        JSONArray formErrors = new JSONArray();
 
         if (name == null || name.length() < 4) {
             formErrors.add("name Must Be At Least 4 Characters or more ..");

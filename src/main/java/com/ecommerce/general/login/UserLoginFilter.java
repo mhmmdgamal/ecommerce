@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 //</editor-fold >
 
-@WebFilter(urlPatterns = {"/new-item", "/edit-item", "/profile", "/edit-profile"})
+@WebFilter(urlPatterns = {"/new-item", "/edit-item", "/show-profile", "/edit-profile"})
 public class UserLoginFilter implements Filter {
 
     @Override

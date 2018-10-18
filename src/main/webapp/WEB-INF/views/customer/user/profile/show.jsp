@@ -14,23 +14,125 @@
                 <ul class="list-unstyled">
                     <li>
                         <i class="fa fa-unlock-alt fa-fw"></i>
-                        <span>Login Name</span> : ${user['name']}
+                        <span>Login Name</span> : 
+                        <span id="name-info"> ${user['name']}</span>
                     </li>
                     <li>
                         <i class="fa fa-envelope-o fa-fw"></i>
-                        <span>Email</span> : ${user['email']}
+                        <span>Email</span> : 
+                        <span id="email-info">${user['email']}</span>
                     </li>
                     <li>
                         <i class="fa fa-user fa-fw"></i>
-                        <span>Full Name</span> : ${user['fullName']}
+                        <span>Full Name</span> : 
+                        <span id="fullName-info">${user['fullName']}</span>
                     </li>
                     <li>
                         <i class="fa fa-calendar fa-fw"></i>
-                        <span>Registered Date</span> : ${user['date']}
+                        <span>Registered Date</span> : <span id="date-info">${user['date']}</span>
                     </li>
                 </ul>
-                <!--<improve>Button not work-->
-                <a href="<%=ControllerPath.EDIT_PROFILE%>" class="btn btn-default">Edit Information</a>
+
+                <a href="#" class="edit-comment btn btn-default" data-toggle="modal" 
+                   data-target="#edit-info-Modal">
+                    <i class='fa fa-edit'></i> Edit Your Information
+                </a>
+
+                <!-- show Modal -->
+                <div class="modal text-center" id="edit-info-Modal" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <!-- Modal content for Information -->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Modal Header</h4>
+                            </div>
+                            <form id='edit-info-form' class="form-horizontal main-form" 
+                                  action="<%=ControllerPath.EDIT_PROFILE%>" method="POST">
+                                <!--<div class="modal-body">-->
+                                <!-- Start id Field -->
+                                <input type="hidden" name="userid" value="${user['id']}" />
+                                <!-- End id Field -->
+                                <div class="form-group form-group-lg">
+                                    <label class="col-sm-3 control-label"><span>Login Name</span> :</label>
+                                    <div class="col-sm-10 col-md-9">
+                                        <input 
+                                            id="name-info-model"
+                                            pattern=".{4,}"
+                                            title="This Field Require At Least 4 Characters"
+                                            type="text" 
+                                            name="name" 
+                                            class="form-control live"  
+                                            placeholder="Name of The Item"
+                                            data-class=".live-title"
+                                            required 
+                                            value="${user['name']}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-lg">
+                                    <label class="col-sm-3 control-label"><span>Password</span> :</label>
+                                    <div class="col-sm-10 col-md-9">
+                                        <input 
+                                            type="hidden" 
+                                            name="oldPassword" 
+                                            value="${user['password']}" />
+                                        <input 
+                                            title="This Field Require At Least 4 Characters"
+                                            type="password" 
+                                            name="newPassword" 
+                                            class="form-control live"  
+                                            placeholder="Leave Blank If You Dont Want To Change"
+                                            data-class=".live-title"
+                                            />
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-lg">
+                                    <label class="col-sm-3 control-label"><span>Email</span> : </label>
+                                    <div class="col-sm-10 col-md-9">
+                                        <input 
+                                            id="email-info-model"
+                                            pattern=".{4,}"
+                                            title="This Field Require At Least 4 Characters"
+                                            type="text" 
+                                            name="email" 
+                                            class="form-control live"  
+                                            placeholder="Name of The Item"
+                                            data-class=".live-title"
+                                            required 
+                                            value="${user['email']}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-lg">
+                                    <label class="col-sm-3 control-label"><span>Full Name</span> : </label>
+                                    <div class="col-sm-10 col-md-9">
+                                        <input 
+                                            id="fulName-info-model"
+                                            pattern=".{4,}"
+                                            title="This Field Require At Least 4 Characters"
+                                            type="text" 
+                                            name="fullName" 
+                                            class="form-control live"  
+                                            placeholder="Name of The Item"
+                                            data-class=".live-title"
+                                            value="${user['fullName']}"/>
+                                    </div>
+                                </div>
+                                <!--</div>-->
+                                <div class="modal-footer">
+                                    <!-- Start Submit Field -->
+                                    <div class="form-group form-group-lg">
+                                        <div class="col-sm-offset-3 col-sm-9">
+                                            <button type="submit" class="btn btn-default" >Edit Your Information </button>
+                                            <button type="button" class="btn btn-default close-modal" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Submit Field -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!--  end Modal -->
             </div>
         </div>
     </div>
@@ -60,7 +162,7 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="well">Sorry There's No Items To Show, Create <a href="<%=ControllerPath.ADD_ITEM%>">New Item</a></div>
+                        <div class="well">There's No Items To Show, Create <a href="<%=ControllerPath.ADD_ITEM%>">New Item</a></div>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -93,7 +195,7 @@
                                             <td>${comment['addDate']}</td>
                                             <td>
                                                 <!--Edit Comment button-->
-                                                <a href="#" class="edit-comment btn btn-info" data-toggle="modal" data-target="#myModal">
+                                                <a href="#" class="edit-comment btn btn-info" data-toggle="modal" data-target="#edit-comment-Modal">
                                                     <i class='fa fa-edit'></i> Edit 
                                                 </a>
                                                 <a href='#' class='delete-comment btn btn-danger'>
@@ -103,9 +205,9 @@
                                         </tr>
                                     </c:forEach>
                                     <!-- show Modal -->
-                                    <div class="modal text-center" id="myModal" role="dialog">
+                                    <div class="modal text-center" id="edit-comment-Modal" role="dialog">
                                         <div class="modal-dialog modal-sm">
-                                            <!-- Modal content-->
+                                            <!-- Modal content for edit comment -->
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -151,9 +253,11 @@
         let modalComment = $('.modal .modal-content .modal-body input[type="text"]');
         // store object input of modal that will contain comment id
         let modalId = $('.modal .modal-content .modal-body input[type="hidden"]');
+
+        let name_info = $('.modal .modal-content input[id="name-info-model"]');
+
         // when click edit button do:
         $('.edit-comment').click(function (event) {
-            console.log("error");
             // prevent the form from making the default action (submit)
             event.preventDefault();
 
@@ -168,33 +272,7 @@
             // set comment value to comment
             modalComment.val(comment);
         });
-        // when click Delete button do:
-        $('.delete-comment').click(function (event) {
-            // prevent the form from making the default action (submit)
-            event.preventDefault();
 
-            if (confirm("Are you sure?")) {
-                // get comment id
-                commentId = $(this).parent().parent().find('td').first().attr('id');
-
-                // send request with ajax
-                $.ajax({//define object from XML Http Request 
-                    url: '<%=ControllerPath.DELETE_COMMENT%>', //action : go to Add Comment controller
-                    type: 'GET', //GET OR POST 
-                    data: {commentid: commentId}, //get Comment(FORM Data)
-                    dataType: 'json', // data will be deal with it
-                    // on success do:
-                    success: function (response) {
-                        // if comment updated successfuly do:
-                        if (response.success) {
-                            //delete row
-                            $("#row" + commentId).remove();
-                        }
-                    }
-                });
-
-            }
-        });
         // when submit edit request 
         $('#edit-comment-form').on('submit', function (event) {
             // prevent the form from making the default action (submit)
@@ -223,6 +301,75 @@
                         $("#" + commentId).text(modalComment.val());
                         // close modal window after comment updated
                         $('.modal .modal-content .modal-footer .close-modal').click();
+                    }
+                }
+            });
+        });
+
+        // when click Delete button do:
+        $('.delete-comment').click(function (event) {
+            // prevent the form from making the default action (submit)
+            event.preventDefault();
+
+            if (confirm("Are you sure?")) {
+                // get comment id
+                commentId = $(this).parent().parent().find('td').first().attr('id');
+
+                // send request with ajax
+                $.ajax({//define object from XML Http Request 
+                    url: '<%=ControllerPath.DELETE_COMMENT%>', //go to Delete Comment controller
+                    type: 'GET', //GET or POST 
+                    data: {commentid: commentId},
+                    dataType: 'json', // data will be deal with it
+                    // on success do:
+                    success: function (response) {
+                        // if comment Deleted Successfully
+                        if (response.success) {
+                            //delete row
+                            $("#row" + commentId).remove();
+                        }
+                    }
+                });
+            }
+        });
+
+        // when submit edit Info request 
+        $('#edit-info-form').on('submit', function (event) {
+            // prevent the form from making the default action (submit)
+            event.preventDefault();
+            // git form object
+            form = $(this);
+            // get form action
+            requestUrl = form.attr('action');
+            // get form method
+            requestMethod = form.attr('method');
+            // get form params
+            requestData = form.serialize(); //read comment
+
+            // send request with ajax
+            $.ajax({//define object from XML Http Request 
+                url: requestUrl, //action : go to Add Comment controller
+                type: requestMethod, //GET OR POST 
+                data: requestData, //get Comment(FORM Data)
+                dataType: 'json', // data will be deal with it
+
+                // on success do:
+                success: function (response) {
+                    // if comment updated successfuly do:
+                    if (response.success) {
+                       
+                        $("#name-info").text($('#name-info-model').val());
+                        $("#email-info").text($('#email-info-model').val());
+                        $("#fullName-info").text($('#fulName-info-model').val());
+                        // close modal window after comment updated
+                        $('.modal .modal-content .modal-footer .close-modal').click();
+                      //<error>consol.log("demo"); don't work
+                       //Ensures there will be no 'console is undefined' errors
+//                        window.console = window.console || (function () {
+//                            var c = {};
+//                            c.log = c.warn = c.debug = c.info = c.error = c.time = c.dir = c.profile = c.clear = c.exception = c.trace = c.assert = function (s) {};
+//                            return c;
+//                        })();
                     }
                 }
             });
