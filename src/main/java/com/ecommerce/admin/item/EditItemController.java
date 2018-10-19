@@ -1,16 +1,15 @@
 package com.ecommerce.admin.item;
 
 import com.ecommerce.general.category.Category;
-import com.ecommerce.general.comment.Comment;
-import com.ecommerce.general.item.Item;
-import com.ecommerce.general.user.User;
 import com.ecommerce.general.category.CategoryDaoImpl;
-import com.ecommerce.general.item.ItemDaoImpl;
-import com.ecommerce.general.user.UserDaoImpl;
+import com.ecommerce.general.comment.Comment;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.item.Item;
+import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.path.ViewPath;
+import com.ecommerce.general.user.User;
+import com.ecommerce.general.user.UserDaoImpl;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -18,26 +17,25 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 @WebServlet(name = "EditItemControlller", urlPatterns = {"/admin/edit-item"})
 public class EditItemController extends HttpServlet {
 
-    
     ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
         servletContext = getServletContext();
-        
+
     }
 
     // <editor-fold >
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // set page title
-        Helper.setTitle(request, "Edit Item");
 
         // get all users with out pendings users
         List<User> users = new UserDaoImpl(servletContext).getAllUsers(false);
@@ -55,32 +53,24 @@ public class EditItemController extends HttpServlet {
         // return the itemId if number or return 0
         long id = itemId != null && Helper.isNumber(itemId) ? Long.parseLong(itemId) : 0;
 
-        // get itemComments with assending order
-        List<Comment> itemComments = new ItemDaoImpl(servletContext).getItemComments(id, "ASC");
-
-        // set the itemComments to request
-        request.setAttribute("itemComments", itemComments);
-
         // get item depending on commentId
         Item itemFounded = new ItemDaoImpl(servletContext).getItemById(id);
-        if (itemFounded != null) {
-            // set the found item to request
-            request.setAttribute("item", itemFounded);
 
-            // forword request to edit page
-            Helper.forwardRequest(request, response, ViewPath.edit_item_admin);
-        } else {
-            // redirect to the previous page with error message
-            Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
-        }
+        // set the found item to request
+        request.setAttribute("item", itemFounded);
+
+        // forword request to edit page
+        Helper.forwardRequest(request, response, ViewPath.edit_item_admin);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // set page title
-        Helper.setTitle(request, "Edit Item");
+        JSONObject obj = new JSONObject();
+        JSONObject data = new JSONObject();
+        JSONArray errors = new JSONArray();
+        String success = null;
 
         // get itemid param from the request
         int id = Integer.parseInt(request.getParameter("itemid"));
@@ -101,27 +91,19 @@ public class EditItemController extends HttpServlet {
         int categoryId = Integer.parseInt(request.getParameter("category"));
         String tags = request.getParameter("tags");
 
-        // make empty list to errors
-        List<String> formErrors
-                //vildate Parameter of FORM 
-                = vildateFormParams(name, description, price, countryMade,
-                        status, userId, categoryId);
+        //vildate Parameter of FORM 
+        errors.addAll(vildateFormParams(name, description, price, countryMade,
+                status, userId, categoryId));
 
         // set errors to the request
-        request.setAttribute("errors", formErrors);
+        request.setAttribute("errors", errors);
 
-        if (formErrors.size() > 0) {
-            Helper.forwardRequest(request, response, ViewPath.edit_item_admin);
-        } else {
+        if (!(errors.size() > 0)) {
             // make new user and set info to it
-            User user = User.builder()
-                    .id(userId)
-                    .build();
+            User user = new UserDaoImpl(servletContext).getUserById(userId);
 
             // make new category and set info to it
-            Category category = Category.builder()
-                    .id(categoryId)
-                    .build();
+            Category category = new CategoryDaoImpl(servletContext).getCategoryById(categoryId);
 
             // make new item and set info to it 
             Item item = Item.builder()
@@ -141,56 +123,68 @@ public class EditItemController extends HttpServlet {
 
             if (!itemUpdated) {
                 // add new error to errors if item not updated
-                formErrors.add("error in update");
+                errors.add("error in update");
             } else {
                 // set success message if item updated
-                request.setAttribute("success", "item updated");
+                success = "item updated";
+                data.put("id", id);
+                data.put("name", name);
+                data.put("description", description);
+                data.put("price", price);
+                data.put("countryMade", countryMade);
+                data.put("status", status);
+                data.put("userId", userId);
+                data.put("username", user.getName());
+                data.put("categoryId", categoryId);
+                data.put("categoryName", category.getName());
+                data.put("tags", tags);
             }
 
-            // set item to request
-            request.setAttribute("item", item);
-
-            // forword to edit page
-            Helper.forwardRequest(request, response, ViewPath.edit_item_admin);
         }
+
+        obj.put("success", success);
+        obj.put("errors", errors);
+        obj.put("data", data);
+        response.setContentType("application/json");
+        response.getWriter().print(obj.toJSONString());
 
     }// </editor-fold>
 
-    public List<String> vildateFormParams(String name, String description, String price,
+    public JSONArray vildateFormParams(String name, String description, String price,
             String countryMade, String status, int userId, int categoryId) {
 
         // make empty list to errors
-        List<String> formErrors = new ArrayList();
+        JSONArray errors = new JSONArray();
 
         // validate the form params
-        if (name == null) {
-            formErrors.add("Name Can't be <strong>Empty</strong>");
+        if (StringUtils.isEmpty(name)) {
+            errors.add("Name Can't be <strong>Empty</strong>");
         }
 
-        if (description == null) {
-            formErrors.add("Description Can't be <strong>Empty</strong>");
+        if (StringUtils.isEmpty(description)) {
+            errors.add("Description Can't be <strong>Empty</strong>");
         }
 
-        if (price == null) {
-            formErrors.add("Price Can't Be <strong>Empty</strong>");
+        if (StringUtils.isEmpty(price)) {
+            errors.add("Price Can't Be <strong>Empty</strong>");
         }
 
-        if (countryMade == null) {
-            formErrors.add("Country Can't Be <strong>Empty</strong>");
+        if (StringUtils.isEmpty(countryMade)) {
+            errors.add("Country Can't Be <strong>Empty</strong>");
         }
 
         if (status.equals("0")) {
-            formErrors.add("You Must Choose the <strong>Status</strong>");
+            errors.add("You Must Choose the <strong>Status</strong>");
         }
 
         if (userId == 0) {
-            formErrors.add("You Must Choose the <strong>User</strong>");
+            errors.add("You Must Choose the <strong>User</strong>");
         }
 
         if (categoryId == 0) {
-            formErrors.add("You Must Choose the <strong>Category</strong>");
+            errors.add("You Must Choose the <strong>Category</strong>");
         }
-        return formErrors;
+        return errors;
     }
 
 }

@@ -1,8 +1,8 @@
 package com.ecommerce.general.category;
 
+import com.ecommerce.general.helper.MySQLDatabaseHelper;
 import com.ecommerce.general.item.Item;
 import com.ecommerce.general.user.UserDaoImpl;
-import com.ecommerce.general.helper.MySQLDatabaseHelper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -47,6 +47,22 @@ public class CategoryDaoImpl implements CategoryDao {
             ex.printStackTrace();
         }
         return updated;
+    }
+    
+    /**
+     * get last category id
+     *
+     * @return int
+     */
+    @Override
+    public int getLastCategoryId() {
+        try {
+            return db.getLastId();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return 0;
     }
 
     /**

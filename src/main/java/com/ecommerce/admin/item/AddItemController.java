@@ -1,15 +1,14 @@
 package com.ecommerce.admin.item;
 
 import com.ecommerce.general.category.Category;
-import com.ecommerce.general.item.Item;
-import com.ecommerce.general.user.User;
 import com.ecommerce.general.category.CategoryDaoImpl;
-import com.ecommerce.general.item.ItemDaoImpl;
-import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.item.Item;
+import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.path.ViewPath;
+import com.ecommerce.general.user.User;
+import com.ecommerce.general.user.UserDaoImpl;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -17,6 +16,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 @WebServlet(name = "AddItemController", urlPatterns = {"/admin/add-item"})
 public class AddItemController extends HttpServlet {
@@ -33,9 +35,6 @@ public class AddItemController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // set page title
-        Helper.setTitle(request, "Add Item");
 
         // get all users with out pendings users
         List<User> users = new UserDaoImpl(servletContext).getAllUsers(false);
@@ -56,8 +55,10 @@ public class AddItemController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // set page title
-        Helper.setTitle(request, "Add Item");
+        JSONObject obj = new JSONObject();
+        JSONObject data = new JSONObject();
+        JSONArray errors = new JSONArray();
+        String success = null;
 
         // get form params from the request
         String name = request.getParameter("name");
@@ -69,27 +70,17 @@ public class AddItemController extends HttpServlet {
         int categoryId = Integer.parseInt(request.getParameter("category"));
         String tags = request.getParameter("tags");
 
-        // make empty list to errors
-        List<String> formErrors
-                //vildate parameter of FORM 
-                = vildateFormParams(name, description, price, countryMade, status, userId, categoryId);
-        // set errors to the request
-        request.setAttribute("errors", formErrors);
+        //vildate parameter of FORM 
+        errors.addAll(vildateFormParams(name, description, price, countryMade, status, userId, categoryId));
 
-        // check if no errors
-        if (formErrors.size() > 0) {
-            // forword to add page
-            Helper.forwardRequest(request, response, ViewPath.add_item_admin);
-        } else {
+        System.out.println(errors);
+
+        if (!(errors.size() > 0)) {
             // make new user and set info to it
-            User user = User.builder()
-                    .id(userId)
-                    .build();
+            User user = new UserDaoImpl(servletContext).getUserById(userId);
 
             // make new category and set info to it
-            Category category = Category.builder()
-                    .id(categoryId)
-                    .build();
+            Category category = new CategoryDaoImpl(servletContext).getCategoryById(categoryId);
 
             // make new item and set info to it 
             Item item = Item.builder()
@@ -99,59 +90,78 @@ public class AddItemController extends HttpServlet {
                     .countryMade(countryMade)
                     .status(status)
                     .user(user)
+                    .addDate(Helper.getCurrentDate())
                     .category(category)
                     .tags(tags)
                     .build();
 
+            ItemDaoImpl itemDao = new ItemDaoImpl(servletContext);
+
             // add item 
-            boolean itemAdded = new ItemDaoImpl(servletContext).addItem(item);
+            boolean itemAdded = itemDao.addItem(item);
 
             if (!itemAdded) {
                 // add new error to errors if item not added
-                formErrors.add("Sorry This Item Is Exist");
+                errors.add("Sorry This Item Is Exist");
             } else {
                 // set success message if item added
-                request.setAttribute("success", "item added");
+                success = "item added";
+                data.put("id", itemDao.getLastItemId());
+                data.put("name", name);
+                data.put("description", description);
+                data.put("price", price);
+                data.put("countryMade", countryMade);
+                data.put("status", status);
+                data.put("userId", userId);
+                data.put("username", user.getName());
+                data.put("categoryId", categoryId);
+                data.put("categoryName", category.getName());
+                data.put("tags", tags);
+                data.put("date", "" + item.getAddDate());
             }
-            // forword to add page
-            Helper.forwardRequest(request, response, ViewPath.add_item_admin);
+
         }
+        obj.put("success", success);
+        obj.put("errors", errors);
+        obj.put("data", data);
+        response.setContentType("application/json");
+        response.getWriter().print(obj.toJSONString());
     }// </editor-fold>
 
-    public List<String> vildateFormParams(String name, String description, String price,
+    public JSONArray vildateFormParams(String name, String description, String price,
             String countryMade, String status, int userId, int categoryId) {
 
         // make empty list to errors
-        List<String> formErrors = new ArrayList();
+        JSONArray errors = new JSONArray();
 
         // validate the form params
-        if (name == null) {
-            formErrors.add("Name Can't be <strong>Empty</strong>");
+        if (StringUtils.isEmpty(name)) {
+            errors.add("Name Can't be <strong>Empty</strong>");
         }
 
-        if (description == null) {
-            formErrors.add("Description Can't be <strong>Empty</strong>");
+        if (StringUtils.isEmpty(description)) {
+            errors.add("Description Can't be <strong>Empty</strong>");
         }
 
-        if (price == null) {
-            formErrors.add("Price Can't Be <strong>Empty</strong>");
+        if (StringUtils.isEmpty(price)) {
+            errors.add("Price Can't Be <strong>Empty</strong>");
         }
 
-        if (countryMade == null) {
-            formErrors.add("Country Can't Be <strong>Empty</strong>");
+        if (StringUtils.isEmpty(countryMade)) {
+            errors.add("Country Can't Be <strong>Empty</strong>");
         }
 
         if (status.equals("0")) {
-            formErrors.add("You Must Choose the <strong>Status</strong>");
+            errors.add("You Must Choose the <strong>Status</strong>");
         }
 
         if (userId == 0) {
-            formErrors.add("You Must Choose the <strong>User</strong>");
+            errors.add("You Must Choose the <strong>User</strong>");
         }
 
         if (categoryId == 0) {
-            formErrors.add("You Must Choose the <strong>Category</strong>");
+            errors.add("You Must Choose the <strong>Category</strong>");
         }
-        return formErrors;
+        return errors;
     }
 }

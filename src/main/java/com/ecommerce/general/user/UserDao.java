@@ -13,6 +13,8 @@ public interface UserDao {
     public boolean deleteUser(long id);
 
     public boolean activeUser(long id);
+    
+    public int getLastUserId();
 
     public List<User> getAllUsers(boolean pendings);
 

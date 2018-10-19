@@ -87,6 +87,13 @@ public final class MySQLDatabaseHelper {
     private String sort;
 
     /**
+     * last id
+     *
+     * @var int
+     */
+    private int lastId;
+
+    /**
      * Connection
      *
      * @var Connection
@@ -340,6 +347,7 @@ public final class MySQLDatabaseHelper {
         PreparedStatement ps = this.buildQuery(query, this.bindings);
         this.reset();
         int rowsAffected = ps.executeUpdate();
+        this.generateLastId(ps);
         return (rowsAffected > 0);
     }
 
@@ -359,6 +367,7 @@ public final class MySQLDatabaseHelper {
         PreparedStatement ps = this.buildQuery(query, this.bindings);
         this.reset();
         int rowsAffected = ps.executeUpdate();
+        this.generateLastId(ps);
         return (rowsAffected > 0);
     }
 
@@ -439,6 +448,28 @@ public final class MySQLDatabaseHelper {
             }
         }
         return ps;
+    }
+
+    /**
+     * generate last id
+     *
+     * @param ps
+     * @return void
+     */
+    private void generateLastId(PreparedStatement ps) throws SQLException {
+        ResultSet rs = ps.getGeneratedKeys();
+        if (rs.next()) {
+            this.lastId = rs.getInt(1);
+        }
+    }
+
+    /**
+     * get last id
+     *
+     * @return int
+     */
+    public int getLastId() throws SQLException {
+        return this.lastId;
     }
 
     /**

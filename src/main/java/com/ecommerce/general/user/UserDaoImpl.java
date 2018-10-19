@@ -35,7 +35,7 @@ public class UserDaoImpl implements UserDao {
     public User getLoginUser(String userName, String password) {
 
         String where = "`name` = ? AND `password` = ?";
-       
+
         User user = null;
         try (ResultSet rs = db.select("id", "name", "password", "full_name", "group_id")
                 .table(table)
@@ -218,6 +218,22 @@ public class UserDaoImpl implements UserDao {
     }
 
     /**
+     * get last user id
+     *
+     * @return int
+     */
+    @Override
+    public int getLastUserId() {
+        try {
+            return db.getLastId();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
      * get all users data table database
      *
      * @param pendings
@@ -245,6 +261,7 @@ public class UserDaoImpl implements UserDao {
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .password(rs.getString("password"))
+                        .email(rs.getString("email"))
                         .fullName(rs.getString("full_name"))
                         .regStatus(rs.getInt("register_status"))
                         .date(rs.getDate("date"))
@@ -283,6 +300,7 @@ public class UserDaoImpl implements UserDao {
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .password(rs.getString("password"))
+                        .email(rs.getString("email"))
                         .fullName(rs.getString("full_name"))
                         .regStatus(rs.getInt("register_status"))
                         .date(rs.getDate("date"))
@@ -340,8 +358,8 @@ public class UserDaoImpl implements UserDao {
                         .id(rs.getLong("id"))
                         .name(rs.getString("name"))
                         .password(rs.getString("password"))
-                        .fullName(rs.getString("full_name"))
                         .email(rs.getString("email"))
+                        .fullName(rs.getString("full_name"))
                         .date(rs.getDate("date"))
                         .build();
             }

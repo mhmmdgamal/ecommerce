@@ -10,6 +10,8 @@ public interface ItemDao {
     public boolean addItem(Item item);
 
     public boolean deleteItem(long id);
+    
+    public int getLastItemId();
 
     public List<Comment> getItemComments(long id, String sort);
 
