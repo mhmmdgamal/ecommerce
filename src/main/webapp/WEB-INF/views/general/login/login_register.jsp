@@ -106,10 +106,14 @@
                         $('input[name="login"]').removeAttr('disabled');
                         flag = false;
                     } else if (results.success !== null) {
-                        loginResults.removeClass().addClass('alert alert-success').html(results.success);
-                        if (results.redirect) {
-                            window.location.href = results.redirect;
-                        }
+
+                        $(document).ajaxSuccess(function () {
+                            loginResults.removeClass().addClass('alert alert-success').html(results.success);
+                            if (results.redirect) {
+                                window.location.href = results.redirect;
+                            }
+//                            alert("AJAX request successfully completed");
+                        });
                     }
                 }
             });

@@ -29,4 +29,6 @@ interface ViewCustomerPath {
     final String footer = CUSTOMER_JSP_PATH + "include/footer.jsp";
     final String navbar = CUSTOMER_JSP_PATH + "include/navbar.jsp";
 
+    // get title of page from url
+//    public static String getTitle(String path);
 }

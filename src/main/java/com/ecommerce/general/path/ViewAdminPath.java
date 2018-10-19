@@ -42,4 +42,6 @@ interface ViewAdminPath {
 
     final String navebar_admin = adminJspPath + "include/navbar.jsp";
 
+    //get title of pages to able to redirect
+//    public String getAdminTitle(String path);
 }

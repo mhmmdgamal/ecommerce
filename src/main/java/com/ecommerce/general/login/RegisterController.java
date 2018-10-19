@@ -8,7 +8,6 @@ import com.ecommerce.general.helper.HashHelper;
 import com.ecommerce.general.helper.Helper;
 import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,127 +19,52 @@ import org.json.simple.JSONObject;
 //</editor-fold >
 
 @WebServlet(name = "RegisterController", urlPatterns = {"/register"})
-public class RegisterController extends HttpServlet {
+public class RegisterController extends HttpServlet implements I.Register {
+
+    String dashboard;
+    String home;
+    String redirect = null;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        //get Session
-        HttpSession session = request.getSession();
-        //if existed session or cookies  
-        if ((session.getAttribute("user") != null) || (CookieHelper.isCookie("user", request, response))) {
-            if ((session.getAttribute("groupId") != null) || (CookieHelper.isCookie("groupId", request, response))) {
-                // go to dashboard
-                response.sendRedirect("admin/dashboard");
-            } else {
-                // go to home 
-                response.sendRedirect("");
-            }
-
-        } else {//if Not existed session or cookies 
-            //set param previous in url again 
-            String previous = request.getParameter("previous");
-            if (previous != null) {
-                previous = "?previous=" + previous;
-            } else {
-                previous = "";
-            }
-            // forword the requset to the login page 
-            Helper.forwardRequest(request, response, ViewPath.login_register + previous, "Login");
-        }
+    public void init() throws ServletException {
+        super.init();
+        dashboard = ViewPath.getUrlPatternAdmin(ViewPath.dashboard_admin);
+        home = ViewPath.getUrlPattern(ViewPath.home);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        JSONObject obj = new JSONObject();
         JSONArray errors = new JSONArray();
         String success = null;
-        String redirect = null;
+        //create user
+        User user = createUser(errors, request);
 
-        // get FORM params from the request
-        String username = request.getParameter("user");
-        String password = request.getParameter("pass");
-        String confirmPassword = request.getParameter("pass2");
-        String email = request.getParameter("email");
-        String fullName = request.getParameter("full_name");
-        String remember = request.getParameter("remember");
-        //get param previous page from url
-        String previous = request.getParameter("previous");
+        boolean userAdded = (user == null) ? false
+                //add user to DB
+                : new UserDaoImpl(getServletContext()).addUser(user);
 
-        // validate the FORM params
-        errors = validateParams(username, password, confirmPassword, email);
+        if (userAdded) {//if user created successfully  
 
-        if (errors.size() > 0) {//if there's errors
-            
-            if (previous != null) {//if user come to login from other page 
-                //set parameter <previous> in url again 
-                redirect = ViewPath.login_register + "?previous=" + previous;
-            } else {
-                redirect = ViewPath.login_register;
-            }
+            success = "Congrats You Are Now Registerd User";
+            //save user data Session or Cookies 
+            saveUserData(user, request, response);
+            //get Success Redirect 
+            redirect = getSuccessRedirect(request);
 
-        } else {//if there's NO errors
-            // hash password
-            String passwordHashed = HashHelper.stringHash(password);
-            // make new user and set info to it
-            User user = User.builder()
-                    .name(username)
-                    .password(passwordHashed)
-                    .email(email)
-                    .fullName(fullName)
-                    .build();
-
-            //creat new user in Database
-            boolean userCreated = new UserDaoImpl(getServletContext()).addUser(user);
-
-            if (userCreated) {//if user created successfully  
-                // set success message 
-                success = "Congrats You Are Now Registerd User";
-                //if user Click Remember Me 
-                if (remember != null && remember.equalsIgnoreCase("y")) {
-                    //<set Cookies>
-                    setUserCookies(user, response);
-
-                } else {
-                    //<set Session>
-                    SetUserSession(user, request.getSession());
-                }
-
-                //System.out.println(previous);
-                if (previous != null && !previous.equals("")) {//previousPage == null <improve>
-                    redirect = previous;
-                } else {
-                    redirect = "home";
-                }
-
-            } else {//if user not created 
-                // add new error to errors 
-                errors.add("Sorry This User Is Exist");
-
-                //forword to login again 
-//                Helper.setTitle(request, "Login");
-                if (previous != null) {
-//                    Helper.forwardRequest(request, response, ViewPath.login_register + "?previous=" + previous);
-                    redirect = ViewPath.login_register + "?previous=" + previous;
-                } else {
-                    
-//                    Helper.forwardRequest(request, response, ViewPath.login_register);
-                    redirect = ViewPath.login_register;
-                }
-            }
+        } else {//if user not created 
+            errors.add("Sorry This User Is Exist");
+            //get Redirect 
+            redirect = getErrorRedirect(request);
         }
-
-        obj.put("success", success);
-        obj.put("errors", errors);
-        obj.put("redirect", redirect);
-        response.setContentType("application/json");
-        response.getWriter().print(obj.toJSONString());
-
+        //send response by JSON 
+        responseJSON(redirect, success, errors, response);
     }
 
-    public JSONArray validateParams(String username, String password, String confirmPassword, String email) {
+    @Override
+    public JSONArray validateParams(String username, String password,
+            String confirmPassword, String email) {
 
         // make empty list to errors
         JSONArray formErrors = new JSONArray();
@@ -168,6 +92,37 @@ public class RegisterController extends HttpServlet {
         return formErrors;
     }
 
+    @Override
+    public User createUser(JSONArray errors, HttpServletRequest request) {
+
+        // get FORM params from the request
+        String username = request.getParameter("user");
+        String password = request.getParameter("pass");
+        String confirmPassword = request.getParameter("pass2");
+        String email = request.getParameter("email");
+        String fullName = request.getParameter("full_name");
+
+        // validate the FORM params
+        errors = validateParams(username, password, confirmPassword, email);
+
+        if (errors.size() > 0) {
+            return null;
+
+        } else {//if no errors
+            // hash password
+            String passwordHashed = HashHelper.stringHash(password);
+            // make new user and set info to it
+            User user = User.builder()
+                    .name(username)
+                    .password(passwordHashed)
+                    .email(email)
+                    .fullName(fullName)
+                    .build();
+            return user;
+        }
+    }
+
+    @Override
     public void SetUserSession(User user, HttpSession session) {
 
         //set session for user if remember me not checked 
@@ -176,6 +131,7 @@ public class RegisterController extends HttpServlet {
         session.setAttribute("fullName", (user.getFullName().split(" ")[0]));
     }
 
+    @Override
     public void setUserCookies(User user, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -183,6 +139,70 @@ public class RegisterController extends HttpServlet {
         CookieHelper.addCookie("user", user.getName(), response);
         CookieHelper.addCookie("userId", "" + user.getId(), response);
         CookieHelper.addCookie("fullName", (user.getFullName().split(" ")[0]), response);
+    }
+
+    @Override
+    public void saveUserData(User user, HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String remember = request.getParameter("remember");
+        //if user Click Remember Me 
+        if (remember != null && remember.equalsIgnoreCase("y")) {
+            //<set Cookies>
+            setUserCookies(user, response);
+
+        } else {
+            //<set Session>
+            SetUserSession(user, request.getSession());
+        }
+    }
+
+    public String getSuccessRedirect(HttpServletRequest request) {
+        return getSuccessRedirect(request, -1);//-1 mean group id not used
+    }
+
+    @Override
+    public String getSuccessRedirect(HttpServletRequest request, int groupId) {
+
+        //get param previous page from url
+        String previous = request.getParameter("previous");
+
+        //if user come to login from other page 
+        if (previous != null && !previous.equals("")) {
+            redirect = previous;
+        } else {
+            redirect = home;
+        }
+        return redirect;
+
+    }
+
+    @Override
+    public String getErrorRedirect(HttpServletRequest request) {
+
+        //get param previous page from url
+        String previous = request.getParameter("previous");
+
+        //if user come to login from other page 
+        if (previous != null && !previous.equals("")) {
+            //set parameter <previous> in url again 
+            redirect = ViewPath.login_register + "?previous=" + previous;
+        } else {
+            redirect = ViewPath.login_register;
+        }
+        return redirect;
+    }
+
+    @Override
+    public void responseJSON(String redirect, String success, JSONArray errors,
+            HttpServletResponse response) throws IOException, IOException {
+
+        JSONObject obj = new JSONObject();
+        obj.put("success", success);
+        obj.put("errors", errors);
+        obj.put("redirect", redirect);
+        response.setContentType("application/json");
+        response.getWriter().print(obj.toJSONString());
     }
 
 }
