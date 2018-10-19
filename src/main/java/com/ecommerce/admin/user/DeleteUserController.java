@@ -1,13 +1,14 @@
 package com.ecommerce.admin.user;
 
-import com.ecommerce.general.user.UserDaoImpl;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.user.UserDaoImpl;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONObject;
 
 @WebServlet(name = "DeleteUserController", urlPatterns = {"/admin/delete-user"})
 public class DeleteUserController extends HttpServlet {
@@ -15,9 +16,6 @@ public class DeleteUserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // set page title
-        Helper.setTitle(request, "Delete User");
 
         // get userId param from the request
         String userId = request.getParameter("userid");
@@ -27,14 +25,12 @@ public class DeleteUserController extends HttpServlet {
 
         // delete user depending on userId
         boolean userDeleted = new UserDaoImpl(getServletContext()).deleteUser(Id);
-        if (userDeleted) {
-            // redirect to the previous page with deleted message
-            Helper.redriectToPrevPage(request, response, "user deleted", false);
 
-        } else {
-            // redirect to the previous page with error message
-            Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
-        }
+        JSONObject obj = new JSONObject();
+        obj.put("success", userDeleted);
+        response.setContentType("application/json");
+        response.getWriter().print(obj.toJSONString());
+        
     }
 
 }

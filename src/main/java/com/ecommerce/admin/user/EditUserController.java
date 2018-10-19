@@ -6,19 +6,18 @@ import com.ecommerce.general.path.ViewPath;
 import com.ecommerce.general.user.User;
 import com.ecommerce.general.user.UserDaoImpl;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 @WebServlet(name = "EditUserController", urlPatterns = {"/admin/edit-user"})
 public class EditUserController extends HttpServlet {
 
-    
     ServletContext servletContext = null;
 
     @Override
@@ -30,9 +29,6 @@ public class EditUserController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // set page title
-        Helper.setTitle(request, "Edit Users");
-
         // get userId param from the request
         String userId = request.getParameter("userid");
 
@@ -41,24 +37,22 @@ public class EditUserController extends HttpServlet {
 
         // get user depending on userId
         User userFounded = new UserDaoImpl(servletContext).getUserById(Id);
-        if (userFounded != null) {
-            // set the found user to the request
-            request.setAttribute("user", userFounded);
+//        if (userFounded != null) {
+        // set the found user to the request
+        request.setAttribute("user", userFounded);
 
-            // forword to edit page
-            Helper.forwardRequest(request, response, ViewPath.edit_user_admin);
-        } else {
-            // redirect to the previous page with error message
-            Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
-        }
+        // forword to edit page
+        Helper.forwardRequest(request, response, ViewPath.edit_user_admin);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // set page title
-        Helper.setTitle(request, "Users");
+        JSONObject obj = new JSONObject();
+        JSONObject data = new JSONObject();
+        JSONArray errors = new JSONArray();
+        String success = null;
 
         // get the action param value if exists or return manage
         // get form params from the request
@@ -69,21 +63,13 @@ public class EditUserController extends HttpServlet {
         String email = request.getParameter("email");
         String fullName = request.getParameter("full");
 
-        // make empty list to errors
-        List<String> formErrors
-                // vildate parameter of FORM 
-                = vildateFormParams(username, fullName, email);
         //<improve> write **** in text field password  
         String password = (newPassword == null || newPassword.isEmpty()) ? oldPassword : HashHelper.stringHash(newPassword);
+        
+        // vildate parameter of FORM 
+        errors.addAll(vildateFormParams(username, fullName, email));
 
-        // set errors to the request
-        request.setAttribute("errors", formErrors);
-
-        // check if no errors
-        if (formErrors.size() > 0) {
-            // forword to edit page
-            Helper.forwardRequest(request, response, ViewPath.edit_user_admin);
-        } else {
+        if (!(errors.size() > 0)) {
             // make new user and set info to it
             User user = User.builder()
                     .id(id)
@@ -91,57 +77,60 @@ public class EditUserController extends HttpServlet {
                     .password(password)
                     .email(email)
                     .fullName(fullName)
+                    .date(Helper.getCurrentDate())
                     .build();
-
-            // add user to the request
-            request.setAttribute("user", user);
 
             // update user
             boolean userUpdated = new UserDaoImpl(servletContext).updateUser(user);
 
             if (!userUpdated) {
                 // add new error to errors if user not updated
-                formErrors.add("error in update");
+                errors.add("error in update");
             } else {
                 // set success message if user updated
-                request.setAttribute("success", "user updated");
+                success = "user updated";
+                data.put("id", id);
+                data.put("name", user.getName());
+                data.put("email", user.getEmail());
+                data.put("fullName", user.getFullName());
             }
-            // forword to edit page
-            Helper.forwardRequest(request, response, ViewPath.edit_user_admin);
         }
+
+        obj.put("success", success);
+        obj.put("errors", errors);
+        obj.put("data", data);
+        response.setContentType("application/json");
+        response.getWriter().print(obj.toJSONString());
+        
     }
 
-    public List<String> vildateFormParams(String username, String fullName,
+    public JSONArray vildateFormParams(String username, String fullName,
             String email) {
 
         // make empty list to errors
-        List<String> formErrors = new ArrayList();
+        JSONArray errors = new JSONArray();
 
         // validate the form params
-        if (username != null) {
+        if (username == null || username.isEmpty()) {
+            errors.add("Username Cant Be <strong>Empty</strong>");
+        } else {
             if (username.length() < 4) {
-                formErrors.add("Username can not Be Less Than <strong>4 Characters</strong>");
+                errors.add("Username Cant Be Less Than <strong>4 Characters</strong>");
             }
-        }
 
-        if (username != null) {
             if (username.length() > 20) {
-                formErrors.add("Username can not Be More Than <strong>20 Characters</strong>");
+                errors.add("Username Cant Be More Than <strong>20 Characters</strong>");
             }
         }
 
-        if (username == null) {
-            formErrors.add("Username can not Be <strong>Empty</strong>");
+        if (fullName == null || fullName.isEmpty()) {
+            errors.add("Full Name Cant Be <strong>Empty</strong>");
         }
 
-        if (fullName == null) {
-            formErrors.add("Full Name can not Be <strong>Empty</strong>");
+        if (email == null || email.isEmpty()) {
+            errors.add("Email Cant Be <strong>Empty</strong>");
         }
-
-        if (email == null) {
-            formErrors.add("Email can not Be <strong>Empty</strong>");
-        }
-        return formErrors;
+        return errors;
     }
 
 }
