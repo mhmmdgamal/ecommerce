@@ -12,6 +12,8 @@ public interface CategoryDao {
     public boolean addCategory(Category category);
 
     public boolean deleteCategory(long id);
+    
+    public int getLastCategoryId();
 
     public List<Category> getAllSupCategories(String sort);
 
