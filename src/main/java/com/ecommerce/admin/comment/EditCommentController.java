@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONObject;
 
 @WebServlet(name = "EditCommentController", urlPatterns = {"/admin/edit-comment"})
 public class EditCommentController extends HttpServlet {
@@ -28,9 +29,6 @@ public class EditCommentController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // set page title
-        Helper.setTitle(request, "Edit Comment");
-
         // get commentId param from the request
         String commentId = request.getParameter("commentid");
 
@@ -39,16 +37,12 @@ public class EditCommentController extends HttpServlet {
 
         // get comment depending on commentId
         Comment commentFounded = new CommentDaoImpl(servletContext).getCommentById(id);
-        if (commentFounded != null) {
-            // set the found comment to the request
-            request.setAttribute("comment", commentFounded);
 
-            // forword request to edit page
-            Helper.forwardRequest(request, response, ViewPath.edit_comment_admin);
-        } else {
-            // redirect to the previous page with error message
-            Helper.redriectToPrevPage(request, response, "Theres No Such ID", true);
-        }
+        // set the found comment to the request
+        request.setAttribute("comment", commentFounded);
+
+        // forword request to edit page
+        Helper.forwardRequest(request, response, ViewPath.edit_comment_admin);
 
     }
 
@@ -56,8 +50,8 @@ public class EditCommentController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // set page title
-        Helper.setTitle(request, "Edit Comment");
+        JSONObject obj = new JSONObject();
+        JSONObject data = new JSONObject();
 
         // get form params from the request
         int id = Integer.parseInt(request.getParameter("commentid"));
@@ -68,24 +62,16 @@ public class EditCommentController extends HttpServlet {
                 .id(id)
                 .comment(com)
                 .build();
+        data.put("id", id);
+        data.put("comment", com);
 
         // update comment
         boolean commentUpdated = new CommentDaoImpl(servletContext).updateComment(comment);
 
-        if (!commentUpdated) {
-            String error = "error in update";
-            // set error message to request if comment does not update successfully
-            request.setAttribute("error", error);
-        } else {
-            // set success message to request if comment updated successfully
-            request.setAttribute("success", "comment updated");
-        }
-
-        // set comment to request
-        request.setAttribute("comment", comment);
-
-        // forword request to the edit page
-        Helper.forwardRequest(request, response, ViewPath.edit_comment_admin);
+        obj.put("success", commentUpdated);
+        obj.put("data", data);
+        response.setContentType("application/json");
+        response.getWriter().print(obj.toJSONString());
 
     }// </editor-fold>
 
