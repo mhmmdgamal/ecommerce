@@ -38,9 +38,9 @@ public interface ControllerAdminPath {
     final String MANAGE_USER_ADMIN = ROOT_PATH + "manage-users";
 
     //get User Controller Path
-    final String ADD_COMMENT_ADMIN = ROOT_PATH + "commadd-comment";
+    final String ADD_COMMENT_ADMIN = ROOT_PATH + "add-comment";
 
-    final String EDIT_COMMENT_ADMIN = ROOT_PATH + "commedit-comment";
+    final String EDIT_COMMENT_ADMIN = ROOT_PATH + "edit-comment";
     
     final String DELETE_COMMENT_ADMIN = ROOT_PATH + "delete-comment";
     
