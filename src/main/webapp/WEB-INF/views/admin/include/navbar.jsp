@@ -16,7 +16,7 @@
                 <li><a href="<%=ControllerPath.MANAGE_CATEGORY_ADMIN %>">Categories</a></li>
                 <li><a href="<%=ControllerPath.MANAGE_ITEM_ADMIN %>">Items</a></li>
                 <li><a href="<%=ControllerPath.MANAGE_USER_ADMIN %>">Users</a></li>
-                <li><a href="<%=ControllerPath.MANAGE_COMMENT_ADMIN%>s">Comments</a></li>
+                <li><a href="<%=ControllerPath.MANAGE_COMMENT_ADMIN%>">Comments</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
