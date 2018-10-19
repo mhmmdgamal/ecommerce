@@ -44,6 +44,22 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     /**
+     * get last item id
+     *
+     * @return int
+     */
+    @Override
+    public int getLastItemId() {
+        try {
+            return db.getLastId();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+    
+    /**
      * get all items linked with the user
      *
      * @param tag
