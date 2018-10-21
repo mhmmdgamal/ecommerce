@@ -8,6 +8,8 @@ import com.ecommerce.general.category.CategoryDaoImpl;
 import com.ecommerce.general.item.ItemDaoImpl;
 import com.ecommerce.general.helper.CookieHelper;
 import com.ecommerce.general.helper.Helper;
+import com.ecommerce.general.path.ControllerPath;
+import com.ecommerce.general.path.ResourcePath;
 import com.ecommerce.general.path.ViewPath;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,17 +20,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 // </editor-fold>
 
-@WebServlet(name = "AddItemControllerForCustomer", urlPatterns = {"/add-item"})
+@WebServlet(name = "AddItemControllerC", urlPatterns = {"/add-item"})
 
-public class AddNewItemController extends HttpServlet {
+public class AddItemController extends HttpServlet {
 
     ServletContext servletContext = null;
 
     @Override
     public void init() throws ServletException {
-        super.init(); //To change body of generated methods, choose Tools | Templates.
+        super.init();
         servletContext = getServletContext();
 
     }
@@ -36,9 +40,6 @@ public class AddNewItemController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // set page title
-        Helper.setTitle(request, "New Item");
 
         // get all categories from database with assending order
         List<Category> categories = new CategoryDaoImpl(servletContext).getAllCategories("ASC");
@@ -54,8 +55,10 @@ public class AddNewItemController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // set page title
-        Helper.setTitle(request, "New Item");
+        JSONObject obj = new JSONObject();
+        JSONObject data = new JSONObject();
+        JSONArray errors = new JSONArray();
+        boolean success = false;
 
         // get all categories from database with assending order
         List<Category> categories = new CategoryDaoImpl(servletContext).getAllCategories("ASC");
@@ -72,19 +75,13 @@ public class AddNewItemController extends HttpServlet {
         int categoryId = Integer.parseInt(request.getParameter("category"));
         String tags = request.getParameter("tags");
 
-        // make empty list to errors
-        List<String> formErrors
+        // add error if existed
+        errors.addAll(
                 //vildate params of FORM 
-                = vildateParams(name, description, price, countryMade, status, categoryId);
-        // set errors to the request
-        request.setAttribute("errors", formErrors);
+                vildateParams(name, description, price, countryMade, status, categoryId));
 
-        // check if no errors
-        if (formErrors.size() > 0) {
-            // forword to add page (to show error for user)
-            Helper.forwardRequest(request, response, ViewPath.add_item);
+        if (!(errors.size() > 0)) {//if no errors
 
-        } else {
             //get id of current user 
             Long userId = getCurrentUserId(request, response);
 
@@ -113,19 +110,24 @@ public class AddNewItemController extends HttpServlet {
             // add item to DB 
             boolean itemAdded = new ItemDaoImpl(servletContext).addItem(item);
 
-            if (!itemAdded) {
-                // add new error to errors if item not added
-                //<improve>formErrors.add("Sorry This Item Is Exist");
-                request.setAttribute("error", "can not add this item! try again!");
+            if (itemAdded) {
+                success = true;
+                data.put("id", item.getId());
+                data.put("name", name);
+                data.put("description", description);
+                data.put("price", price);
+                data.put("date", "" + item.getAddDate());
+                data.put("show_item", "" + ControllerPath.SHOW__ITEM);
+                data.put("img", ResourcePath.img+"img.png");
 
-            } else {
-                // set success message if item added
-                request.setAttribute("success", "Item Has Been Added");
             }
-
-            // forword to add page
-            Helper.forwardRequest(request, response, ViewPath.add_item);
         }
+
+        obj.put("success", success);
+        obj.put("errors", errors);
+        obj.put("data", data);
+        response.setContentType("application/json");
+        response.getWriter().print(obj.toJSONString());
     }
 
     public List<String> vildateParams(String name, String description,

@@ -144,7 +144,7 @@
                     <c:when test="${userItems.size() > 0}">
                         <div class="row">
                             <c:forEach items="${userItems}" var="item">
-                                <div class="col-sm-6 col-md-3">
+                                <div class="show-item col-sm-6 col-md-3">
                                     <div class="thumbnail item-box">
                                         <c:if test="${item['approve'] eq 0}">
                                             <span class="approve-status">Waiting Approval</span>
@@ -160,9 +160,51 @@
                                 </div>
                             </c:forEach>
                         </div>
+                        <div class="col-sm-6 col-md-3">
+                            <a href="#" class="add-item btn btn-primary" 
+                               data-toggle="modal" data-target="#itemModal">
+                                <i class="fa fa-plus"></i> New Item
+                            </a>
+                            <!-- show item Modal -->
+                            <div class="modal fade" id="itemModal" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form id="add-item-form" method="POST">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">title</h4>
+                                            </div>
+                                            <!-- Start modal-body --> 
+                                            <div class="modal-body">
+                                            </div>
+                                            <!-- End modal-body --> 
+                                            <div class="modal-footer">
+                                                <input type="submit"  name="save" value="Save" class="btn btn-default btn-lg" />
+                                                <button type="button" class="btn btn-default btn-lg close-modal" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>
+                                        <!-- start show Image-->
+                                        <div class="col-md-4">
+                                            <div class="thumbnail item-box live-preview">
+                                                <span class="price-tag">
+                                                    $<span class="live-price">0</span>
+                                                </span>
+                                                <img class="img-responsive" src="<%=ResourcePath.img%>img.png" alt="No Image" />
+                                                <div class="caption">
+                                                    <h3 class="live-title">Title</h3>
+                                                    <p class="live-desc">Description</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End show Image-->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  end item Modal -->
+                        </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="well">There's No Items To Show, Create <a href="<%=ControllerPath.ADD_ITEM%>">New Item</a></div>
+                        <div class="well">There's No Items To Show, Create <a href="<%=ControllerPath.ADD_ITEM%>">Add New Item</a></div>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -357,14 +399,14 @@
                 success: function (response) {
                     // if comment updated successfuly do:
                     if (response.success) {
-                       
+
                         $("#name-info").text($('#name-info-model').val());
                         $("#email-info").text($('#email-info-model').val());
                         $("#fullName-info").text($('#fulName-info-model').val());
                         // close modal window after comment updated
                         $('.modal .modal-content .modal-footer .close-modal').click();
-                      //<error>consol.log("demo"); don't work
-                       //Ensures there will be no 'console is undefined' errors
+                        //<error>consol.log("demo"); don't work
+                        //Ensures there will be no 'console is undefined' errors
 //                        window.console = window.console || (function () {
 //                            var c = {};
 //                            c.log = c.warn = c.debug = c.info = c.error = c.time = c.dir = c.profile = c.clear = c.exception = c.trace = c.assert = function (s) {};
@@ -374,6 +416,87 @@
                 }
             });
         });
+
+        ////////////////////////////////////////////////////////////////////////
+        //add item 
+
+        let flagAdd = false;
+
+        // when click Add button do:
+        $(document).on('click', '.add-item', function (event) {
+            // prevent the form from making the default action (submit)
+            event.preventDefault();
+            flagAdd = true;
+//            itemData = $(this).parent().parent().find('td:nth-child(1)');
+
+            // send request with ajax
+            $.ajax({//define object from XML Http Request 
+                url: '<%=ControllerPath.ADD_ITEM%>', //action : go to Add Comment controller
+                type: 'GET', //GET OR POST 
+                // on success do:
+                success: function (response) {
+                    $('#itemModal h4').text("Add Item");
+                    $('#itemModal .modal-content .modal-body').html(response);
+                    $("select").selectBoxIt({
+                        autoWidth: false
+                    });
+                }
+            });
+        });
+
+        let flag = false;
+        $(document).on('submit', '#add-item-form', function (e) {
+
+            e.preventDefault();
+            if (flag === true) {
+                return false;
+            }
+
+            form = $(this);
+            requestUrl = '<%=ControllerPath.ADD_ITEM%>';
+            requestMethod = form.attr('method');
+            requestData = form.serialize();
+            $.ajax({
+                url: requestUrl,
+                type: requestMethod,
+                data: requestData,
+                dataType: 'json',
+                beforeSend: function () {
+                    flag = true;
+                    $('input[name="save"]').attr('disabled', true);
+                },
+                success: function (response) {
+                    $('input[name="save"]').removeAttr('disabled');
+                    flag = false;
+                    if (response.errors.length > 0) {
+                        alert("Erorrs : AJAX request say there's some Erorrs");
+                    } else if (response.success !== null) {
+
+                        $(document).ajaxSuccess(function () {
+                            alert("AJAX request successfully completed");
+                        });
+                        //<error>(bad show item ) ???
+                        $('.show-item :first').after(
+                                '<div class="show-item col-sm-6 col-md-3">'
+                                + '<div class="thumbnail item-box">'
+                                + ' <span class="approve-status">Waiting Approval</span>'
+                                + ' <span class="price-tag">' + response.data.price + '</span>'
+                                + '<img class="img-responsive" src="' + response.data.img + '" alt="No Image" />'
+                                + '<div class="caption">'
+                                + '<h3><a href="' + response.data.show_item + '?itemid=' + response.data.id + '">'
+                                + response.data.name + '</a>' + '</h3>'
+                                + '<p>' + response.data.description + '</p>'
+                                + '<div class="date">' + response.data.date + '</div>'
+                                + '</div>'
+                                + '</div>'
+                                + '</div>'
+                                );
+                        $('.modal .modal-content .modal-footer .close-modal').click();
+                    }
+                }
+            });
+        });
+
     });
 </script>
 <script src="<%=ResourcePath.js%>jquery-ui.min.js"></script>

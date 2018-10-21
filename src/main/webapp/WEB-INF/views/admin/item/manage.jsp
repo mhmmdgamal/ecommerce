@@ -72,7 +72,8 @@
                     </table>
                 </form>
             </div>
-            <a href="#" class="add-item btn btn-primary" data-toggle="modal" data-target="#itemModal">
+            <a href="#" class="add-item btn btn-primary" data-toggle="modal" 
+               data-target="#itemModal">
                 <i class="fa fa-plus"></i> New Item
             </a>
         </div>
@@ -216,7 +217,7 @@
             // prevent the form from making the default action (submit)
             event.preventDefault();
             if (confirm("Are you sure?")) {
-                // get comment id
+                // get comment id 
                 let itemId = $(this).parent().parent().find('td:nth-child(1)').text();
                 // send request with ajax
                 $.ajax({//define object from XML Http Request 

@@ -18,7 +18,7 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li><a href="<%=ControllerPath.SHOW_PROFILE %>">My Profile</a></li>
-                            <li><a href="<%=ControllerPath.ADD_ITEM %>">New Item</a></li>
+                            <!--<li><a href="<%=ControllerPath.ADD_ITEM %>">New Item</a></li>-->
                             <li><a href="<%=ControllerPath.LOGOUT %>">Logout</a></li>
                         </ul>
                     </div>

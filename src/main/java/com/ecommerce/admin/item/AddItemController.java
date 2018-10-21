@@ -31,7 +31,6 @@ public class AddItemController extends HttpServlet {
 
     }
 
-    // <editor-fold >
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -126,7 +125,7 @@ public class AddItemController extends HttpServlet {
         obj.put("data", data);
         response.setContentType("application/json");
         response.getWriter().print(obj.toJSONString());
-    }// </editor-fold>
+    }
 
     public JSONArray vildateFormParams(String name, String description, String price,
             String countryMade, String status, int userId, int categoryId) {

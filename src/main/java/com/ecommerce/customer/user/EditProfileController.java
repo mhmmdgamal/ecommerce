@@ -29,7 +29,6 @@ public class EditProfileController extends HttpServlet {
         super.init(); //To change body of generated methods, choose Tools | Templates.
         servletContext = getServletContext();
     }// </editor-fold >
-    // <editor-fold >
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -78,16 +77,7 @@ public class EditProfileController extends HttpServlet {
 
         String password = (newPassword == null || newPassword.isEmpty()) ? oldPassword : HashHelper.stringHash(newPassword);
 
-        // set errors to the request
-//        request.setAttribute("errors", formErrors);
-        if (errors.size() > 0) {// if there is errors
-
-            // forword to login page
-//            Helper.setTitle(request, "Edit Profile");
-//            Helper.forwardRequest(request, response, ViewPath.edit_profile);
-            redirect = ViewPath.edit_profile;
-
-        } else {//if there is no errors
+        if (!(errors.size() > 0)) {//if there is no errors
 
             //get id of current user 
             Long userId = getCurrentUserId(request, response);
@@ -106,31 +96,19 @@ public class EditProfileController extends HttpServlet {
 
             //set message success or error
             if (!userUpdated) {
-                // add new error to errors if User not added
-                //<improve>formErrors.add("can not update this User");         
-                //request.setAttribute("success", "User Has Been Updated");
                 errors.add("can not update this User");
-
             } else {
-                // set success message if User added
-//                request.setAttribute("success", "User Has Been Updated");
                 success = true;
             }
 
-            // set User to request
-//            request.setAttribute("user", user);
-            // forword to add page
-//            Helper.forwardRequest(request, response, ViewPath.edit_profile);
-//            redirect = ViewPath.edit_profile;
         }
 
         obj.put("success", success);
         obj.put("errors", errors);
-//        obj.put("redirect", redirect);
         response.setContentType("application/json");
         response.getWriter().print(obj.toJSONString());
 
-    }// </editor-fold>
+    }
 
     public JSONArray vildateFormParams(String name, String email,
             String fullName) {
