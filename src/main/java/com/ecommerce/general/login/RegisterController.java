@@ -35,7 +35,7 @@ public class RegisterController extends HttpServlet implements I.Register {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        //attributes
         JSONArray errors = new JSONArray();
         String success = null;
         //create user

@@ -227,7 +227,7 @@ public class UserDaoImpl implements UserDao {
         try {
             return db.getLastId();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+//            System.out.println(ex.getMessage());
             ex.printStackTrace();
         }
         return 0;

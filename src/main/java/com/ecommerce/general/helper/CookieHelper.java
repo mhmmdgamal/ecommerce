@@ -35,7 +35,15 @@ public class CookieHelper {
             response.addCookie(cookie);
         }
     }
-
+/**
+ * 
+ * @param name
+ * @param request
+ * @param response
+ * @return true if the (name) stored in cookies array
+ * @throws ServletException
+ * @throws IOException 
+ */
     public static boolean isCookie(String name, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -54,6 +62,15 @@ public class CookieHelper {
         return false;
     }
 
+    /**
+     * 
+     * @param name
+     * @param request
+     * @param response
+     * @return String (value of name(key))
+     * @throws ServletException
+     * @throws IOException 
+     */
     public static String getCookie(String name, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 

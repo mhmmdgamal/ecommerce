@@ -24,42 +24,44 @@ public final class MySQLDatabaseHelper {
     private String table;
 
     /**
-     * Data Container
+     * Data Container to set key and Value, for example :
+     * pstmt.setString(key,Value);
      *
      * @var map
      */
     private Map<String, Object> data = new LinkedHashMap();
 
     /**
-     * Bindings Container
+     * Bindings Container to set Value, for example :
+     * pstmt.setString(key,Value);
      *
      * @var array
      */
     private ArrayList bindings = new ArrayList();
 
     /**
-     * Wheres
+     * Wheres (condition)
      *
      * @var array
      */
     private ArrayList wheres = new ArrayList();
 
     /**
-     * Selects
+     * Selects(SELECT column1, column2, ...)
      *
      * @var array
      */
     private ArrayList<String> selects = new ArrayList();
 
     /**
-     * Limit
+     * select first 30 records : "SELECT * FROM Orders LIMIT 30
      *
      * @var int
      */
     private int limit;
 
     /**
-     * Offset
+     * start select with Offset : "SELECT * FROM Orders LIMIT 30 OFFSET 15";
      *
      * @var int
      */
@@ -159,7 +161,7 @@ public final class MySQLDatabaseHelper {
     }
 
     /**
-     * Get Database Connection Object PDO Object
+     * Get Database Connection Object PDO Object(php)
      *
      * @return Connection
      */
@@ -179,7 +181,7 @@ public final class MySQLDatabaseHelper {
     }
 
     /**
-     * Set Join clause
+     * Set Join clause (item.userID=user.id;)
      *
      * @param join
      * @return this
@@ -372,9 +374,10 @@ public final class MySQLDatabaseHelper {
     }
 
     /**
-     * Set the fields for insert and update
+     * Set the fields for insert and update, for example:PreparedStatement pstmt
+     * = con.prepareStatement ("UPDATE employee SET name = ? WHERE id = ?");
      *
-     * @return string
+     * @return string (query)
      */
     private String setFields() {
         String query = "";
@@ -410,9 +413,10 @@ public final class MySQLDatabaseHelper {
     }
 
     /**
-     * Execute the given buildQuery statement
+     * Execute the given buildQuery statement for example :
+     * pstmt.setString(1,"Ahmad"); pstmt.setInt(2, 12);
      *
-     * @param query
+     * @param query ("UPDATE employee SET name = ? WHERE id = ?")
      * @param bindings
      * @return PreparedStatement object
      * @throws java.sql.SQLException

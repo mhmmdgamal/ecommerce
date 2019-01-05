@@ -102,7 +102,8 @@ public class Helper {
      * @throws ServletException
      * @throws IOException
      */
-    public static void forwardRequest(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
+    public static void forwardRequest(HttpServletRequest request,
+            HttpServletResponse response, String page) throws ServletException, IOException {
         request.getRequestDispatcher(page).forward(request, response);
     }
 
@@ -157,12 +158,13 @@ public class Helper {
      * @return
      */
     public static String rTrim(String str, String chars) {
+        //$ = remove (chars) at the end of (str)
         Pattern pattern = Pattern.compile(chars + "$");
         return pattern.matcher(str).replaceAll("");
     }
 
     /**
-     * check if the object is blank
+     * check if the object is blank(empty)
      *
      * @param obj
      * @return boolean
